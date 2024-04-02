@@ -10,7 +10,7 @@
   },
   "dependencies": {
     "express": "^4.16.1",
-    "pg": "^7.12.1"
+    "pg": "^8.11.4"
   },
   "devDependencies": {
     "@babel/cli": "^7.6.2",

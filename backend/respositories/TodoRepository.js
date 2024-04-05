@@ -9,13 +9,18 @@ class TodoRepository {
   }
 
   /**
-   * @param {String} name
+   * @params {*} object
    */
-  create(name, description) {
-    const newTodo = { name, description, done: false };
+  create(object) {
+    const newTodo = {
+        name: object.name, 
+        description: object.description, 
+        done: object.done 
+    };
+
     // eslint-disable-next-line new-cap
     const todo = new this.model(newTodo);
-
+  
     return todo.save();
   }
 

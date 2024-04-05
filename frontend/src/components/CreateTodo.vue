@@ -7,7 +7,7 @@
           type="text"
           class="form-control"
           @keypress="typing=true"
-          placeholder="What do you want to do?"
+          placeholder="Course Name"
           v-model="name"
           @keyup.enter="addTodo($event)"
         />
@@ -15,8 +15,8 @@
           type="text"
           class="form-control"
           @keypress="typing=true"
-          placeholder="What do you want to do?"
-          v-model="name"
+          placeholder="Course description"
+          v-model="description"
           @keyup.enter="addTodo($event)"
         />
         <small class="form-text text-muted" v-show="typing">Hit enter to save</small>
@@ -32,6 +32,7 @@ export default {
   data() {
     return {
       name: "",
+      description:"",
       typing: false
     };
   },
@@ -40,8 +41,10 @@ export default {
       if (event) event.preventDefault();
       let todo = {
         name: this.name,
+        description: this.description,
         done: false //false by default
       };
+
       console.log(todo);
       this.$http
         .post("/", todo)
@@ -57,6 +60,7 @@ export default {
 
     clearTodo() {
       this.name = "";
+      this.description = "";
     },
 
     refreshTodo() {

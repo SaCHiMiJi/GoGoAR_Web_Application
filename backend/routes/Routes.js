@@ -12,10 +12,20 @@ app.get('/', (req, res) => {
 
 // add a todo item
 app.post('/', (req, res) => {
-  const { name } = req.body;
-  repository.create(name).then((todo) => {
-    res.json(todo);
-  }).catch((error) => console.log(error));
+  const { name, description, done } = req.body; // Destructure properties from req.body directly
+  const todo = { name, description, done };
+
+  // Call repository.create() to save the todo item
+  repository.create(todo)
+  .then((createdTodo) => {
+    res.json(createdTodo); // Respond with the created todo item
+    console.log(createdTodo); // Log the created todo item
+  })
+  .catch((error) => console.log(error)); // Log any errors that occur
+  /*
+  repository.create(json(todo));
+  res.json(todo);
+  */
 });
 
 // delete a todo item
@@ -31,7 +41,7 @@ app.delete('/:id', (req, res) => {
 // update a todo item
 app.put('/:id', (req, res) => {
   const { id } = req.params;
-  const todo = { name: req.body.name, done: req.body.done };
+  const todo = { name: req.body.name, description: req.body.description, done: req.body.done };
   repository.updateById(id, todo)
     .then(res.status(200).json([]))
     .catch((error) => console.log(error));

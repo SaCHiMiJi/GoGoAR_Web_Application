@@ -6,8 +6,8 @@ const { Schema } = mongoose;
 const courseSchema = new Schema({
     course_id: Integer,
     course_name: String,
-    description: String,
-    done: Boolean,
+    course_description: String,
+    date_created: Date
 });
 
 const Todo = mongoose.model('Todo', todoSchema);

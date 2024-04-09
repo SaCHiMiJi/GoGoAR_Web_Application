@@ -1,4 +1,8 @@
 {
+  "name": "frontend",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
@@ -7,15 +11,15 @@
   "dependencies": {
     "@vitejs/plugin-vue": "^5.0.4",
     "axios": "^1.6.8",
-    "bootstrap": "^5.3.3",
-    "bootstrap-vue": "^2.23.1",
     "core-js": "^3.36.1",
-    "dotenv": "^16.4.5",
-    "vite": "^5.2.8",
     "vue": "^3.4.21",
+    "vue-router": "^4.3.0",
     "vuetify": "^3.5.14"
   },
   "devDependencies": {
-    "@vue/compiler-sfc": "^3.4.21"
+    "@vue/compiler-sfc": "^3.4.21",
+    "dotenv": "^16.4.5",
+    "sass": "^1.74.1",
+    "vite": "^5.2.8"
   }
 }

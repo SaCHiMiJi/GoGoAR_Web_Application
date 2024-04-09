@@ -1,21 +1,24 @@
-import { createRouter } from 'vue-router';
+import { createRouter, createWebHistory } from 'vue-router';
+// import 'dotenv/config';
 
 // Import your components
-// import TodoHome from './components/TodoHome.vue';
 import Courses from './components/Courses.vue';
 import Home from './components/Home.vue';
 
-const router = createRouter({
-  routes: [
-    {
-      path: '/',
-      component: Home
-    },
-    {
-      path: '/courses',
-      component: Courses
-    }
-  ]
-})
+const routes = [
+  {
+    path: '/',
+    component: Home
+  },
+  {
+    path: '/courses',
+    component: Courses
+  }
+];
 
-export default router
+const router = createRouter({
+  history: createWebHistory(import.meta.env.BASE_URL),
+  routes
+});
+
+export default router;

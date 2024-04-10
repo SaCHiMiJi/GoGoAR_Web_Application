@@ -1,9 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router';
-// import 'dotenv/config';
-
-// Import your components
-import Courses from './components/Courses.vue';
 import Home from './components/Home.vue';
+import ARCreation from './components/ARCreation.vue';
 
 const routes = [
   {
@@ -11,8 +8,8 @@ const routes = [
     component: Home
   },
   {
-    path: '/courses',
-    component: Courses
+    path: '/arcreation',
+    component: ARCreation
   }
 ];
 

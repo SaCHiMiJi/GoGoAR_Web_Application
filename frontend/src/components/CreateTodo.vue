@@ -24,6 +24,7 @@
     </form>
   </div>
 </template>
+
 <script>
 import axios from "axios";
 import bus from "./../bus.js";
@@ -64,13 +65,32 @@ export default {
     },
 
     refreshTodo() {
-      bus.$emit("refreshTodo");
+      bus.emit("refreshTodo");
     }
   }
 };
 </script>
+
 <style lang="scss" scoped>
 .underline {
   text-decoration: underline;
+}
+
+/* Add additional CSS decoration */
+.form-group {
+  margin-bottom: 20px;
+}
+
+.todo__row input {
+  /* Add styling for inputs */
+  border: 1px solid #ced4da;
+  border-radius: 4px;
+  padding: 8px 12px;
+}
+
+.form-text {
+  /* Add styling for small text */
+  font-size: 0.75rem;
+  color: #6c757d;
 }
 </style>

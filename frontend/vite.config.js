@@ -7,7 +7,7 @@ const config = {
   ],
   server: {
     host: true,
-    port: 8080,
+    port: 57329,
     watch: {
       usePolling: true
     }

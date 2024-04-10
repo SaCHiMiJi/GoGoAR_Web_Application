@@ -4,12 +4,12 @@ const { Schema } = mongoose;
 
 // Define schema for todo items
 const courseSchema = new Schema({
-    course_id: Integer,
     course_name: String,
     course_description: String,
+    course_instruction: Array,
     date_created: Date
 });
 
-const Todo = mongoose.model('Todo', todoSchema);
+const Course = mongoose.model('Course', courseSchema);
 
-module.exports = Todo;
+module.exports = Course;

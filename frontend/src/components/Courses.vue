@@ -1,5 +1,5 @@
 <template>
-    <div v-bind:show="todos.length>0" class="col align-self-center">
+    <div v-bind:show="courses.length>0" class="col align-self-center">
       <!-- Add by amount of Course -->
       <div class="form-row align-items-center" v-bind:key="course" v-for="course in courses">
         <div class="col-auto my-1">
@@ -57,7 +57,7 @@
       },
   
       listenToEvents() {
-        bus.$on("refreshCourse", $event => {
+        bus.on("refreshCourse", $event => {
           this.fetchCourse(); //update todo
         });
       }

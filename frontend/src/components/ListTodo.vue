@@ -47,7 +47,7 @@
 
 <script>
 import axios from "axios";
-// import bus from "./../bus.js";
+import bus from "./../bus.js";
 
 export default {
   data() {
@@ -95,12 +95,12 @@ export default {
     },
 
     listenToEvents() {
-      bus.$on("refreshTodo", $event => {
-        this.fetchTodo(); //update todo
-      });
+      bus.on("refreshTodo", $event => {
+        this.fetchTodo(); // update todo
+        });
     }
-  }
-};
+  },
+  };
 </script>
 
 <style lang="scss" scoped>

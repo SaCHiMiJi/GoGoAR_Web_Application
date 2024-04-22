@@ -1,6 +1,6 @@
-const Course = require('../models/Course');
+const Assignment = require('../models/Assignment.js');
 
-class CourseRepository {
+class AsssignmentRepository {
   /**
    * @param {*} model
    */
@@ -12,18 +12,16 @@ class CourseRepository {
    * @params {*} object
    */
   create(object) {
-    const newCourse = {
-        course_name: object.course_name, 
-        course_description: object.course_description, 
-        course_instruction: object.course_instruction,
-        date_created: new Date()
-
+    const newAssignment = {
+        assignment_name: object.assignment_name, 
+        creator_email: object.creator_email,
+        steps: object.steps
     };
 
     // eslint-disable-next-line new-cap
-    const course = new this.model(newCourse);
+    const assignment = new this.model(newAssignment);
   
-    return course.save();
+    return assignment.save();
   }
 
   findAll() {
@@ -54,14 +52,13 @@ class CourseRepository {
     return this.model.findOneAndUpdate(query, 
         { $set: 
             { 
-                course_name: object.course_name, 
-                course_description: object.course_description, 
-                course_instruction: object.course_instruction,
-                date_created: new Date()
+              assignment_name: object.assignment_name, 
+              creator_email: object.creator_email,
+              steps: object.steps
             } 
         }
     );
   }
 }
 
-module.exports = new CourseRepository(Course);
+module.exports = new AsssignmentRepository(Assignment);

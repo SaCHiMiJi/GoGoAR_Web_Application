@@ -1,9 +1,10 @@
 const express = require('express');
 
 const app = express.Router();
-const course_repository = require('../respositories/CourseRepository');
-const todo_repository = require('../respositories/TodoRepository');
+const assignment_repository = require('../respositories/AssignmentRepository.js');
+// const todo_repository = require('../respositories/TodoRepository');
 
+/*
 // get all todo items in the db
 app.get('/', (req, res) => {
   todo_repository.findAll().then((todos) => {
@@ -23,10 +24,8 @@ app.post('/', (req, res) => {
     console.log(createdTodo); // Log the created todo item
   })
   .catch((error) => console.log(error)); // Log any errors that occur
-  /*
-  repository.create(json(todo));
-  res.json(todo);
-  */
+  // repository.create(json(todo));
+  // res.json(todo);
 });
 
 // delete a todo item
@@ -47,31 +46,31 @@ app.put('/:id', (req, res) => {
     .then(res.status(200).json([]))
     .catch((error) => console.log(error));
 });
-
+*/
 // course
 // get all existed courses
-app.get('/getcourses', (req, res) => {
-  course_repository.findAll().then((courses) => {
-    res.json(courses);
+app.get('/getassignment', (req, res) => {
+  assignment_repository.findAll().then((assignments) => {
+    res.json(assignments);
   }).catch((error) => console.log(error));
 });
 
 // create the new course
-app.post('/createcourse', (req, res) => {
-  const { name, description, done } = req.body; // Destructure properties from req.body directly
-  const course = { name, description, done };
+app.post('/createassignment', (req, res) => {
+  const { assignment_id, assignment_name, creator_email, steps } = req.body; // Destructure properties from req.body directly
+  const assignment = { assignment_id, assignment_name, creator_email, steps };
 
   // Call repository.create() to save the todo item
-  course_repository.create(course)
-  .then((createdCourse) => {
-    res.json(createdCourse); // Respond with the created todo item
-    console.log(createdCourse); // Log the created todo item
-  })
-  .catch((error) => console.log(error)); // Log any errors that occur
+  assignment_repository.create(assignment)
+    .then((createassignment) => {
+      res.json(createassignment); // Respond with the created todo item
+      console.log(createassignment); // Log the created todo item
+    })
+    .catch((error) => console.log(error)); // Log any errors that occur
 });
 
 // delete a course item by id
-app.delete('/course:id', (req, res) => {
+app.delete('/assignment/:id', (req, res) => {
   const { id } = req.params;
   course_repository.deleteById(id).then((ok) => {
     console.log(ok);
@@ -81,7 +80,7 @@ app.delete('/course:id', (req, res) => {
 });
 
 // update a todo item
-app.put('/course:id', (req, res) => {
+app.put('/assignment/:id', (req, res) => {
   const { id } = req.params;
   const course = { 
     course_name: req.body.name,

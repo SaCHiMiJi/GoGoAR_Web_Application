@@ -1,0 +1,15 @@
+{
+    "assignment_id" : 1234,
+    "assignment_name" : "highlight the input and the output",
+    "creator_email" : "apachara2@gmail.com",
+    "steps":{
+        "1": {
+            "highlight" : "input1",
+            "context" : "lorem ipsum sit ame"
+        },
+        "2": {
+            "highlight" : "output4",
+            "context" : "connect output right here"
+        }
+    }
+}

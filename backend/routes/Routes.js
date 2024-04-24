@@ -48,11 +48,21 @@ app.put('/:id', (req, res) => {
 });
 */
 // course
-// get all existed courses
+// get all existed
 app.get('/getassignment', (req, res) => {
   assignment_repository.findAll().then((assignments) => {
     res.json(assignments);
   }).catch((error) => console.log(error));
+});
+
+// find one existing assignment
+app.get('/getassignment/:id', (req, res) => {
+  const { id } = req.params;
+  assignment_repository.findById(id)
+    .then((assignment) => {
+      console.log(`find record by id: ${id}`);
+      res.json(assignment);
+    }).catch((error) => console.log(error));
 });
 
 // create the new course
@@ -72,13 +82,14 @@ app.post('/createassignment', (req, res) => {
 // delete a course item by id
 app.delete('/assignment/:id', (req, res) => {
   const { id } = req.params;
-  course_repository.deleteById(id).then((ok) => {
+  assignment_repository.deleteById(id).then((ok) => {
     console.log(ok);
     console.log(`Deleted record with id: ${id}`);
     res.status(200).json([]);
   }).catch((error) => console.log(error));
 });
 
+/*
 // update a todo item
 app.put('/assignment/:id', (req, res) => {
   const { id } = req.params;
@@ -88,8 +99,9 @@ app.put('/assignment/:id', (req, res) => {
     done: req.body.done 
   };
   course_repository.updateById(id, course)
-    .then(res.status(200).json([]))
-    .catch((error) => console.log(error));
+  .then(res.status(200).json([]))
+  .catch((error) => console.log(error));
 });
 
+*/
 module.exports = app;

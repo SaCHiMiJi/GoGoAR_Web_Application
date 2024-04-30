@@ -13,7 +13,7 @@
                 <!-- Assignment name -->
                 <div class="mb-5 bg-slate-300 rounded-md p-8">
                     <label for="large-input" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Assignment Name</label>
-                    <input type="text" id="large-input" class="block w-full p-4 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 text-base focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                    <input v-model="assignmentName" type="text" id="large-input" class="block w-full p-4 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 text-base focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                 </div>
                 <!-- Assignment form -->
                 <div class="mb-5 bg-slate-300 rounded-md p-8" className="instructionContainer">
@@ -21,9 +21,7 @@
                     <div className="addInstructionButton" v-if="!formCreating">
                         <div v-for="[key] in steps" :key="key">
                             <div class="container mx-auto bg-slate-300 align-self: center;">
-                                {{ getSubValue(key, "function") }}<br>
-                                {{ getSubValue(key, "port") }}<br>
-                                {{ getSubValue(key, "context") }}
+                                {{ getStepFunctionDetails(key) }}
                                 <button v-on:click="openInstructionForm(key)">✏️</button>
                                 <button v-on:click="deleteStep(key)">🗑️</button>
                                 <button v-on:click="moveStepUp(key)">🔼</button>
@@ -37,8 +35,8 @@
                         </button>
                         <button 
                             class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800" 
-                            v-on:click="">
-                            Create Instruction
+                            v-on:click="submitAssignment">
+                            Save Assignment
                         </button>
                     </div>
                     <!-- Instruction forms -->
@@ -119,6 +117,7 @@ import '../js/imageMapResizer.min.js';
 export default {
     data() {
         return {
+            assignment_id: null,
             areas: [
                 { alt: 'output-4', title: 'output-4', coords: "603,175,743,294", shape: 'rect' },
                 { alt: 'output-3', title: 'output-3', coords: "789,171,931,298", shape: 'rect' },
@@ -142,10 +141,30 @@ export default {
             // POST datas
             assignmentName: "",
             creator_mail: "apachara2@gmail.com",
-            steps: new Map()
+            steps: new Map(),
+            isExist: false
         };
     },
     methods: {
+        // fetch assignment's detail
+        getAssignmentDetail() {
+            this.$http.get("http://localhost/todos/getassignment/" + this.assignment_id)
+            .then(response => {
+                const data = response.data;
+                console.log(data);
+                this.assignmentName = data.assignment_name;
+                this.creator_mail = data.creator_email;
+                this.steps = this.objectToMap(data.steps);
+
+                console.log("fetched name as: " + this.assignmentName
+                    + ", fetch creator's mail as : " + this.creator_mail);
+
+                this.displaySteps();
+            })
+            .catch(error => {
+                console.error('Error fetching data:', error);
+            });
+        },
         // get subMap with Map's key as indicator on eaches.
         getSubValue(key, subKey) {
             if(this.steps.has(key)) {
@@ -199,9 +218,6 @@ export default {
             // add map element
             this.steps.set(elementIndex, stepsInfo);
             
-            // checking map as stringnify object
-            this.displaySteps();
-            
             // reset values in form.
             this.closeInstruction();
         },
@@ -247,7 +263,75 @@ export default {
             }
         },
         submitAssignment() {
+            let stepsObject = {};
+            this.steps.forEach((subMap, key) => {
+                let subMapObject = {};
+                subMap.forEach((value, subKey) => {
+                    subMapObject[subKey] = value;
+                });
+                stepsObject[key] = subMapObject;
+            });
 
+            let data = JSON.stringify({
+                "assignment_name": this.assignmentName,
+                "creator_email": this.creator_mail,
+                "steps": stepsObject
+            });
+
+            // Set headers for Axios
+            let config = {
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            };
+
+            if(this.isExist) {
+                this.$http
+                    .put("http://localhost/todos/assignment/"+this.assignment_id, data, config)
+                    .then(response => {
+                        console.log("edited!", response.data);
+                    })
+                    .catch(error => {
+                        console.error(error);
+                    });    
+            } else {
+                this.$http
+                    .post("http://localhost/todos/createassignment", data, config)
+                    .then(response => {
+                        console.log("saved!", response.data);
+                    })
+                    .catch(error => {
+                        console.error(error);
+                    });
+            }
+        },
+        getStepFunctionDetails(index) {
+            // Convert the step number to a string if it's passed as a number
+            const step = this.steps.get(index);
+            let stepInfo = "";
+            if (step) {
+                console.log(`Details of step ${index}:`);
+                for (let [key, value] of step.entries()) {
+                    stepInfo += `-${value}`;
+                    console.log(`${key}: ${value}`);
+                }
+
+                return stepInfo;
+            } else {
+                console.log(`Step ${index} not found.`);
+            }
+        },
+        objectToMap(obj) {
+            const result = new Map();
+            Object.keys(obj).forEach(key => {
+                const value = obj[key];
+                if (value && typeof value === 'object' && !Array.isArray(value) && value !== null) {
+                result.set(key, this.objectToMap(value)); // Recursively convert nested objects
+                } else {
+                result.set(key, value);
+                }
+            });
+            return result;
         }
     },
     computed: {
@@ -265,6 +349,13 @@ export default {
     },
     mounted() {
         imageMapResize();
+    },
+    created() {
+        if (this.$route.query.jsonData) {
+            this.assignment_id = JSON.parse(this.$route.query.jsonData);
+            this.getAssignmentDetail();
+            this.isExist = true;
+        }
     }
 };
 </script>

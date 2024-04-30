@@ -18,7 +18,6 @@ class AsssignmentRepository {
         steps: object.steps
     };
 
-    // eslint-disable-next-line new-cap
     const assignment = new this.model(newAssignment);
   
     return assignment.save();
@@ -43,22 +42,41 @@ class AsssignmentRepository {
   }
 
   /**
-   *
    * @param {integer} id
    * @param {*} object
    */
   updateById(id, object) {
+    if (!id) {
+        console.error("No ID provided for update.");
+        return Promise.reject("No ID provided for update.");
+    }
+
     const query = { _id: id };
+    console.log("Updating object with ID: " + id);
+    console.log(object);
+
     return this.model.findOneAndUpdate(query, 
         { $set: 
             { 
               assignment_name: object.assignment_name, 
               creator_email: object.creator_email,
               steps: object.steps
-            } 
+            }
+        },
+        { new: true } // Return the updated document
+    ).then(updatedDocument => {
+        if (!updatedDocument) {
+            console.log("No document found with ID:", id);
+            return null;
         }
-    );
+        console.log("Updated document:", updatedDocument);
+        return updatedDocument;
+      }).catch(error => {
+          console.error("Error updating document:", error);
+          throw error;
+      });
   }
+
 }
 
 module.exports = new AsssignmentRepository(Assignment);

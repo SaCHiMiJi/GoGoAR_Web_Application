@@ -15,6 +15,7 @@ const app = express();
 mongoose.connect(config.DB, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
+  useFindAndModify: false
 });
 
 app.use(cors());  //enable cors
@@ -26,6 +27,8 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/todos', routes);
+
+console.log("application is restarted.")
 
 // catch 404 and forward to error handler
 app.use((req, res, next) => {

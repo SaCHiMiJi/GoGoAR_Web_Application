@@ -1,13 +1,13 @@
 <template>
-    <div>
-      
-      <h1>Home Page</h1>
+  <div>
+    
+    <h1>Home Page</h1>
 
-    </div>
-  </template>
+  </div>
+</template>
+
+<script>
+export default {
   
-  <script>
-  export default {
-    // Component definition
-  }
-  </script>
+}
+</script>

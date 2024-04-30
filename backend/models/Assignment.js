@@ -6,7 +6,7 @@ const { Schema } = mongoose;
 const assignmentSchema = new Schema({
     assignment_name: String,
     creator_email: String,
-    steps: Map,
+    steps: { type: Schema.Types.Mixed }
 });
 
 const Assignment = mongoose.model('Assignment', assignmentSchema);

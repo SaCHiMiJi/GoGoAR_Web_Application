@@ -1,7 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router';
 import Home from './components/Home.vue';
 import ARCreation from './components/ARCreation.vue';
-import ARContent from './components/ARContent.vue';
+import MyLibrary from  './components/MyLibrary.vue';
 
 const routes = [
   {
@@ -10,11 +10,12 @@ const routes = [
   },
   {
     path: '/arcreation',
-    component: ARCreation
+    component: ARCreation,
+    props: true
   },
   {
-    path: '/arcontent',
-    component: ARContent
+    path: '/mylibrary',
+    component: MyLibrary
   }
 ];
 

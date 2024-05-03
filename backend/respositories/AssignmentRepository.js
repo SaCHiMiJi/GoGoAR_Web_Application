@@ -14,7 +14,9 @@ class AsssignmentRepository {
   create(object) {
     const newAssignment = {
         assignment_name: object.assignment_name, 
-        creator_email: object.creator_email,
+        creator_id: object.creator_id,
+        ref_url: object.ref_url,
+        mobileapp_url: null,
         steps: object.steps
     };
 
@@ -59,11 +61,14 @@ class AsssignmentRepository {
         { $set: 
             { 
               assignment_name: object.assignment_name, 
-              creator_email: object.creator_email,
+              creator_id: object.creator_id,
+              ref_url: object.ref_url,
               steps: object.steps
             }
         },
-        { new: true } // Return the updated document
+        { 
+          new: true
+        } 
     ).then(updatedDocument => {
         if (!updatedDocument) {
             console.log("No document found with ID:", id);
@@ -74,9 +79,66 @@ class AsssignmentRepository {
       }).catch(error => {
           console.error("Error updating document:", error);
           throw error;
+      });    
+  }
+
+  /**
+   * @param {integer} id
+   * @param {string} mobileapp_url
+   */
+  // assign mobile app's URL to the existing assignment
+  updateURL(id, mobileapp_url) {
+    // check if id is presence.
+    if (!id) {
+        console.error("No ID provided for update.");
+        return Promise.reject("No ID provided for update.");
+    }
+
+    const query = { _id: id };
+
+    return this.model.findOneAndUpdate(query,  
+      { 
+        $set: { 
+          mobileapp_url: mobileapp_url 
+        } 
+      },
+      { 
+        new: true, useFindAndModify: false 
+      } 
+    ).then(assigneURL => {
+        if (!assigneURL) {
+            console.log("No document found with ID:", id);
+            return null;
+        }
+        console.log("Updated document:", assigneURL);
+        return assigneURL;
+      }).catch(error => {
+          console.error("Error updating document:", error);
+          throw error;
       });
   }
 
+  /**
+   * @param {integer} id
+   */
+  // Retrieve the mobile app's URL.
+  getMobileAppURL(id) {
+    // check if id is presence.
+    if (!id) {
+      console.error("No ID provided for update.");
+      return Promise.reject("No ID provided for update.");
+   }
+
+   const query = { _id: id};
+   return this.model.findOne(query, 
+      'mobileapp_url');
+  }
+
+  findMultiple(assignmentIds) {
+    return this.model.find({
+      '_id': { $in: assignmentIds }
+    });
+  }
 }
 
 module.exports = new AsssignmentRepository(Assignment);

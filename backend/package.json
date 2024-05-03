@@ -1,9 +1,8 @@
 {
-    "name": "node-todo",
+    "name": "node-assignment-AR",
     "version": "0.0.0",
-    "description": "Simple todo application.",
+    "description": "AR assignment application.",
     "main": "server.js",
-    "author": "Samuel James",
     "scripts": {
         "build": "webpack",
         "start": "node app.js"
@@ -22,6 +21,8 @@
         "eslint": "^5.16.0",
         "eslint-config-airbnb-base": "^14.0.0",
         "eslint-plugin-import": "^2.18.2",
-        "eslint-plugin-vue": "^5.2.3"
+        "eslint-plugin-vue": "^5.2.3",
+        "webpack": "^5.91.0",
+        "webpack-cli": "^5.1.4"
     }
 }

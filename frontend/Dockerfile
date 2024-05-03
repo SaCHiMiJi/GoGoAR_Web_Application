@@ -1,14 +1,21 @@
+# Use a Node.js base image
 FROM node:lts-alpine
 
-# set working directory
+# Set working directory
 WORKDIR /app
 
+# Install dependencies
 COPY package*.json ./
-
 RUN npm install
 
+# Copy source files
 COPY . .
-EXPOSE 50364
 
-# start app
-CMD ["npm", "run", "dev"]
+# Build the application
+RUN npm run build
+
+# Expose the port Vite serves on
+EXPOSE 5000
+
+# Start the application using Vite's preview mode
+CMD ["npm", "run", "preview"]

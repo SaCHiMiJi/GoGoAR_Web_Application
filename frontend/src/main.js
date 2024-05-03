@@ -7,7 +7,7 @@ import router from './router';
 import './index.css';
 
 const http = axios.create({
-  baseURL: import.meta.env.BACKEND_URL || 'http://localhost/todos',
+  baseURL: import.meta.env.BACKEND_URL || 'http://localhost/api/assignment',
 });
 
 const app = createApp(App); // Create a Vue app instance

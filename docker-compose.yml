@@ -9,7 +9,7 @@ services:
       - ./backend:/usr/app
       - /usr/app/node_modules
     environment:  
-      - MONGO_URL=mongodb://db:27017/todos
+      - MONGO_URL=mongodb://db:27017/assignment
       - APP_PORT=80
     ports: ['80:80'] 
   db:
@@ -26,4 +26,4 @@ services:
     ports:
       - '500:50364'
     environment:  
-      - BACKEND_URL=http://localhost/todos
+      - BACKEND_URL=http://localhost/assignment

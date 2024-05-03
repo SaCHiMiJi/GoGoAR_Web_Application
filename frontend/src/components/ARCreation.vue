@@ -1,6 +1,6 @@
 <template>
     <div class="align-self: center;">
-        <div class="columns-sm">
+        <div class="columns-sm" v-if="!isAssignmentSubmit">
             <!-- Image container on 1st column -->
             <div class="img-container">
                 <img class="object-contain" :src="imgUrl" usemap="#image_map"/>
@@ -15,6 +15,12 @@
                     <label for="large-input" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Assignment Name</label>
                     <input v-model="assignmentName" type="text" id="large-input" class="block w-full p-4 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 text-base focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                 </div>
+                <!-- Assignment Reference URL -->
+                <div class="mb-5 bg-slate-300 rounded-md p-8">
+                    <label for="large-input" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Reference Link</label>
+                    <input v-model="ref_url" type="text" id="large-input" class="block w-full p-4 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 text-base focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                </div>
+
                 <!-- Assignment form -->
                 <div class="mb-5 bg-slate-300 rounded-md p-8" className="instructionContainer">
                     <!-- Add form button -->
@@ -23,9 +29,9 @@
                             <div class="container mx-auto bg-slate-300 align-self: center;">
                                 {{ getStepFunctionDetails(key) }}
                                 <button v-on:click="openInstructionForm(key)">✏️</button>
-                                <button v-on:click="deleteStep(key)">🗑️</button>
-                                <button v-on:click="moveStepUp(key)">🔼</button>
-                                <button v-on:click="moveStepDown(key)">🔽</button>
+                                <button v-on:click="deleteInstruction(key)">🗑️</button>
+                                <button v-on:click="moveInstructionUp(key)">🔼</button>
+                                <button v-on:click="moveInstructionDown(key)">🔽</button>
                             </div>
                         </div>
                         <button 
@@ -103,6 +109,19 @@
                 </div>
             </div>
         </div>
+        <div class="columns-sm" v-else>
+            <div className="url-appear">
+                <div className="URL existed">
+
+                </div>
+                <div className="noURLDisplayed">
+                    <p> This assignment didn't existed at the moment.Please create url via mobile application or try again.</p>
+                </div>
+            </div>
+            <div className="side-menu">
+
+            </div>
+        </div>
     </div>
 </template>
 
@@ -140,15 +159,18 @@ export default {
 
             // POST datas
             assignmentName: "",
+            ref_url: "",
             creator_mail: "apachara2@gmail.com",
             steps: new Map(),
-            isExist: false
+            isExist: false,
+
+            isAssignmentSubmit: false
         };
     },
     methods: {
         // fetch assignment's detail
         getAssignmentDetail() {
-            this.$http.get("http://localhost/todos/getassignment/" + this.assignment_id)
+            this.$http.get("/getassignment/" + this.assignment_id)
             .then(response => {
                 const data = response.data;
                 console.log(data);
@@ -159,7 +181,7 @@ export default {
                 console.log("fetched name as: " + this.assignmentName
                     + ", fetch creator's mail as : " + this.creator_mail);
 
-                this.displaySteps();
+                this.displayInstructions();
             })
             .catch(error => {
                 console.error('Error fetching data:', error);
@@ -175,6 +197,8 @@ export default {
             this.assignmentPort = this.areas[index].alt;
             this.areaClicked = index;
         },
+
+        // Manage Assignment's Instruction
         openInstructionForm(index) {
             this.currentIndex = index;
             this.formCreating = true;
@@ -221,7 +245,7 @@ export default {
             // reset values in form.
             this.closeInstruction();
         },
-        displaySteps() {
+        displayInstructions() {
             // display the map as object
             function mapToObject(map) {
                 const out = {};
@@ -238,10 +262,10 @@ export default {
             return this.steps.size;
         },
         // delete existing steps
-        deleteStep(key) {
+        deleteInstruction(key) {
             this.steps.delete(key);
         },
-        moveStepUp(key) {
+        moveInstructionUp(key) {
             // the indicated key won't be the first and not the only one
             const entries = Array.from(this.steps.entries());
             const index = entries.findIndex(entry => entry[0] === key);
@@ -251,7 +275,7 @@ export default {
                 console.log("re-sorting");
             }
         },
-        moveStepDown(key) {
+        moveInstructionDown(key) {
             // the indicated key won't be the last and not the only one
             const entries = Array.from(this.steps.entries());
             const index = entries.findIndex(entry => entry[0] === key);
@@ -263,6 +287,7 @@ export default {
             }
         },
         submitAssignment() {
+            // convert the "steps" map into nested object
             let stepsObject = {};
             this.steps.forEach((subMap, key) => {
                 let subMapObject = {};
@@ -275,6 +300,7 @@ export default {
             let data = JSON.stringify({
                 "assignment_name": this.assignmentName,
                 "creator_email": this.creator_mail,
+                "ref_url": this.ref_url,
                 "steps": stepsObject
             });
 
@@ -285,26 +311,30 @@ export default {
                 }
             };
 
+            // Edit the assignment in database.
             if(this.isExist) {
                 this.$http
-                    .put("http://localhost/todos/assignment/"+this.assignment_id, data, config)
+                    .put("/modify/"+this.assignment_id, data, config)
                     .then(response => {
                         console.log("edited!", response.data);
+                        this.isAssignmentSubmit = true;
                     })
                     .catch(error => {
                         console.error(error);
                     });    
             } else {
                 this.$http
-                    .post("http://localhost/todos/createassignment", data, config)
+                    .post("/create", data, config)
                     .then(response => {
                         console.log("saved!", response.data);
+                        this.isAssignmentSubmit = true;
                     })
                     .catch(error => {
                         console.error(error);
                     });
             }
         },
+        // Return them as text for overall displays.
         getStepFunctionDetails(index) {
             // Convert the step number to a string if it's passed as a number
             const step = this.steps.get(index);

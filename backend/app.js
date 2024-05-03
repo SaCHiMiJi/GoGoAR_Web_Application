@@ -7,7 +7,6 @@ const logger = require('morgan');
 const cors = require('cors')
 
 const config = require('./config/Config.js');
-
 const routes = require('./routes/Routes.js');
 
 const app = express();
@@ -26,7 +25,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/todos', routes);
+app.use('/assignment', routes);
 
 console.log("application is restarted.")
 

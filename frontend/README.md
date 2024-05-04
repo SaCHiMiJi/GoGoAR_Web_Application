@@ -25,4 +25,4 @@ Start the `frontend`, `backend` and `db` containers using docker-compose
 ```
 $ docker-compose up -d 
 ```
-Access the app from your browser at `http://localhost:57329`
+Access the app from your browser at `http://localhost:50364`

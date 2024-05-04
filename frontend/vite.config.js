@@ -7,14 +7,14 @@ const config = {
     vue(),
   ],
   preview: {
-    port: 50364,
+    port: 3030,
     strictPort: true,
   },
   server: {
     host: true,
-    port: 50364,
+    port: 3030,
     strictPort: true,
-    // origin: "http://0.0.0.0:50364"
+    // origin: "http://0.0.0.0:3030"
     watch: {
       usePolling: true
     }

@@ -4,7 +4,7 @@ WORKDIR /usr/app
 COPY package*.json ./
 
 # Set environment variable
-ENV NODE_ENV=production
+ENV NODE_ENV = production
 
 # Check if files are copied correctly
 RUN ls -l 
@@ -12,7 +12,9 @@ RUN ls -l
 RUN npm install
 
 COPY . . 
+# CMD ["node", "app.js"]
+# RUN npm run build
+# CMD ["npm", "run", "prod"]
 
-CMD ["node", "app.js"]
-# CMD [ "npm", "start" ]
+CMD [ "npm", "start" ]
 # CMD [ "npm", "run", "build"]

@@ -114,9 +114,14 @@ app.put('/addappurl/:id/:mobileAppURL', (req, res) => {
 app.get('/getappurl/:id', (req, res) => {
   const id = req.params.id;
   assignment_repository.getMobileAppURL(id)
-  .then((url) => {
-    console.log(`send the URL: ${ url.mobileapp_url }`);
-    res.send(url.mobileapp_url);
+  .then((dburl) => {
+    const url = dburl.mobileapp_url;
+    if(url) {
+      console.log(`send the URL: ${ url }`);
+      res.send(url);
+    } else {
+      res.send(false)
+    }
   })
   .catch((error) => {
     // Log the error and send a 500 response

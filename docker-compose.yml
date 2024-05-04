@@ -1,21 +1,24 @@
 services:
   backend:
-    container_name: backend 
-    build: 
+    container_name: backend
+    build:
       context: ./backend
     depends_on:
-      - db  
+      - db
     volumes:
       - ./backend:/usr/app
       - /usr/app/node_modules
-    environment:  
+    environment:
       - MONGO_URL=mongodb://db:27017/assignment
-      - APP_PORT=80
-    ports: ['80:80'] 
+      - APP_PORT=3000  # Change the port to 3000
+    ports:
+      - '3000:3000'  # Update the port mapping
+
   db:
     container_name: db
     image: mongo:4.0
     restart: always
+
   frontend:
     container_name: frontend
     build:
@@ -24,6 +27,17 @@ services:
       - ./frontend:/app
       - /app/node_modules
     ports:
-      - '500:50364'
-    environment:  
-      - BACKEND_URL=http://localhost/assignment
+      - '3030:3030'  # Change the port mapping
+    environment:
+      - BACKEND_URL=http://backend:3000  # Update the backend URL
+
+  nginx:
+    container_name: nginx
+    image: nginx:latest
+    ports:
+      - '80:80'
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro  # Mount custom NGINX configuration
+    depends_on:
+      - backend
+      - frontend

@@ -1,5 +1,6 @@
 <template>
     <div class="align-self: center;">
+        :D
         <div class="columns-sm" v-if="!isAssignmentSubmit">
             <!-- Image container on 1st column -->
             <div class="img-container">
@@ -8,6 +9,7 @@
                     <area v-for="(area, index) in areas" :key="index" :alt="area.alt" :title="area.title" :coords="area.coords" :shape="area.shape" @click="handleAreaClick(index)" :class="{ 'selected-area': areaClicked === index }"/>
                 </map>
             </div>
+
             <!-- Form container on 2nd column -->
             <div class="form-container md:container md:mx-auto max-w-sm mx-auto">
                 <!-- Assignment name -->
@@ -115,7 +117,10 @@
 
                 </div>
                 <div className="noURLDisplayed">
-                    <p> This assignment didn't existed at the moment.Please create url via mobile application or try again.</p>
+                    <p> 
+                        This assignment didn't existed at the moment.
+                        Please create url via mobile application or try again.
+                    </p>
                 </div>
             </div>
             <div className="side-menu">
@@ -130,8 +135,10 @@
 </script>
 
 <script>
-import 'image-map-resizer';
-import '../js/imageMapResizer.min.js';
+import axios from 'axios';
+
+// import imageMapResize from 'image-map-resizer';
+import ImageMap from 'image-map';
 
 export default {
     data() {
@@ -160,17 +167,18 @@ export default {
             // POST datas
             assignmentName: "",
             ref_url: "",
-            creator_mail: "apachara2@gmail.com",
+            creator_id: "test12345",
             steps: new Map(),
             isExist: false,
 
-            isAssignmentSubmit: false
+            isAssignmentSubmit: false,
+            mobileAppURL: ""
         };
     },
     methods: {
         // fetch assignment's detail
         getAssignmentDetail() {
-            this.$http.get("/getassignment/" + this.assignment_id)
+            axios.get("http://localhost/assignment/getassignment/" + this.assignment_id)
             .then(response => {
                 const data = response.data;
                 console.log(data);
@@ -313,21 +321,19 @@ export default {
 
             // Edit the assignment in database.
             if(this.isExist) {
-                this.$http
-                    .put("/modify/"+this.assignment_id, data, config)
+                axios.put("http://localhost/assignment/modify/"+this.assignment_id, data, config)
                     .then(response => {
                         console.log("edited!", response.data);
-                        this.isAssignmentSubmit = true;
+                        this.getMobileAppURL();
                     })
                     .catch(error => {
                         console.error(error);
                     });    
             } else {
-                this.$http
-                    .post("/create", data, config)
+                axios.post("http://localhost/assignment/create", data, config)
                     .then(response => {
                         console.log("saved!", response.data);
-                        this.isAssignmentSubmit = true;
+                        this.getMobileAppURL();
                     })
                     .catch(error => {
                         console.error(error);
@@ -362,6 +368,19 @@ export default {
                 }
             });
             return result;
+        },
+        getMobileAppURL() {
+            this.isAssignmentSubmit = true;
+            axios.get('http://localhost/assignment/getappurl/' + this.assignment_id)
+                .then((response) => {
+                    this.mobileAppURL = response;
+                })
+                .catch((error) => {
+                    console.log(error); 
+                });
+        },
+        resizeImageMaps() {
+            ImageMap('img[usemap]')
         }
     },
     computed: {
@@ -378,7 +397,7 @@ export default {
         }
     },
     mounted() {
-        imageMapResize();
+        this.resizeImageMaps();
     },
     created() {
         if (this.$route.query.jsonData) {

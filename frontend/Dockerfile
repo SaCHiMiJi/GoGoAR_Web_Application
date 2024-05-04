@@ -15,7 +15,7 @@ COPY . .
 RUN npm run build
 
 # Expose the port Vite serves on
-EXPOSE 5000
+EXPOSE 3030
 
 # Start the application using Vite's preview mode
 CMD ["npm", "run", "preview"]

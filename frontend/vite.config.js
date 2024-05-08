@@ -14,9 +14,15 @@ const config = {
     host: true,
     port: 3030,
     strictPort: true,
-    // origin: "http://0.0.0.0:3030"
     watch: {
       usePolling: true
+    },
+    proxy: {
+    	'/api': {
+		target: 'http:/localhost:3000',
+		changeOrigin: true,
+		rewrite: (path) => path.replace(/^\/api/, ''),
+	}
     }
   }
 }

@@ -19,3 +19,4 @@ EXPOSE 3030
 
 # Start the application using Vite's preview mode
 CMD ["npm", "run", "preview"]
+# CMD ["npm", "run", "dev"]

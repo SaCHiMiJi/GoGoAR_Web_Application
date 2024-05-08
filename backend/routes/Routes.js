@@ -28,8 +28,9 @@ app.post('/create', (req, res) => {
   // Call repository.create() to save the todo item
   assignment_repository.create(assignment)
   .then((createassignment) => {
-    res.json(createassignment); // Respond with the created assignment
-    console.log(createassignment); // Log the created assignment
+	  const id = createassignment._id;
+	  console.log("new assignment id is the: " + id); // Log the created assignment
+	  res.send(id);
   })
   .catch((error) => console.log(error)); // Log any errors that occur
 });
@@ -38,8 +39,7 @@ app.post('/create', (req, res) => {
 // delete a assignment item by id
 app.delete('/delete/:id', (req, res) => {
   const { id } = req.params;
-  assignment_repository.deleteById(id).then((ok) => {
-    console.log(ok);
+  assignment_repository.deleteById(id).then({
     console.log(`Deleted record with id: ${id}`);
     res.status(200).json([]);
   }).catch((error) => console.log(error));
@@ -89,10 +89,11 @@ app.get('/getassignment/:id', (req, res) => {
 });
 
 // post from mobile application.
-app.put('/addappurl/:id/:mobileAppURL', (req, res) => {
+app.put('/addappurl/:id', (req, res) => {
   const id = req.params.id;
-  const mobileAppURL = req.params.mobileAppURL;
+  const { mobileAppURL } = req.body;
   
+  console.log(mobileAppURL);
   assignment_repository.updateURL(id, mobileAppURL)
   .then(updatedDocument => {
     if (!updatedDocument) {

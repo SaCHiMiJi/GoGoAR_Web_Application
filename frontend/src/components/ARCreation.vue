@@ -1,6 +1,5 @@
 <template>
-    <div class="align-self: center;">
-        :D
+    <div class="align-self: center;"> 
         <div class="columns-sm" v-if="!isAssignmentSubmit">
             <!-- Image container on 1st column -->
             <div class="img-container">
@@ -48,7 +47,7 @@
                         </button>
                     </div>
                     <!-- Instruction forms -->
-                    <div className="instructionForm" v-else>
+                    <div className="instructionForm" class="overflow-auto" v-else>
                         <div class="mb-5">
                             <div>
                                 Function
@@ -113,13 +112,16 @@
         </div>
         <div class="columns-sm" v-else>
             <div className="url-appear">
-                <div className="URL existed">
-
+                <div className="URL existed" v-if="mobileAppURL !== '' && mobileAppURL !== false ">
+			<a v-bind:href="mobileAppURL">Here</a>
                 </div>
-                <div className="noURLDisplayed">
+                <div className="noURLDisplayed" v-else>
                     <p> 
                         This assignment didn't existed at the moment.
                         Please create url via mobile application or try again.
+			<button v-on:click="getMobileAppURL()"> Re-fetch the URL</button>
+			<br>
+			{{ assignment_id }}
                     </p>
                 </div>
             </div>
@@ -136,8 +138,6 @@
 
 <script>
 import axios from 'axios';
-
-// import imageMapResize from 'image-map-resizer';
 import ImageMap from 'image-map';
 
 export default {
@@ -178,7 +178,7 @@ export default {
     methods: {
         // fetch assignment's detail
         getAssignmentDetail() {
-            axios.get("http://localhost/assignment/getassignment/" + this.assignment_id)
+            this.$http.get("/getassignment/" + this.assignment_id)
             .then(response => {
                 const data = response.data;
                 console.log(data);
@@ -312,16 +312,9 @@ export default {
                 "steps": stepsObject
             });
 
-            // Set headers for Axios
-            let config = {
-                headers: {
-                    'Content-Type': 'application/json'
-                }
-            };
-
             // Edit the assignment in database.
             if(this.isExist) {
-                axios.put("http://localhost/assignment/modify/"+this.assignment_id, data, config)
+                this.$http.put("/modify/"+this.assignment_id, data)
                     .then(response => {
                         console.log("edited!", response.data);
                         this.getMobileAppURL();
@@ -330,9 +323,11 @@ export default {
                         console.error(error);
                     });    
             } else {
-                axios.post("http://localhost/assignment/create", data, config)
+
+		this.$http.post("create", data)
                     .then(response => {
                         console.log("saved!", response.data);
+			this.assignment_id = response.data;
                         this.getMobileAppURL();
                     })
                     .catch(error => {
@@ -371,9 +366,10 @@ export default {
         },
         getMobileAppURL() {
             this.isAssignmentSubmit = true;
-            axios.get('http://localhost/assignment/getappurl/' + this.assignment_id)
+            this.$http.get('/getappurl/' + this.assignment_id)
                 .then((response) => {
-                    this.mobileAppURL = response;
+                    this.mobileAppURL = response.data;
+		    console.log(this.mobileAppURL + " == " + response);
                 })
                 .catch((error) => {
                     console.log(error); 

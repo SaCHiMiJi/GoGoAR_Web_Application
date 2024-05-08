@@ -4,7 +4,7 @@ const path = require('path');
 const mongoose = require('mongoose');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
-const cors = require('cors')
+const cors = require('cors');
 
 const config = require('./config/Config.js');
 const routes = require('./routes/Routes.js');
@@ -17,8 +17,29 @@ mongoose.connect(config.DB, {
   useFindAndModify: false
 });
 
-app.use(cors());  //enable cors
+// CORS Configuration
+const corsOptions = {
+	origin: 'http://localhost:3030',
+	methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+	credentials: true
+};
 
+app.use(cors(corsOptions));  //enable cors
+
+app.options('*', cors());
+
+// enable cors for the POST method.
+/*
+ 
+app.options('/assignment/create', cors({
+	methods: ['POST'],
+	enablePreflight: true
+}));
+app.post('/assignment/create', cors({
+	methods: ['POST'],
+	enablePreflight: true
+}));
+*/
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
@@ -29,9 +50,16 @@ app.use('/assignment', routes);
 
 console.log("application is restarted.")
 
+// Error handling and logging middleware
+app.use((req, res, next) => {
+    console.log(`FullRequest URL: ${req.protocol}://${req.get('host')}${req.originalUrl}`);
+    // Instead of creating a 404 error here, just pass control to the next middleware
+    next();
+}); 
+
 // catch 404 and forward to error handler
 app.use((req, res, next) => {
-  next(createError(404));
+	next(createError(404));
 });
 
 // error handler

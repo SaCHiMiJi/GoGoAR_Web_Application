@@ -3,6 +3,7 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
+  "proxy": "http://localhost:3000",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
@@ -12,10 +13,7 @@
     "@vitejs/plugin-vue": "^5.0.4",
     "axios": "^1.6.8",
     "image-map": "^2.0.1",
-    "image-map-resizer": "^1.0.10",
-    "mitt": "^3.0.1",
     "tailwindcss": "^3.4.3",
-    "unity-webgl": "^3.5.3",
     "vue": "^3.4.21",
     "vue-router": "^4.3.0",
     "vuetify": "^3.5.14"

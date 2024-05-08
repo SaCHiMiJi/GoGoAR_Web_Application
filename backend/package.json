@@ -6,7 +6,7 @@
     "scripts": {
         "build": "webpack",
         "start": "node app.js",
-	"prod": "node dist/bundle.js"
+        "prod": "node dist/bundle.js"
     },
     "dependencies": {
         "cookie-parser": "~1.4.4",

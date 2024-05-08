@@ -12,9 +12,8 @@ RUN ls -l
 RUN npm install
 
 COPY . . 
-# CMD ["node", "app.js"]
-# RUN npm run build
-# CMD ["npm", "run", "prod"]
 
-CMD [ "npm", "start" ]
-# CMD [ "npm", "run", "build"]
+EXPOSE 3000
+
+CMD ["node", "app.js"]
+

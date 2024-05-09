@@ -2,28 +2,26 @@
     <div class="align-self: center;"> 
         <div class="columns-sm" v-if="!isAssignmentSubmit">
             <!-- Image container on 1st column -->
-            <div class="img-container">
-                <img class="object-contain" :src="imgUrl" usemap="#image_map"/>
+            <div class="img-container bg-slate-500">
+                <img class="object-contain" src="/gogoboard.png" usemap="#image_map"/>
                 <map name="image_map">
                     <area v-for="(area, index) in areas" :key="index" :alt="area.alt" :title="area.title" :coords="area.coords" :shape="area.shape" @click="handleAreaClick(index)" :class="{ 'selected-area': areaClicked === index }"/>
                 </map>
             </div>
 
             <!-- Form container on 2nd column -->
-            <div class="form-container md:container md:mx-auto max-w-sm mx-auto">
+            <div class="form-container md:container md:mx-auto max-w-sm mx-auto bg-slate-500">
                 <!-- Assignment name -->
                 <div class="mb-5 bg-slate-300 rounded-md p-8">
                     <label for="large-input" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Assignment Name</label>
                     <input v-model="assignmentName" type="text" id="large-input" class="block w-full p-4 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 text-base focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                </div>
                 <!-- Assignment Reference URL -->
-                <div class="mb-5 bg-slate-300 rounded-md p-8">
-                    <label for="large-input" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Reference Link</label>
+                <label for="large-input" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Reference Link</label>
                     <input v-model="ref_url" type="text" id="large-input" class="block w-full p-4 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 text-base focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                 </div>
 
                 <!-- Assignment form -->
-                <div class="mb-5 bg-slate-300 rounded-md p-8" className="instructionContainer">
+                <div class="mb-5 bg-slate-300 rounded-md p-8 overflow-scroll" className="instructionContainer">
                     <!-- Add form button -->
                     <div className="addInstructionButton" v-if="!formCreating">
                         <div v-for="[key] in steps" :key="key">

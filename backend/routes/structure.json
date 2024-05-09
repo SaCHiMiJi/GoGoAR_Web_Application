@@ -1,14 +1,22 @@
 {
-    "assignment_name" : "highlight the input and the output",
-    "creator_email" : "apachara2@gmail.com",
-    "steps":{
+    "assignmentname": "Example Course 3",
+    "description": "lorem ipsum sit ame",
+    "creator_id": "id12345",
+    "ref_url": null,
+    "steps": {
         "1": {
-            "highlight" : "input1",
-            "context" : "lorem ipsum sit ame"
+            "function": "context",
+            "context": "yo"
         },
         "2": {
-            "highlight" : "output4",
-            "context" : "connect output right here"
+            "function": "highlight",
+            "component": "input1",
+            "context": "this is input number 1"
+        },
+        "3": {
+            "function": "connect",
+            "component": "input1",
+            "externalComponent": "Button"
         }
     }
-}
+}_

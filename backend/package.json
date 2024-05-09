@@ -1,6 +1,7 @@
 {
     "name": "node-assignment-AR",
     "version": "0.0.0",
+    "type": "commonjs",
     "description": "AR assignment application.",
     "main": "server.js",
     "scripts": {

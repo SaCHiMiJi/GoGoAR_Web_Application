@@ -6,6 +6,8 @@ const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 const cors = require('cors');
 
+const http = require('http');
+
 const config = require('./config/Config.js');
 const routes = require('./routes/Routes.js');
 
@@ -16,30 +18,8 @@ mongoose.connect(config.DB, {
   useUnifiedTopology: true,
   useFindAndModify: false
 });
+app.use(cors());  //enable cors
 
-// CORS Configuration
-const corsOptions = {
-	origin: 'http://localhost:3030',
-	methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-	credentials: true
-};
-
-app.use(cors(corsOptions));  //enable cors
-
-app.options('*', cors());
-
-// enable cors for the POST method.
-/*
- 
-app.options('/assignment/create', cors({
-	methods: ['POST'],
-	enablePreflight: true
-}));
-app.post('/assignment/create', cors({
-	methods: ['POST'],
-	enablePreflight: true
-}));
-*/
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
@@ -47,8 +27,6 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/assignment', routes);
-
-console.log("application is restarted.")
 
 // Error handling and logging middleware
 app.use((req, res, next) => {
@@ -73,6 +51,12 @@ app.use((err, req, res) => {
   res.render('error');
 });
 
-app.listen(config.APP_PORT); // Listen on port defined in environment
+const server = http.createServer(app);
+server.keepAliveTimeout = 30000;
+server.headerTimeout = 35000;
+
+server.listen(config.APP_PORT, () => {
+	console.log(`Server running on port ${config.APP_PORT}`);
+});
 
 module.exports = app;

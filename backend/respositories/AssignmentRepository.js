@@ -13,10 +13,13 @@ class AsssignmentRepository {
    */
   create(object) {
     const newAssignment = {
-        assignment_name: object.assignment_name, 
+        assignment_name: object.assignment_name,
+	description: object.description,
         creator_id: object.creator_id,
         ref_url: object.ref_url,
-        mobileapp_url: null,
+	mobileapp_url: null,
+	created_date: object.created_date,
+	modified_date: null,
         steps: object.steps
     };
 
@@ -35,7 +38,11 @@ class AsssignmentRepository {
   findById(id) {
     return this.model.findById(id);
   }
-
+  
+  findUnityURL(id) {
+    return this.model.findById(id);
+  }
+  
   /**
    * @param {integer} id
    */
@@ -60,9 +67,11 @@ class AsssignmentRepository {
     return this.model.findOneAndUpdate(query, 
         { $set: 
             { 
-              assignment_name: object.assignment_name, 
+              assignment_name: object.assignment_name,
+	      description: object.description,
               creator_id: object.creator_id,
               ref_url: object.ref_url,
+	      modified_date: object.modified_date,
               steps: object.steps
             }
         },
@@ -79,10 +88,9 @@ class AsssignmentRepository {
       }).catch(error => {
           console.error("Error updating document:", error);
           throw error;
-      });    
+      });
   }
-
-  /**
+  /*
    * @param {integer} id
    * @param {string} mobileapp_url
    */

@@ -29,14 +29,3 @@ services:
       - '3030:3030'  # Change the port mapping
     environment:
       - BACKEND_URL=http://localhost:3000  # Update the backend URL
-
-        #nginx:
-        #container_name: nginx
-        #image: nginx
-        #ports:
-        #- '80:80'
-        #volumes:
-        #- ./nginx/nginx.conf:/etc/nginx/conf.d/default.conf   
-        #depends_on:
-        #- backend
-        #- frontend 

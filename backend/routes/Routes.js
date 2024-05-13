@@ -6,7 +6,6 @@ const assignment_repository = require('../respositories/AssignmentRepository.js'
 
 // Retreive all existed assignment.
 app.get('/getall', (req, res) => {
-  console.log('getall');
   assignment_repository.findAll().then((assignments) => {
     return res.json(assignments);
   }).catch((error) => console.log(error));
@@ -15,7 +14,7 @@ app.get('/getall', (req, res) => {
 
 // create the new assignment.
 app.post('/create', (req, res) => {
-  console.log('create');
+  console.log(req.body);
   // Destructure properties from req.body directly
   const { assignment_name, description, creator_id, ref_url, steps } = req.body; 
   const createdDate = new Date();
@@ -25,9 +24,9 @@ app.post('/create', (req, res) => {
     creator_id: creator_id,
     ref_url: ref_url,
     created_date: createdDate,
-    steps: steps 
+    steps: JSON.parse(steps)	 
   };
-  
+  console.log(steps);
   
   // Call repository.create() to save the todo item
   assignment_repository.create(assignment)
@@ -52,7 +51,6 @@ app.delete('/delete/:id', (req, res) => {
 
 // update a assignment item
 app.put('/modify/:id', (req, res) => {
-  console.log('modify');
   const id = req.params.id; // Get the ID from the URL parameter
   const { assignment_name, description, creator_id, ref_url, steps } = req.body; // Extract other details from the body
   const newDate = new Date();
@@ -88,7 +86,6 @@ core feature API
 */
 // find one existing assignment.
 app.get('/getassignment/:id', (req, res) => {
-  console.log('get assignment by id');
   const { id } = req.params;
   assignment_repository.findById(id)
   .then((assignment) => {
@@ -99,7 +96,6 @@ app.get('/getassignment/:id', (req, res) => {
 
 // post from mobile application.
 app.put('/addappurl/:id', (req, res) => {
-  console.log('add app\'s URL');
   const id = req.params.id;
   const { mobileAppURL } = req.body;
    
@@ -122,7 +118,6 @@ app.put('/addappurl/:id', (req, res) => {
 
 // get unity url
 app.get('/getappurl/:id', (req, res) => {
-  console.log('get app\'s URL');
   const id = req.params.id;
   assignment_repository.getMobileAppURL(id)
   .then((dburl) => {
@@ -143,7 +138,6 @@ app.get('/getappurl/:id', (req, res) => {
 
 // Respond the array of nested assignment, with the array of id
 app.post('/getassignmentgroup', async (req, res) => {
-  console.log('get assignment group');
   try {
     const assignmentIds = req.body; // Assuming the body itself is an array of IDs
 

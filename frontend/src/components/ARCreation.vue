@@ -1,16 +1,23 @@
-<template>
+  <template>
     <div class="align-self: center;"> 
-        <div class="columns-auto" v-if="!isAssignmentSubmit">
+        <div class="columns-lg" v-if="!isAssignmentSubmit">
             <!-- Image container on 1st column -->
-            <div class="img-container bg-slate-500 w-full">
-                <img class="object-contain" src="/gogoboard.png" usemap="#image_map"/>
+            <div class="bg-slate-500 flex flex-col justify-center overflow-y-auto">
+                <img class="object-none w-325 h-325" src="/gogoboard.png" usemap="#image_map"/>
                 <map name="image_map">
                     <area v-for="(area, index) in areas" :key="index" :alt="area.alt" :title="area.title" :coords="area.coords" :shape="area.shape" @click="handleAreaClick(index)" :class="{ 'selected-area': areaClicked === index }"/>
                 </map>
+                <div>
+                    <button 
+                        class="mb-5 p-8 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none" 
+                        v-on:click="submitAssignment">
+                        Save Assignment
+                    </button>
+                </div>                
             </div>
 
             <!-- Form container on 2nd column -->
-            <div class="form-container md:container w-full md:mx-auto max-w-sm mx-auto bg-slate-500">
+            <div class="form-container flex flex-col justify-center bg-slate-500 overflow-y-auto">
                 <!-- Assignment name -->
                 <div class="mb-5 bg-slate-300 rounded-md p-8">
                     <label for="large-input" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Assignment Name</label>
@@ -21,31 +28,49 @@
                 </div>
 
                 <!-- Assignment form -->
-                <div class="mb-5 bg-slate-300 rounded-md p-8 overflow-scroll" className="instructionContainer">
+                <div class="mb-5 bg-slate-300 rounded-md p-8" className="instructionContainer">
                     <!-- Add form button -->
                     <div className="addInstructionButton" v-if="!formCreating">
                         <div v-for="[key] in steps" :key="key">
-                            <div class="container mx-auto bg-slate-300 align-self: center;">
-                                {{ getStepFunctionDetails(key) }}
-                                <button v-on:click="openInstructionForm(key)">✏️</button>
-                                <button v-on:click="deleteInstruction(key)">🗑️</button>
+                            <div class="bg-gray-100">
+                                <div class="bg-white flex items-center rounded-lg shadow-lg overflow-hidden">
+                                    <div class="px-4 py-2">
+                                        <span class="text-gray-700 text-lg">{{ key }}</span>
+                                    </div>
+                                    <div class="flex-1 px-4 py-2">
+                                        <span class="text-gray-700 font-medium">{{ getStepFunctionDetails(key) }}</span>
+                                    </div>
+                                    <div class="flex-shrink-0 px-2">
+                                        <button v-on:click="openInstructionForm(key)" class="text-gray-700 hover:text-gray-900">
+                                            ✏️<!-- <svg src="/edit_image.svg" class="" fill="none"></svg> --> 
+                                        </button>
+                                        <button v-on:click="deleteInstruction(key)" class="text-gray-700 hover:text-gray-900">
+                                            🗑️<!-- <svg src="/delete_image.svg" class="" fill="none"></svg> -->
+                                        </button>
+                                    </div>
+                                    <div class="flex-shrink-0 pr-4">
+                                        <button class="text-gray-700 hover:text-gray-900">
+                                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">/delete_image.svg</svg>
+                                        </button>
+                                    </div>
+                                </div>
                                 <button v-on:click="moveInstructionUp(key)">🔼</button>
                                 <button v-on:click="moveInstructionDown(key)">🔽</button>
                             </div>
                         </div>
-                        <button 
-                            class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800" 
-                            v-on:click="openInstructionForm(0)">
-                            Create Instruction
-                        </button>
-                        <button 
-                            class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800" 
-                            v-on:click="submitAssignment">
-                            Save Assignment
-                        </button>
+
+                        <!-- Form creation and submission -->
+                        <div>
+
+                            <button 
+                                class="mb-5 p-8 w-full text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800" 
+                                v-on:click="openInstructionForm(0)">
+                                +
+                            </button>
+                        </div>
                     </div>
                     <!-- Instruction forms -->
-                    <div className="instructionForm" class="overflow-auto" v-else>
+                    <div className="instructionForm" class="mb-8 p-8" v-else>
                         <div class="mb-5">
                             <div>
                                 Function
@@ -108,22 +133,36 @@
                 </div>
             </div>
         </div>
-        <div class="columns-sm" v-else>
+        <!-- Post form submission -->
+        <div class="columns-lg" v-else>
+            <!-- 1st column -->
             <div className="url-appear">
                 <div className="URL existed" v-if="mobileAppURL !== '' && mobileAppURL !== false ">
-			<a v-bind:href="mobileAppURL">Here</a>
+                    <img src="/tick-circle.svg"/>
+                    <p>The assignment is now presence mobile app's URL.
+                        You can try the assignment on the right.</p>
+
                 </div>
                 <div className="noURLDisplayed" v-else>
+                    <img class="object-none w-325 h-325" src="/error.jpg"/>
                     <p> 
-                        This assignment didn't existed at the moment.
-                        Please create url via mobile application or try again.
-			<button v-on:click="getMobileAppURL()"> Re-fetch the URL</button>
-			<br>
-			{{ assignment_id }}
+                        This assignment is yet to have mobile app's URL.
+                        Please create url via mobile application and try to refetch again.
                     </p>
                 </div>
             </div>
+            <!-- 2nd column -->
             <div className="side-menu">
+                <div v-if="mobileAppURL !== '' && mobileAppURL !== false ">
+                    <button>
+                        <a v-bind:href="mobileAppURL">Here</a>
+                    </button>
+                </div>
+                <div v-else>
+                    <button v-on:click="getMobileAppURL()"> Re-fetch the URL</button>
+                    using this ID to assign the URL to the assignment: 
+                    {{ assignment_id }}
+                </div>
 
             </div>
         </div>
@@ -163,11 +202,12 @@ export default {
             assignmentContext: null,
             assignmentExternalComponent: null,
 
+            // this value will ensure how many instruction have existed.
             currentIndex: 0,
             // POST datas
             assignmentName: "",
             ref_url: "",
-            creator_id: "test12345",
+            creator_id: "guestuser0000",
             steps: new Map(),
             isExist: false,
 
@@ -184,7 +224,7 @@ export default {
                 console.log(data);
                 this.assignmentName = data.assignment_name;
                 this.creator_mail = data.creator_email;
-		this.ref_url = data.ref_url;
+		        this.ref_url = data.ref_url;
                 this.steps = this.objectToMap(data.steps);
 
                 console.log("fetched name as: " + this.assignmentName
@@ -209,9 +249,11 @@ export default {
 
         // Manage Assignment's Instruction
         openInstructionForm(index) {
+            // if index is zero, that's mean this is the new instruction to be created.
             this.currentIndex = index;
             this.formCreating = true;
 
+            // if index is not a zero, the instruction presence to be edited the existing one.
             if(index > 0) {
                 this.assignmentFunction = this.getSubValue(index, "function");
                 this.assignmentPort = this.getSubValue(index, "port");
@@ -219,18 +261,18 @@ export default {
             }
         },
         closeInstruction() {
+            // prevent unexpected error for next operation.
             this.formCreating = false;
             this.assignmentFunction = null;
             this.assignmentPort = null;
             this.assignmentContext = null;
             this.assignmentExternalComponent = null;
-
             this.currentIndex = 0;
         },
         saveInstructionForm() {
             var elementIndex = this.currentIndex;
             
-            // create new subMap.
+            // element is a zero, proceed to create the new instruction.
             if (elementIndex === 0) {
                 elementIndex = this.getInstructionAmount() + 1;
             }
@@ -313,17 +355,8 @@ export default {
                 "steps": JSON.stringify(stepsObject)
             };
 	    
-	    // prevents error on build
-	    var bodyFormData = new FormData();
-
-	    bodyFormData.append('assignment_name', this.assignmentName);
-	    bodyFormData.append('creator_id', this.creator_id);
-	    bodyFormData.append('ref_url', this.ref_url);
-	    bodyFormData.append('steps', stepsObject);
-
-	    console.log(data);
-	    console.log((data));
-		
+            console.log(data);
+                
             // Edit the assignment in database.
             if(this.isExist) {
                 this.$http.put("/modify/"+this.assignment_id, qs.stringify(data))
@@ -416,11 +449,3 @@ export default {
     }
 };
 </script>
-
-<style scoped>
-area {
-    display: block;
-    background-color: #ff0000;
-    fill: #ff0000;
-}
-</style>

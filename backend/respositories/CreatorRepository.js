@@ -48,7 +48,6 @@ class CreatorRepository {
   /**
    * @param {integer} id
    * @param {*} object
-   */
   updateById(id, object) {
     const query = { _id: id };
 
@@ -79,7 +78,10 @@ class CreatorRepository {
 
   checkLogin(inputPassword) {
     
-  }
+  }*/
+	findByEmail(email) {
+		return this.model.findOne({ creator_email: email });
+	}
 
 }
 

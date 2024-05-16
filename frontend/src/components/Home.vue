@@ -1,8 +1,6 @@
 <template>
   <div>
-    
-    <h1>Home Page</h1>
-
+    <img src="/Home.png" class="object-fill"></img>
   </div>
 </template>
 

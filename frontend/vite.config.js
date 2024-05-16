@@ -15,8 +15,7 @@ const config = {
     port: 3030,
     strictPort: true,
     watch: {
-      ignored: ['**/node_modules/**', '**/.git/**'],
-      usePolling: true
+    	usePolling: true
     }
     
   }

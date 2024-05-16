@@ -2,8 +2,8 @@ const Assignment = require('../models/Assignment.js');
 
 class AsssignmentRepository {
   /**
-   * @param {*} model
-   */
+   * @param {*} model */
+
   constructor(model) {
     this.model = model;
   }

@@ -2,8 +2,13 @@ const express = require('express');
 
 const app = express.Router();
 const assignment_repository = require('../respositories/AssignmentRepository.js');
+const creator_repository = require('../respositories/CreatorRepository.js');
 
+// securities for authentication route.
+const jwt = require('jsonwebtoken');
+const bcrypt = require('bcrypt');
 
+const jwt_token = process.env.JWT_TOKEN;
 // Retreive all existed assignment.
 app.get('/getall', (req, res) => {
   assignment_repository.findAll().then((assignments) => {
@@ -16,15 +21,22 @@ app.get('/getall', (req, res) => {
 app.post('/create', (req, res) => {
   console.log(req.body);
   // Destructure properties from req.body directly
-  const { assignment_name, description, creator_id, ref_url, steps } = req.body; 
+  let { assignment_name, description, creator_id, ref_url, steps } = req.body; 
   const createdDate = new Date();
-  const assignment = { 
+  
+  
+  // the steps value would be string if it received from frontend, but JSON from body.
+  if(typeof steps === "string") {
+  	steps = JSON.parse(steps);
+  }
+
+  let assignment = { 
     assignment_name: assignment_name, 
     description: description,
     creator_id: creator_id,
     ref_url: ref_url,
     created_date: createdDate,
-    steps: JSON.parse(steps)	 
+    steps: steps	 
   };
   console.log(steps);
   
@@ -152,6 +164,64 @@ app.post('/getassignmentgroup', async (req, res) => {
     console.error('Error querying assignments:', error);
     res.status(500).json({ message: 'Error retrieving assignments', error: error });
   }
+}
+);
+
+// Authentication
+// User registration
+app.post('/register', async (req, res) => {
+  try {
+    const { username, email, password } = req.body;
+    console.log(req.body);
+
+    const hashedPassword = await bcrypt.hash(password, 10);
+
+    const creatorDetail = { 
+      creator_username: username, 
+      creator_email: email, 
+      creator_password: hashedPassword 
+    };
+    console.log(creatorDetail);
+    console.log("find existing email...");
+    const user = await creator_repository.findByEmail(email);
+    console.log("finding complete.");
+
+    // if the input email is not presence in database.
+    if (user !== null) {
+            return res.status(401).json({ error: 'User\'s email is already exist.' });
+    }
+
+    creator_repository.create(creatorDetail).
+    then(() =>{
+      res.status(201).json({ message: 'User registered successfully' });
+    });
+  } catch(error) {
+      console.log(error.toString());
+        res.status(500).json({ error: 'Internal Server Error.' });
+    }
 });
 
+app.post('/login', async (req, res) => {
+    const { email, password } = req.body;
+    const user = await creator_repository.findByEmail(email);
+    // if the input email is not presence in database.
+    if (!user) {
+      return res.status(401).json({ error: 'User\'s email not found.\nPlease ensure that your email is registered.' });
+    }
+    
+    // password validating.
+    const passwordMatch = await bcrypt.compare(password, user.creator_password);
+
+    if (!passwordMatch) {
+      return res.status(401).json({ error: 'Wrong password, Please tried again.' });
+    }
+    const token = jwt.sign({ userID: user._id }, process.env.JWT_TOKEN, {
+            expiresIn: '24h'
+      });
+    res.status(200).json({ 
+      _id: user._id,
+      creator_username: user.creator_username,
+      token: token 
+    });
+});	
 module.exports = app;

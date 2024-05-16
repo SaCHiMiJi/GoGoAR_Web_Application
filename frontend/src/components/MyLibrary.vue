@@ -1,29 +1,33 @@
 <template>
-    <div>
+    <div class="grid grid-cols-4 gap-4">
         <div class="form-row align-items-center" v-bind:key="assignment" v-for="assignment in assignments">
+            <!-- Topic -->
             <div class="max-w-sm p-6 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
-                <a href="#">
-                </a>
-
+                    {{ assignment.assignment_name }}
+                <br>    
+                <!-- Description -->
+                <p class="font-normal text-gray-700 dark:text-gray-400">
+                    {{ assignment.description }}
+                </p>
+                <!-- URL -->
+                <p class="font-normal text-gray-500 dark:text-gray-400" v-if="assignment.mobileapp_url != null">
+                    <a :href='assignment.mobileapp_url'>the assignment url</a>
+                </p>    
                 <!-- Edit Button -->
                 <a href="#" 
-		class="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-                    <router-link :to="{path: '/arcreation',
-		    query: { jsonData: JSON.stringify(assignment._id) } }">
-                        <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">✏️</h5>
-                    </router-link>
-                    <svg class="rtl:rotate-180 w-3.5 h-3.5 ms-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 10">
-                    </svg>
-                </a>
+                class="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                <router-link :to="{path: '/arcreation', query: { jsonData: JSON.stringify(assignment._id) } }">
+                    <h5 class="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">✏️</h5>
+                </router-link>
+            </a>
 
-                <!-- Remove Button -->
-                <a href="#" class="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-                    <button v-on:click="deleteAssignment(assignment._id)">
-                        🗑️
-                    </button>
-                </a>
-
-            </div>
+            <!-- Remove Button -->
+            <a href="#" class="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                <button v-on:click="deleteAssignment(assignment._id)">
+                    <h5 class="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">🗑️</h5>
+                </button>
+            </a>
+        </div>
         </div>
     </div>
   </template>

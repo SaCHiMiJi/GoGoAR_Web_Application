@@ -11,6 +11,7 @@ ENV NODE_ENV = production
 
 RUN npm i npm@latest -g
 RUN npm install
+RUN npm install -g http-server
 
 COPY --chown=node:node package.json package-lock.json* ./
 RUN npm ci && npm cache clean --force
@@ -19,10 +20,11 @@ RUN npm ci && npm cache clean --force
 COPY . .
 
 # Build the application
-RUN npm run build
+# RUN npm run build
 
 # Expose the port Vite serves on
-EXPOSE 3030
+EXPOSE 3030 
 
 # Start the application using Vite's preview mode
-CMD ["npm", "run", "preview"]
+CMD ["npm", "run", "dev"]
+

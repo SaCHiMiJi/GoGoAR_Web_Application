@@ -19,9 +19,9 @@
                       <label for="password" class="block mb-2 text-sm font-medium text-gray-900">Password</label>
                       <input v-model="password" type="password" name="password" id="password" placeholder="••••••••" class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5" required="">
                   </div>
-                  <button type="submit" class="w-full text-dark bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center">Sign in</button>
+                  <button @click="loginSubmission()" type="submit" class="w-full text-dark bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center">Sign in</button>
                   <p class="text-sm font-light text-gray-500">
-                      Don’t have an account yet? <a href="#" class="font-medium text-primary-600 hover:underline">Sign up</a>
+                      Don’t have an account yet? <a href="/signup" class="font-medium text-primary-600 hover:underline">Sign up</a>
                   </p>
               </form>
           </div>
@@ -33,17 +33,24 @@
 
 <script>
 import { useToast } from "vue-toastification";
+import { useRouter } from "vue-router";
 import qs from 'qs';
 
 export default {
-	setup() {
+	setup(props, { emit }) {
 		const toast = useToast();
-		return { toast };
+		const router = useRouter();
+
+		const checkUser = () => {
+			emit('check-user')
+		};
+
+		return { toast, router, checkUser };
 	},
 	data() {
 		return {
-			email: null,
-			password: null
+			email: "",
+			password: "" 
 		}
 	},
 	methods: {
@@ -58,11 +65,15 @@ export default {
 
 			this.$http.post("/login", loginDetail)
 				.then((res) => {
-					localStorage.setItem("userInfo", JSON.stringify(res));
-					$router.replace({ path: '/Home'});
+					localStorage.setItem("userInfo", JSON.stringify(res.data));
+					this.toast("Signin successfully.");
+					this.emitter.emit("check-user");	
+					setTimeout(() => {
+				        	this.router.replace({ path: '/' });
+				        }, 1000); // Wait 1 second before changing the route	
 				})
 				.catch((error) => {
-					this.errorCard(error.response.data.error);
+					this.errorCard(error.data.error);
 				});
 
 		}

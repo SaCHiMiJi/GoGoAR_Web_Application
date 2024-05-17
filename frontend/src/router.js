@@ -13,18 +13,24 @@ const routes = [
   {
     	path: '/arcreation',
     	component: ARCreation,
-    	props: true
+    	props: true,
+	meta: {
+		requiresAuth: true
+	}
   },
   {
     	path: '/mylibrary',
-    	component: MyLibrary
+    	component: MyLibrary,
+	meta: {
+		requiresAuth: true
+        }
   },
   {
-	path: '/register',
+	path: '/signup',
 	component: RegisterPage
   },
   {
-	path: '/login',
+	path: '/signin',
 	component: LoginPage
   }
 ];
@@ -33,5 +39,15 @@ const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes
 });
+
+router.beforeEach((to, from, next) => {
+  if (to.matched.some((record) => record.meta.requiresAuth)) {
+  	if (localStorage.getItem('userInfo') === null) {
+    		router.push({ path: '/signin'});
+	}
+  } else {
+    next()
+  }
+})
 
 export default router;

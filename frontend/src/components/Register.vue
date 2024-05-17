@@ -61,7 +61,7 @@
 		<button class="w-full text-black bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center"
 		@click="validateRegister()" >Create an account</button>
                 <p class="text-sm font-light text-gray-500">
-                	Already have an account? <a href="#" class="font-medium text-primary-600 hover:underline">Login here</a>
+                	Already have an account? <a href="/signin" class="font-medium text-primary-600 hover:underline">Signin here</a>
                 </p>
 		</form>
 		</div>
@@ -74,7 +74,7 @@
 		please login to continue.
 	</div>
 	<div>
-	<button @click="$router.replace({ path: '/login'}) ">
+	<button @click="$router.replace({ path: '/signin'}) ">
 			Login
 		</button>
 	</div>
@@ -139,8 +139,6 @@ export default {
 		        	return this.errorCard("Please enter a valid email address.");
 			}
 			
-			// validate the password and confirmation password.
-			console.log(this.password + " - " + this.confirmaryPassword);
 			if(this.password !== this.confirmaryPassword) {
 				return this.errorCard("Your confirmary password is not the same, please retry again.")
 			}
@@ -156,8 +154,9 @@ export default {
                                 "password": this.password
                         });
 
-			this.$http.post("/register", registerDetail)                                                                                                                                                                     .then((response) => {                                                                                                                                                                                            console.log(JSON.stringify(response.data));                                                                                                                                                              this.isRegistered = true;                                                                                                                                                                                                                                                                                                                                                                                 })                                                                                                                                                                                                       .catch((error) => {                                                                                                                                                                                              this.errorCard(error.response.data.error);                                                                                                                                                       });
-
+			this.$http.post("/register", registerDetail)                                                                                                                                                                     			.then((response) => {
+					console.log(JSON.stringify(response.data));                                                                                                                                                              			  this.isRegistered = true;})
+				.catch((error) => {                                                                                                                                                                                              			  this.errorCard(error.response.data.error);                                                                                                                                                       });
 		},
 		errorCard(message) {
 			this.toast.error(message);			

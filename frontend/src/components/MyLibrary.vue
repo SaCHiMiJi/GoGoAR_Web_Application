@@ -42,6 +42,7 @@ export default {
             };
     },
     created: function()  {
+    	this.emitter.emit("restrict-unauthorize");
         this.fetchAssignment();
     },
     methods: {

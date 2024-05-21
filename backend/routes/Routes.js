@@ -64,9 +64,16 @@ app.delete('/delete/:id', (req, res) => {
 // update a assignment item
 app.put('/modify/:id', (req, res) => {
   const id = req.params.id; // Get the ID from the URL parameter
-  const { assignment_name, description, creator_id, ref_url, steps } = req.body; // Extract other details from the body
+  let { assignment_name, description, creator_id, ref_url, steps } = req.body; // Extract other details from the body
   const newDate = new Date();
-  const assignment = { 
+
+  
+  // the steps value would be string if it received from frontend, but JSON from body.
+  if(typeof steps === "string") {
+  	steps = JSON.parse(steps);
+  }
+
+  let assignment = { 
     assignment_name: assignment_name, 
     description: description,
     creator_id: creator_id, 
@@ -223,5 +230,25 @@ app.post('/login', async (req, res) => {
       creator_username: user.creator_username,
       token: token 
     });
+});
+
+app.get('/getredirectionurl/:id', (req, res) => {
+  const id = req.params.id;
+  assignment_repository.getMobileAppURL(id)
+  .then((dburl) => {
+    const url = dburl.mobileapp_url;
+    if(url) {
+      console.log(`send the URL: ${ url }`);
+      res.send("http://localhost:3030/appredirection?url=" + url);
+    } else {
+      res.send(false)
+    }
+  })
+  .catch((error) => {
+    // Log the error and send a 500 response
+    console.error(error);
+    res.status(500).send(error.toString());
+  });
 });	
+
 module.exports = app;

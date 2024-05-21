@@ -4,6 +4,7 @@ import ARCreation from './components/ARCreation.vue';
 import MyLibrary from  './components/MyLibrary.vue';
 import RegisterPage from './components/Register.vue';
 import LoginPage from './components/Login.vue';
+import RedirectionPage from './components/RedirectPage.vue';
 
 const routes = [
   {
@@ -14,24 +15,29 @@ const routes = [
     	path: '/arcreation',
     	component: ARCreation,
     	props: true,
-	meta: {
-		requiresAuth: true
-	}
+	    meta: {
+		    requiresAuth: true
+	    }
   },
   {
     	path: '/mylibrary',
     	component: MyLibrary,
-	meta: {
-		requiresAuth: true
-        }
+	    meta: {
+		    requiresAuth: true
+      }
   },
   {
-	path: '/signup',
-	component: RegisterPage
+	    path: '/signup',
+	    component: RegisterPage
   },
   {
-	path: '/signin',
-	component: LoginPage
+	    path: '/signin',
+	    component: LoginPage
+  },
+  {
+      path: '/appredirection',
+      component: RedirectionPage,
+      props: true    
   }
 ];
 
@@ -44,7 +50,9 @@ router.beforeEach((to, from, next) => {
   if (to.matched.some((record) => record.meta.requiresAuth)) {
   	if (localStorage.getItem('userInfo') === null) {
     		router.push({ path: '/signin'});
-	}
+	  } else {
+  		next();
+	  }
   } else {
     next()
   }

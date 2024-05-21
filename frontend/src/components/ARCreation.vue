@@ -1,30 +1,41 @@
   <template>
-    <div class="align-self: center;"> 
+  <div class="align-self-center;"> 
         <div class="columns-lg" v-if="!isAssignmentSubmit">
             <!-- Image container on 1st column -->
-            <div class="bg-slate-500 flex flex-col justify-center overflow-y-auto">
-                <img class="object-none w-325 h-325" src="/gogoboard.png" usemap="#image_map"/>
+            <div class="flex-grow flex items-center justify-center">
+              <div class="relative">
+                <img class="object-none self-center" src="/gogoboard.png" usemap="#image_map"/>
                 <map name="image_map">
                     <area v-for="(area, index) in areas" :key="index" :alt="area.alt" :title="area.title" :coords="area.coords" :shape="area.shape" @click="handleAreaClick(index)" :class="{ 'selected-area': areaClicked === index }"/>
                 </map>
-                <div>
+
+                <div class="fixed bottom-0 left-0">
                     <button 
-                        class="mb-5 p-8 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none" 
+                        class="mb-5 p-8 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 focus:outline-none" 
                         v-on:click="submitAssignment">
                         Save Assignment
                     </button>
-                </div>                
+                </div>
+              </div>
             </div>
 
             <!-- Form container on 2nd column -->
-            <div class="form-container flex flex-col justify-center bg-slate-500 overflow-y-auto">
+            <div class="pr-24 max-h-100vh form-container flex flex-col justify-center overflow-auto">
                 <!-- Assignment name -->
-                <div class="mb-5 bg-slate-300 rounded-md p-8">
-                    <label for="large-input" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Assignment Name</label>
-                    <input v-model="assignmentName" type="text" id="large-input" class="block w-full p-4 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 text-base focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                <!-- Assignment Reference URL -->
-                <label for="large-input" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Reference Link</label>
-                    <input v-model="ref_url" type="text" id="large-input" class="block w-full p-4 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 text-base focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                <div class="bg-slate-300 rounded-md p-8">
+                    <div v-if="formCreating" class="flex justify-end">
+                       {{ displayInstructionOrder() }}
+                    </div>
+
+                    <label for="large-input" class="block mb-2 text-sm font-medium text-gray-900">Assignment Name</label>
+                    <input v-model="assignmentName" type="text" id="large-input" class="block w-full p-4 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 text-base focus:ring-blue-500 focus:border-blue-500">
+                    <!-- Description -->
+                    <label for="large-input" class="block mb-2 text-sm font-medium text-gray-900">Description</label>
+                    <input v-model="description" type="text" id="large-input" class="block w-full p-4 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 text-base focus:ring-blue-500 focus:border-blue-500">
+
+                    <!-- Assignment Reference URL -->
+                    <label for="large-input" class="block mb-2 text-sm font-medium text-gray-900">Reference Link</label>
+                   <input v-model="ref_url" type="text" id="large-input" class="block w-full p-4 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 text-base focus:ring-blue-500 focus:border-blue-500">
                 </div>
 
                 <!-- Assignment form -->
@@ -32,38 +43,39 @@
                     <!-- Add form button -->
                     <div className="addInstructionButton" v-if="!formCreating">
                         <div v-for="[key] in steps" :key="key">
-                            <div class="bg-gray-100">
-                                <div class="bg-white flex items-center rounded-lg shadow-lg overflow-hidden">
-                                    <div class="px-4 py-2">
-                                        <span class="text-gray-700 text-lg">{{ key }}</span>
-                                    </div>
-                                    <div class="flex-1 px-4 py-2">
-                                        <span class="text-gray-700 font-medium">{{ getStepFunctionDetails(key) }}</span>
-                                    </div>
-                                    <div class="flex-shrink-0 px-2">
-                                        <button v-on:click="openInstructionForm(key)" class="text-gray-700 hover:text-gray-900">
-                                            ✏️<!-- <svg src="/edit_image.svg" class="" fill="none"></svg> --> 
-                                        </button>
-                                        <button v-on:click="deleteInstruction(key)" class="text-gray-700 hover:text-gray-900">
-                                            🗑️<!-- <svg src="/delete_image.svg" class="" fill="none"></svg> -->
-                                        </button>
-                                    </div>
-                                    <div class="flex-shrink-0 pr-4">
-                                        <button class="text-gray-700 hover:text-gray-900">
-                                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">/delete_image.svg</svg>
-                                        </button>
-                                    </div>
-                                </div>
-                                <button v-on:click="moveInstructionUp(key)">🔼</button>
-                                <button v-on:click="moveInstructionDown(key)">🔽</button>
+                          <div class="p-4 bg-gray-100 rounded-lg shadow-md flex items-center justify-between mb-2">
+                            <div class="flex items-center">
+                              <span class="bg-gray-200 text-gray-700 text-xs font-medium px-2 py-1 rounded-full mr-2">{{ key }}</span>
+                              <span class="text-lg font-medium text-purple-700">{{ getStepFunctionDetails(key) }}</span>
+                          </div>
+                            <div class="flex items-center space-x-2">
+                              <button class="text-gray-700 hover:text-gray-900" v-on:click="openInstructionForm(key)">
+                                <img class="w-5 h-5 md-5 pd-5" src="/edit_image.svg" />
+                              </button>
+                              <button class="text-gray-700 hover:text-gray-900" v-on:click="deleteInstruction(key)">
+                                <img class="w-5 h-5 md-5 pd-5" src="/delete_image.svg" />
+                              </button>
+                              <div class="flex flex-col space-y-5 md-5 pd-5 " >
+                                <button class="text-gray-700 hover:text-gray-900" v-on:click="moveInstructionUp(key)">
+                                  <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 15l7-7 7 7"></path>
+                                </svg>
+                                </button>
+                                <button class="text-gray-700 hover:text-gray-900" v-on:click="moveInstructionDown(key)">
+                                  <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                                  </svg>
+                                </button>
+                              </div>
                             </div>
+                          </div>
                         </div>
 
                         <!-- Form creation and submission -->
                         <div>
 
                             <button 
-                                class="mb-5 p-8 w-full text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800" 
+                                class="mb-5 p-8 w-full text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2" 
                                 v-on:click="openInstructionForm(0)">
                                 +
                             </button>
@@ -85,20 +97,20 @@
                     
                         <!-- Component -->
                         <div class="mb-5" v-if="assignmentFunction !== 'context' && assignmentFunction !== null">
-                            <label for="base-input" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+                            <label for="base-input" class="block mb-2 text-sm font-medium text-gray-900">
                                 Gogoboard's port
                             </label>
                             <input v-model="assignmentPort" type="text" id="base-input" 
-                                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
                         </div>
                         
                         <!-- Description -->
                         <div class="mb-5" v-if="assignmentFunction !== 'connect' && assignmentFunction !== null">
-                            <label for="small-input" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+                            <label for="small-input" class="block mb-2 text-sm font-medium text-gray-900">
                                 Context
                             </label>
                             <input v-model="assignmentContext" type="textarea" id="small-input" 
-                            class="block w-full p-2 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 text-xs focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                            class="block w-full p-2 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 text-xs focus:ring-blue-500 focus:border-blue-500">
                         </div>
 
                         <!-- External Component -->
@@ -125,7 +137,7 @@
                         <!-- Buttons -->
                         <div class="mb-5">
                             <button 
-                                class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800" 
+                                class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2" 
                                 @click="saveInstructionForm" :disabled="!isFormValid">Save</button>
                             <button @click="closeInstruction">Cancel</button>
                         </div>
@@ -161,37 +173,56 @@
                 <div v-else>
                     <button v-on:click="getMobileAppURL()"> Re-fetch the URL</button>
                     using this ID to assign the URL to the assignment: 
-                    {{ assignment_id }}
-                </div>
-
+                    <div class="w-full max-w-[26rem]">
+                      <div class="relative">
+                        <label for="npm-install-copy-text" class="sr-only">Label</label>
+                        <input v-model="assignment_id" id="npm-install-copy-text" type="text" class="col-span-6 bg-gray-50 border border-gray-300 text-gray-500 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full px-2.5 py-4 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500" disabled readonly>
+                        <button data-copy-to-clipboard-target="npm-install-copy-text" class="absolute end-2.5 top-1/2 -translate-y-1/2 text-gray-900 dark:text-gray-400 hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-600 dark:hover:bg-gray-700 rounded-lg py-2 px-2.5 inline-flex items-center justify-center bg-white border-gray-200 border">
+                        <span id="default-message" class="inline-flex items-center">
+                          <svg class="w-3 h-3 me-1.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 18 20">
+                            <path d="M16 1h-3.278A1.992 1.992 0 0 0 11 0H7a1.993 1.993 0 0 0-1.722 1H2a2 2 0 0 0-2 2v15a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V3a2 2 0 0 0-2-2Zm-3 14H5a1 1 0 0 1 0-2h8a1 1 0 0 1 0 2Zm0-4H5a1 1 0 0 1 0-2h8a1 1 0 1 1 0 2Zm0-5H5a1 1 0 0 1 0-2h2V2h4v2h2a1 1 0 1 1 0 2Z"/>
+                          </svg>
+                        <span class="text-xs font-semibold">Copy</span>
+                    </span>
+                  <span id="success-message" class="hidden inline-flex items-center">
+                    <svg class="w-3 h-3 text-blue-700 dark:text-blue-500 me-1.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 16 12">
+                      <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 5.917 5.724 10.5 15 1.5"/>
+                    </svg>
+                    <span class="text-xs font-semibold text-blue-700 dark:text-blue-500">Copied</span>   
+                  </span>
+                </button>
+              </div>
+            </div>
+               </div>
             </div>
         </div>
     </div>
-</template>
 
-<script setup>
-    import imgUrl from '/gogoboard.png'
-</script>
+  </template>
 
 <script>
-import axios from 'axios';
 import ImageMap from 'image-map';
 import qs from 'qs';
+// import { useToast } from "vue-toastification";
 
 export default {
+    /*setup() {
+      const toast = useToast();
+      return ( toast );
+    },*/
     data() {
         return {
             assignment_id: null,
             areas: [
-                { alt: 'output-4', title: 'output-4', coords: "603,175,743,294", shape: 'rect' },
-                { alt: 'output-3', title: 'output-3', coords: "789,171,931,298", shape: 'rect' },
-                { alt: 'output-2', title: 'output-2', coords: "972,171,1130,303", shape: 'rect' },
-                { alt: 'output-1', title: 'output-1', coords: "1173,175,1323,305", shape: 'rect' },
-                { alt: 'input-1', title: 'input-1', coords: "579,1601,767,1740", shape: 'rect' },
-                { alt: 'input-2', title: 'input-2', coords: "774,1601,959,1746", shape: 'rect' },
-                { alt: 'input-3', title: 'input-3', coords: "964,1603,1147,1742", shape: 'rect' },
-                { alt: 'input-4', title: 'input-4', coords: "1156,1599,1340,1744", shape: 'rect' }
-            ],
+          		{ alt: 'input1', title: 'input1', coords: "200,452,155,413", shape: 'rect' },
+          		{ alt: 'input2', title: 'input2', coords: "200,454,252,409", shape: 'rect' },
+          		{ alt: 'input3', title: 'input3', coords: "252,407,298,454", shape: 'rect' },
+          		{ alt: 'input4', title: 'input4', coords: "299,414,349,451", shape: 'rect' },
+          		{ alt: 'output1', title: 'output1', coords: "304,50,343,83", shape: 'rect' },
+          		{ alt: 'output2', title: 'output2', coords: "252,44,294,79", shape: 'rect' },
+          		{ alt: 'output3', title: 'output3', coords: "206,46,243,80", shape: 'rect' },
+          		{ alt: 'output4', title: 'output4', coords: "155,47,196,81", shape: 'rect' }
+	          ],
             areaClicked: null,
 	    // boolean to view form.
             formCreating: false,
@@ -204,8 +235,10 @@ export default {
 
             // this value will ensure how many instruction have existed.
             currentIndex: 0,
+
             // POST datas
             assignmentName: "",
+            description: "",
             ref_url: "",
             creator_id: "guestuser0000",
             steps: new Map(),
@@ -224,13 +257,13 @@ export default {
                 console.log(data);
                 this.assignmentName = data.assignment_name;
                 this.creator_mail = data.creator_email;
-		        this.ref_url = data.ref_url;
+		            this.ref_url = data.ref_url;
                 this.steps = this.objectToMap(data.steps);
 
                 console.log("fetched name as: " + this.assignmentName
                     + ", fetch creator's mail as : " + this.creator_mail);
 
-                this.displayInstructions();
+                // this.displayInstructions();
             })
             .catch(error => {
                 console.error('Error fetching data:', error);
@@ -246,7 +279,12 @@ export default {
             this.assignmentPort = this.areas[index].alt;
             this.areaClicked = index;
         },
-
+        displayInstructionOrder() {
+          if(this.currentIndex === 0) {
+             return this.getInstructionAmount() + 1;
+          }
+          return this.currentIndex;
+        },
         // Manage Assignment's Instruction
         openInstructionForm(index) {
             // if index is zero, that's mean this is the new instruction to be created.
@@ -292,7 +330,7 @@ export default {
 
             // add map element
             this.steps.set(elementIndex, stepsInfo);
-            
+            console.log 
             // reset values in form.
             this.closeInstruction();
         },
@@ -322,20 +360,26 @@ export default {
             const index = entries.findIndex(entry => entry[0] === key);
             if (index > 0) { // Ensure there is a previous item to swap with
                 [entries[index], entries[index - 1]] = [entries[index - 1], entries[index]]; // Swap with previous
-                this.steps = new Map(entries); // Convert array back to Map
-                console.log("re-sorting");
+                this.steps = new Map(entries.map(([k, v], i) => [i + 1, v])); // Convert array back to Map
             }
         },
         moveInstructionDown(key) {
-            // the indicated key won't be the last and not the only one
-            const entries = Array.from(this.steps.entries());
-            const index = entries.findIndex(entry => entry[0] === key);
+          const entries = Array.from(this.steps.entries());
+          const index = entries.findIndex(entry => entry[0] === key);
+          // Ensure the current item is not the last one
+          if (index < entries.length - 1) {
+            // Swap current item with the next item
+            const temp = entries[index + 1];
+            entries[index + 1] = entries[index];
+            entries[index] = temp;
 
-            if (index < entries.length - 1) { // Ensure there is a next item to swap with
-                [entries[index], entries[index + 1]] = [entries[index + 1], entries[index]]; // Swap with next
-                this.steps = new Map(entries); // Convert array back to Map
-                console.log("re-sorting");
-            }
+            // Re-construct the map directly from the updated entries
+            const newSteps = new Map();
+            entries.forEach(([k, v], i) => {
+                newSteps.set(i + 1, v);
+            });
+            this.steps = newSteps;
+          }
         },
         submitAssignment() {
             // convert the "steps" map into nested object
@@ -351,6 +395,7 @@ export default {
             let data = {
                 "assignment_name": this.assignmentName,
                 "creator_id": this.creator_id,
+                "description": this.description,
                 "ref_url": this.ref_url,
                 "steps": JSON.stringify(stepsObject)
             };
@@ -369,10 +414,10 @@ export default {
                     });    
             } else {
 
-		this.$http.post("create", qs.stringify(data))
+		          this.$http.post("create", qs.stringify(data))
                     .then(response => {
                         console.log("saved!", response.data);
-			this.assignment_id = response.data;
+                  			this.assignment_id = response.data;
                         this.getMobileAppURL();
                     })
                     .catch(error => {
@@ -411,10 +456,10 @@ export default {
         },
         getMobileAppURL() {
             this.isAssignmentSubmit = true;
-            this.$http.get('/getappurl/' + this.assignment_id)
+            this.$http.get('/getredirectionurl/' + this.assignment_id)
                 .then((response) => {
                     this.mobileAppURL = response.data;
-		    console.log(this.mobileAppURL + " == " + response);
+            		    console.log(this.mobileAppURL + " == " + response);
                 })
                 .catch((error) => {
                     console.log(error); 
@@ -422,7 +467,7 @@ export default {
         },
         resizeImageMaps() {
             ImageMap('img[usemap]');
-        }
+        },
     },
     computed: {
         isFormValid() {
@@ -449,3 +494,18 @@ export default {
     }
 };
 </script>
+
+<style>
+rect.hoverable
+{
+    fill: transparent;
+    stroke:gray; /* Replace with none if you like */
+    stroke-width: 4;
+    cursor: pointer;
+}
+
+rect.hoverable:hover
+{
+    fill:black;   
+}
+</style>

@@ -90,7 +90,7 @@ app.put('/modify/:id', (req, res) => {
       return res.status(404).json({ message: 'No assignment found with the given ID' });
     }
     // Send back the updated assignment
-    res.status(200).json(updatedDocument);
+    return res.status(200).json(updatedDocument);
   })
   .catch((error) => {
     // Log the error and send a 500 response
@@ -154,6 +154,25 @@ app.get('/getappurl/:id', (req, res) => {
     res.status(500).send(error.toString());
   });
 });
+
+// get the assignment by userID.
+app.get('/getassignmentbyuser/:id', async (req, res) => {
+  const userid = req.params.id;
+  
+  try {
+    creator_repository.findById(userid);
+  } catch(error) {
+    return res.status(400).json({ "message": "Creator not found."});
+  }
+  assignment_repository.findByCreatorID(userid.toString())
+    .then((assignments) => {
+      return res.json(assignments);
+    })
+    .catch((error) => {
+      return res.status(500).send(error.toString());
+    });
+}
+);
 
 // Respond the array of nested assignment, with the array of id
 app.post('/getassignmentgroup', async (req, res) => {

@@ -154,9 +154,13 @@ export default {
                                 "password": this.password
                         });
 
-			this.$http.post("/register", registerDetail)                                                                                                                                                                     			.then((response) => {
-					console.log(JSON.stringify(response.data));                                                                                                                                                              			  this.isRegistered = true;})
-				.catch((error) => {                                                                                                                                                                                              			  this.errorCard(error.response.data.error);                                                                                                                                                       });
+			this.$http.post("/register", registerDetail)
+      .then((response) => {
+					console.log(JSON.stringify(response.data));
+          this.isRegistered = true;})
+				.catch((error) => {
+          this.errorCard(error.response.data.error);
+        });
 		},
 		errorCard(message) {
 			this.toast.error(message);			

@@ -21,25 +21,25 @@
 
             <!-- Form container on 2nd column -->
             <div class="pr-24 max-h-100vh form-container flex flex-col justify-center overflow-auto">
-                <!-- Assignment name -->
-                <div class="bg-slate-300 rounded-md p-8">
-                    <div v-if="formCreating" class="flex justify-end">
+                <!-- Assignment Detail -->
+                <div class="bg-[#322653] rounded-md p-8 mt-8">
+                    <div v-if="formCreating" class="flex justify-end text-white">
                        {{ displayInstructionOrder() }}
                     </div>
 
-                    <label for="large-input" class="block mb-2 text-sm font-medium text-gray-900">Assignment Name</label>
+                    <label for="large-input" class="block mb-2 text-sm font-medium text-white">Assignment Name</label>
                     <input v-model="assignmentName" type="text" id="large-input" class="block w-full p-4 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 text-base focus:ring-blue-500 focus:border-blue-500">
                     <!-- Description -->
-                    <label for="large-input" class="block mb-2 text-sm font-medium text-gray-900">Description</label>
+                    <label for="large-input" class="block mb-2 text-sm font-medium text-white">Description</label>
                     <input v-model="description" type="text" id="large-input" class="block w-full p-4 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 text-base focus:ring-blue-500 focus:border-blue-500">
 
                     <!-- Assignment Reference URL -->
-                    <label for="large-input" class="block mb-2 text-sm font-medium text-gray-900">Reference Link</label>
+                    <label for="large-input" class="block mb-2 text-sm font-medium text-white">Reference Link</label>
                    <input v-model="ref_url" type="text" id="large-input" class="block w-full p-4 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 text-base focus:ring-blue-500 focus:border-blue-500">
                 </div>
 
                 <!-- Assignment form -->
-                <div class="mb-5 bg-slate-300 rounded-md p-8" className="instructionContainer">
+                <div class="mb-5 bg-[#EDE7F0] rounded-md p-8" className="instructionContainer">
                     <!-- Add form button -->
                     <div className="addInstructionButton" v-if="!formCreating">
                         <div v-for="[key] in steps" :key="key">
@@ -72,18 +72,18 @@
                         </div>
 
                         <!-- Form creation and submission -->
-                        <div>
+                        <div class="grid content-center place-items-center bg-[#EDE7F0]">
 
                             <button 
-                                class="mb-5 p-8 w-full text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2" 
+                                class="my-5 px-10 w-10/12 text-black bg-white hover:bg-white focus:ring-4 focus:ring-slate-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2" 
                                 v-on:click="openInstructionForm(0)">
                                 +
                             </button>
                         </div>
                     </div>
                     <!-- Instruction forms -->
-                    <div className="instructionForm" class="mb-8 p-8" v-else>
-                        <div class="mb-5">
+                    <div className="instructionForm" class="block bg-[#EDE7F0] p-16" v-else>
+                        <div>
                             <div>
                                 Function
                             </div>
@@ -96,25 +96,49 @@
                         </div>
                     
                         <!-- Component -->
-                        <div class="mb-5" v-if="assignmentFunction !== 'context' && assignmentFunction !== null">
-                            <label for="base-input" class="block mb-2 text-sm font-medium text-gray-900">
+                        <div v-if="assignmentFunction !== 'context' && assignmentFunction !== null">
+                            <div for="base-input" class="text-sm font-medium text-gray-900">
                                 Gogoboard's port
-                            </label>
-                            <input v-model="assignmentPort" type="text" id="base-input" 
-                                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
+                            </div>
+                            <select v-model="assignmentPort">
+                                <option selected disabled>Gogoboard ports</option>
+                                <option value="allinput">All input</option>
+                                <option value="input1">input 1</option>
+                                <option value="input2">input 2</option>
+                                <option value="input3">input 3</option>
+                                <option value="input4">input 4</option>
+                                <option value="alloutput">All output</option>
+                                <option value="output1">output 1</option>
+                                <option value="output2">output 2</option>
+                                <option value="output3">output 3</option>
+                                <option value="output4">output 4</option>
+                                <option value="allservo">All servo</option>
+                                <option value="servo1">servo 1</option>
+                                <option value="servo2">servo 2</option>
+                                <option value="servo3">servo 3</option>
+                                <option value="servo4">servo 4</option>
+                                <option value="allcon">All configurable</option>
+                                <option value="con1">configurable 1</option>
+                                <option value="con2">configurable 2</option>
+                                <option value="con3">configurable 3</option>
+                                <option value="i2c">I2C</option>
+                                <option value="chian">chian</option>
+                                <option value="uart">UART</option>
+                            </select>
+
                         </div>
                         
                         <!-- Description -->
-                        <div class="mb-5" v-if="assignmentFunction !== 'connect' && assignmentFunction !== null">
-                            <label for="small-input" class="block mb-2 text-sm font-medium text-gray-900">
+                        <div v-if="assignmentFunction !== 'connect' && assignmentFunction !== null">
+                            <div for="small-input" class="text-sm font-medium text-gray-900">
                                 Context
-                            </label>
+                            </div>
                             <input v-model="assignmentContext" type="textarea" id="small-input" 
                             class="block w-full p-2 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 text-xs focus:ring-blue-500 focus:border-blue-500">
                         </div>
 
                         <!-- External Component -->
-                        <div class="mb-5" v-if="assignmentFunction === 'connect' && assignmentFunction !== null">
+                        <div v-if="assignmentFunction === 'connect' && assignmentFunction !== null">
                             <div>
                                 External Component
                             </div>
@@ -135,11 +159,10 @@
                         </div>
                         
                         <!-- Buttons -->
-                        <div class="mb-5">
+                        <div class="flex justify-center">
+                            <button @click="closeInstruction" class="items-center text-white bg-[#D65F5F] hover:bg-white-800 focus:ring-4 focus:ring-white-300 font-medium rounded-lg text-sm px-5 py-2.5 m-6 p-8">Cancel</button>
                             <button 
-                                class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2" 
-                                @click="saveInstructionForm" :disabled="!isFormValid">Save</button>
-                            <button @click="closeInstruction">Cancel</button>
+                                class="items-center text-white bg-[#50C878] hover:bg-white-800 focus:ring-4 focus:ring-white-300 font-medium rounded-lg text-sm px-5 py-2.5 m-6 p-8" @click="saveInstructionForm" :disabled="!isFormValid">Save</button>
                         </div>
                     </div>
                 </div>
@@ -148,15 +171,15 @@
         <!-- Post form submission -->
         <div class="columns-lg" v-else>
             <!-- 1st column -->
-            <div className="url-appear">
-                <div className="URL existed" v-if="mobileAppURL !== '' && mobileAppURL !== false ">
-                    <img src="/tick-circle.svg"/>
+            <div class="flex-grow flex items-center justify-center">
+                <div className="URL existed" class="relative" v-if="mobileAppURL !== '' && mobileAppURL !== false ">
+                    <img src="/tick-circle.svg" class="object-none self-center w-325 h-325"/>
                     <p>The assignment is now presence mobile app's URL.
                         You can try the assignment on the right.</p>
 
                 </div>
-                <div className="noURLDisplayed" v-else>
-                    <img class="object-none w-325 h-325" src="/error.jpg"/>
+                <div className="noURLDisplayed" class="relative" v-else>
+                    <img class="object-none self-center w-325 h-325" src="/error.jpg"/>
                     <p> 
                         This assignment is yet to have mobile app's URL.
                         Please create url via mobile application and try to refetch again.
@@ -203,13 +226,9 @@
 <script>
 import ImageMap from 'image-map';
 import qs from 'qs';
-// import { useToast } from "vue-toastification";
+import { useToast } from "vue-toastification";
 
 export default {
-    /*setup() {
-      const toast = useToast();
-      return ( toast );
-    },*/
     data() {
         return {
             assignment_id: null,
@@ -224,10 +243,10 @@ export default {
           		{ alt: 'output4', title: 'output4', coords: "155,47,196,81", shape: 'rect' }
 	          ],
             areaClicked: null,
-	    // boolean to view form.
+	          // boolean to view form.
             formCreating: false,
 	    
-	    // ar creation's instructure.
+	          // ar creation's instructure.
             assignmentFunction: null,
             assignmentPort: null,
             assignmentContext: null,
@@ -299,6 +318,8 @@ export default {
             }
         },
         closeInstruction() {
+
+            useToast().info('instruction done.');
             // prevent unexpected error for next operation.
             this.formCreating = false;
             this.assignmentFunction = null;
@@ -330,7 +351,6 @@ export default {
 
             // add map element
             this.steps.set(elementIndex, stepsInfo);
-            console.log 
             // reset values in form.
             this.closeInstruction();
         },
@@ -406,22 +426,22 @@ export default {
             if(this.isExist) {
                 this.$http.put("/modify/"+this.assignment_id, qs.stringify(data))
                     .then(response => {
-                        console.log("edited!", response.data);
+                        useToast().success("edit completed.");
                         this.getMobileAppURL();
                     })
                     .catch(error => {
-                        console.error(error);
+                        useToast().error(error);
                     });    
             } else {
 
 		          this.$http.post("create", qs.stringify(data))
                     .then(response => {
-                        console.log("saved!", response.data);
+                        useToast().success("assignment creating completed.");
                   			this.assignment_id = response.data;
                         this.getMobileAppURL();
                     })
                     .catch(error => {
-                        console.error(error);
+                        useToast().error(error);
                     });
             }
         },
@@ -477,9 +497,7 @@ export default {
                 return (this.assignmentPort !== null) && (this.assignmentExternalComponent !== null);
             } else if(this.assignmentFunction === "context") {
                 return this.assignmentContext !== null;
-            } else {
-                return false;
-            }
+            } 
         }
     },
     mounted() {
@@ -491,6 +509,8 @@ export default {
             this.getAssignmentDetail();
             this.isExist = true;
         }
+
+        this.creator_id = JSON.parse(localStorage.getItem('userInfo'))._id;
     }
 };
 </script>

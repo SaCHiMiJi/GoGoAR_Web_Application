@@ -1,10 +1,13 @@
 import { createRouter, createWebHistory } from 'vue-router';
 import Home from './components/Home.vue';
-import ARCreation from './components/ARCreation.vue';
+import AssignmentCreation from './components/AssignmentCreation.vue';
 import MyLibrary from  './components/MyLibrary.vue';
 import RegisterPage from './components/Register.vue';
 import LoginPage from './components/Login.vue';
 import RedirectionPage from './components/RedirectPage.vue';
+
+import DiscoveryPage from './components/Discovery.vue';
+import AssignmentViewPage from './components/AssignmentView.vue';
 
 const routes = [
   {
@@ -12,8 +15,8 @@ const routes = [
     	component: Home
   },
   {
-    	path: '/arcreation',
-    	component: ARCreation,
+    	path: '/assignmentcreation',
+    	component: AssignmentCreation,
     	props: true,
 	    meta: {
 		    requiresAuth: true
@@ -38,6 +41,17 @@ const routes = [
       path: '/appredirection',
       component: RedirectionPage,
       props: true    
+  },
+  {
+      // View the assignment created from anyone.
+      path: '/discovery',
+      component: DiscoveryPage
+  },
+  {
+      // this page can be redirected form discovery page and required assignment ID to view, the assignment instruction are unable to be modify.
+      path: '/assignmentview/:id',
+      props: true,
+      component: AssignmentViewPage
   }
 ];
 

@@ -7,7 +7,7 @@
         	<img src="/weblogo.svg" class="h-8" alt="Gogoboard Logo" />
 	</a>
 
-      	<!-- Dropdown on mobile -->
+      	<!-- Dropdown on mobile device. -->
         <button data-collapse-toggle="navbar-default" type="button" class="inline-flex items-center p-2 w-10 h-10 justify-center text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200" aria-controls="navbar-default" aria-expanded="false">
             <span class="sr-only">Open main menu</span>
             <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 17 14">
@@ -18,31 +18,30 @@
         <!-- Navigation Buttons -->
 	<div class="hidden w-full md:block md:w-auto" id="navbar-default">
           <ul class="font-medium flex flex-col p-4 md:p-0 mt-4 border border-gray-100 rounded-lg md:flex-row md:space-x-8 rtl:space-x-reverse md:mt-0 md:border-0">
-            
-	    <RouterLink to="/">
-	    	<button class="justify justify-items-center text-white bg-[#322653] hover:bg-white hover:text-black focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 focus:outline-none">My Discovery</button>
-	    </RouterLink>
+      	    <RouterLink to="/discovery">
+	            	<button class="justify justify-items-center text-white bg-[#322653] hover:bg-white hover:text-black focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 focus:outline-none">Discovery</button>
+      	    </RouterLink>
 
-	    <!-- Available Page for Authenticated User -->
-	    <ul v-if="!userInfo">
-	    	    <RouterLink to="/signup">
+	          <!-- Available Page for Authenticated User -->
+      	    <ul v-if="!userInfo">
+	      	    <RouterLink to="/signup">
         		    <button class="justify justify-items-center text-white bg-[#322653] hover:bg-white hover:text-black focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 focus:outline-none">Sign Up</button>
 	            </RouterLink>
 
-		    <RouterLink to="/signin">
+      		    <RouterLink to="/signin">
         	    	<button class="justify justify-items-center text-white bg-[#322653] hover:bg-white hover:text-black focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 focus:outline-none">Sign In</button>
 	            </RouterLink>
-	    </ul>
-	    <!-- Sign out -->
-	    <ul v-else>
-	    	<RouterLink to="/arcreation">
-	              <button class="justify justify-items-center text-white bg-[#322653] hover:bg-white hover:text-black focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 focus:outline-none">AR creation</button>
-        	</RouterLink>
-	        <RouterLink to="/mylibrary">
+	          </ul>
+      	    <!-- Sign out -->
+	          <ul v-else>
+      	    	<RouterLink to="/assignmentcreation">
+	                <button class="justify justify-items-center text-white bg-[#322653] hover:bg-white hover:text-black focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 focus:outline-none">AR creation</button>
+            	</RouterLink>
+    	        <RouterLink to="/mylibrary">
               		<button class="justify justify-items-center text-white bg-[#322653] hover:bg-white hover:text-black focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 focus:outline-none">My Library</button>
-		</RouterLink>
+          		</RouterLink>
             	<button @click="signOut" class="justify justify-items-center text-white bg-[#322653] hover:bg-white hover:text-black focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 focus:outline-none">Sign Out</button>
-		</ul>
+		        </ul>
           </ul>
         </div>
       </div>
@@ -63,6 +62,7 @@ onMounted(() => {
 
 <script>
 export default {
+
   data() {
     return {
       userInfo: null

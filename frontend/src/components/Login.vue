@@ -38,14 +38,13 @@ import qs from 'qs';
 
 export default {
 	setup(props, { emit }) {
-		const toast = useToast();
 		const router = useRouter();
 
 		const checkUser = () => {
 			emit('check-user')
 		};
 
-		return { toast, router, checkUser };
+		return { router, checkUser };
 	},
 	data() {
 		return {
@@ -54,9 +53,6 @@ export default {
 		}
 	},
 	methods: {
-		errorCard(message) {
-			this.toast.error(message);	
-		},
 		loginSubmission() {
 			const loginDetail = qs.stringify({
 				"email": this.email,
@@ -66,14 +62,14 @@ export default {
 			this.$http.post("/login", loginDetail)
 				.then((res) => {
 					localStorage.setItem("userInfo", JSON.stringify(res.data));
-					this.toast("Signin successfully.");
+					useToast().success("Signin successfully.");
 					this.emitter.emit("check-user");	
 					setTimeout(() => {
 				        	this.router.replace({ path: '/' });
 				        }, 1000); // Wait 1 second before changing the route	
 				})
 				.catch((error) => {
-					this.errorCard(error.data.error);
+					useToast().error(error.response.data.error);
 				});
 
 		}

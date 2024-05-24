@@ -147,6 +147,12 @@ class AsssignmentRepository {
       '_id': { $in: assignmentIds }
     });
   }
+
+  findByCreatorID(creatorid) {
+    return this.model.find({
+      "creator_id": creatorid
+    });
+  }
 }
 
 module.exports = new AsssignmentRepository(Assignment);

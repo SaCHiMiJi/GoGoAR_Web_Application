@@ -2,9 +2,8 @@
 <div>
 <section class="bg-gray-50">
   <div v-if="isRegistered === false" class="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
-      <a href="#" class="flex items-center mb-6 text-2xl font-semibold text-gray-900">
-          <img class="w-8 h-8 mr-2" src="https://flowbite.s3.amazonaws.com/blocks/marketing-ui/logo.svg" alt="logo">
-          Flowbite    
+      <a href="#" class="flex items-center p-4 mb-6 text-2xl font-semibold bg-[#322653] text-gray-300 rounded-xl">
+          <img class=" mr-2" src="/weblogo.svg" alt="logo">
       </a>
       <div class="w-full bg-white rounded-lg shaded md:mt-0 sm:max-w-md xl:p-0">
           <div class="p-6 space-y-4 md:space-y-6 sm:p-8">
@@ -53,31 +52,31 @@
 		            <svg v-else xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-500" viewBox="0 0 20 20" fill="currentColor">
                 		<path d="M3.055 13.045A8 8 0 0116.945 6.055L10 10 3.055 13.045zm.666 1.665A10 10 0 0017.278 8.278L10 10 3.721 16.721zM10 8a2 2 0 100 4 2 2 0 000-4z"/>
 		            </svg>
-		        </button>
-		    </div>
-		</div>
+		                </button>
+          		    </div>
+            		</div>
 		
-		<!-- Register request button -->
-		<button class="w-full text-black bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center"
+            		<!-- Register request button -->
+		            <button class="w-full text-black bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center"
 		@click="validateRegister()" >Create an account</button>
                 <p class="text-sm font-light text-gray-500">
                 	Already have an account? <a href="/signin" class="font-medium text-primary-600 hover:underline">Signin here</a>
                 </p>
-		</form>
-		</div>
-	</div>
-</div>
+    		</form>
+		  </div>
+	  </div>
+  </div>
   <!-- Post submission panel -->
   <div v-else class="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
-  	<div>
-		You have registered successfully!
-		please login to continue.
-	</div>
-	<div>
-	<button @click="$router.replace({ path: '/signin'}) ">
-			Login
-		</button>
-	</div>
+  	<div class="pb-4">
+		  You have registered successfully!
+		  please login to continue.
+	  </div>
+	  <div>
+	    <button @click="$router.replace({ path: '/signin'}) " class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600">
+			  Login
+  		</button>
+	  </div>
   </div>
 </section>  
 

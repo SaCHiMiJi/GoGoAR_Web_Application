@@ -169,59 +169,93 @@
             </div>
         </div>
         <!-- Post form submission -->
-        <div class="columns-lg" v-else>
+        <div class="gap-8 items-center py-8 px-4 mx-auto max-w-screen-xl xl:gap-16 md:grid md:grid-cols-2 sm:py-16 lg:px-6" v-else>
             <!-- 1st column -->
-            <div class="flex-grow flex items-center justify-center">
-                <div className="URL existed" class="relative" v-if="mobileAppURL !== '' && mobileAppURL !== false ">
-                    <img src="/tick-circle.svg" class="object-none self-center w-325 h-325"/>
+                <div class="object-none self-center w-325 h-325 text-center text-sm" v-if="mobileAppURL !== '' && mobileAppURL !== false ">
+                    <img src="/tick-circle.svg" class="mx-auto mb-4"/>
                     <p>The assignment is now presence mobile app's URL.
-                        You can try the assignment on the right.</p>
-
+                        You can try the assignment on the right.
+                    </p>
+                    <div class="flex justify-center text-center text-lg">
+                      <div>
+                        <div class="py-6">
+                          Preview your Assignment.
+                        </div>
+                        <button class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 focus:outline-none">
+                          <a v-bind:href="mobileAppURL">Here</a>
+                        </button>
+                      </div>
+                    </div>
                 </div>
-                <div className="noURLDisplayed" class="relative" v-else>
-                    <img class="object-none self-center w-325 h-325" src="/error.jpg"/>
+                <div class="object-none self-center w-325 h-325 text-center text-sm" v-else>
+                    <img  src="/error.jpg"/>
                     <p> 
                         This assignment is yet to have mobile app's URL.
                         Please create url via mobile application and try to refetch again.
                     </p>
                 </div>
-            </div>
             <!-- 2nd column -->
-            <div className="side-menu">
-                <div v-if="mobileAppURL !== '' && mobileAppURL !== false ">
-                    <button>
-                        <a v-bind:href="mobileAppURL">Here</a>
-                    </button>
+                <!-- Show the instructions -->
+                <div v-if="mobileAppURL !== '' && mobileAppURL !== false " >
+                  <!-- Assignment name -->
+                  <div class="bg-[#322653] rounded-md p-8">
+                    <div v-if="formCreating" class="flex justify-end">
+                       {{ displayInstructionOrder() }}
+                    </div>
+
+                    <label for="large-input" class="block mb-2 text-sm font-medium text-white">Assignment Name</label>
+                    <input v-model="assignmentName" type="text" id="large-input" class="block w-full p-4 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 text-base focus:ring-blue-500 focus:border-blue-500" readonly>
+                    <!-- Description -->
+                    <label for="large-input" class="block mb-2 text-sm font-medium text-white">Description</label>
+                    <input v-model="description" type="text" id="large-input" class="block w-full p-4 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 text-base focus:ring-blue-500 focus:border-blue-500" readonly>
+
+                    <!-- Assignment Reference URL -->
+                    <label for="large-input" class="block mb-2 text-sm font-medium text-white">Reference Link</label>
+                   <input v-model="ref_url" type="text" id="large-input" class="block w-full p-4 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 text-base focus:ring-blue-500 focus:border-blue-500" readonly>
+                    </div>
+
+                    <div class="mb-5 bg-slate-300 rounded-md p-8" className="instructionContainer">
+                    <!-- Instruction View page -->
+                    <div>
+                        <div v-for="[key] in steps" :key="key">
+                          <div class="p-4 bg-gray-100 rounded-lg shadow-md flex items-center justify-between mb-2">
+                            <div class="flex items-center">
+                              <span class="bg-gray-200 text-gray-700 text-xs font-medium px-2 py-1 rounded-full mr-2">{{ key }}</span>
+                              <span class="text-lg font-medium text-purple-700">{{ getStepFunctionDetails(key) }}</span>
+                            </div>
+                          </div>
+                        </div>
+                    </div>
+                  </div>
                 </div>
+
                 <div v-else>
                     <button v-on:click="getMobileAppURL()"> Re-fetch the URL</button>
-                    using this ID to assign the URL to the assignment: 
+                    <p>using this ID to assign the URL to the assignment: </p>
                     <div class="w-full max-w-[26rem]">
                       <div class="relative">
                         <label for="npm-install-copy-text" class="sr-only">Label</label>
                         <input v-model="assignment_id" id="npm-install-copy-text" type="text" class="col-span-6 bg-gray-50 border border-gray-300 text-gray-500 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full px-2.5 py-4 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500" disabled readonly>
                         <button data-copy-to-clipboard-target="npm-install-copy-text" class="absolute end-2.5 top-1/2 -translate-y-1/2 text-gray-900 dark:text-gray-400 hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-600 dark:hover:bg-gray-700 rounded-lg py-2 px-2.5 inline-flex items-center justify-center bg-white border-gray-200 border">
-                        <span id="default-message" class="inline-flex items-center">
-                          <svg class="w-3 h-3 me-1.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 18 20">
-                            <path d="M16 1h-3.278A1.992 1.992 0 0 0 11 0H7a1.993 1.993 0 0 0-1.722 1H2a2 2 0 0 0-2 2v15a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V3a2 2 0 0 0-2-2Zm-3 14H5a1 1 0 0 1 0-2h8a1 1 0 0 1 0 2Zm0-4H5a1 1 0 0 1 0-2h8a1 1 0 1 1 0 2Zm0-5H5a1 1 0 0 1 0-2h2V2h4v2h2a1 1 0 1 1 0 2Z"/>
+                          <span id="default-message" class="inline-flex items-center">
+                            <svg class="w-3 h-3 me-1.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 18 20">
+                              <path d="M16 1h-3.278A1.992 1.992 0 0 0 11 0H7a1.993 1.993 0 0 0-1.722 1H2a2 2 0 0 0-2 2v15a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V3a2 2 0 0 0-2-2Zm-3 14H5a1 1 0 0 1 0-2h8a1 1 0 0 1 0 2Zm0-4H5a1 1 0 0 1 0-2h8a1 1 0 1 1 0 2Zm0-5H5a1 1 0 0 1 0-2h2V2h4v2h2a1 1 0 1 1 0 2Z"/>
+                            </svg>
+                            <span class="text-xs font-semibold">Copy</span>
+                        </span>
+                        <span id="success-message" class="hidden inline-flex items-center">
+                          <svg class="w-3 h-3 text-blue-700 dark:text-blue-500 me-1.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 16 12">
+                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 5.917 5.724 10.5 15 1.5"/>
                           </svg>
-                        <span class="text-xs font-semibold">Copy</span>
-                    </span>
-                  <span id="success-message" class="hidden inline-flex items-center">
-                    <svg class="w-3 h-3 text-blue-700 dark:text-blue-500 me-1.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 16 12">
-                      <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 5.917 5.724 10.5 15 1.5"/>
-                    </svg>
-                    <span class="text-xs font-semibold text-blue-700 dark:text-blue-500">Copied</span>   
-                  </span>
-                </button>
+                          <span class="text-xs font-semibold text-blue-700 dark:text-blue-500">Copied</span>   
+                        </span>
+                      </button>
+                    </div>
+                </div>
               </div>
-            </div>
-               </div>
-            </div>
-        </div>
+          </div>
     </div>
-
-  </template>
+</template>
 
 <script>
 import ImageMap from 'image-map';
@@ -373,6 +407,19 @@ export default {
         // delete existing steps
         deleteInstruction(key) {
             this.steps.delete(key);
+            
+            // reassign the order of all instructions.
+            this.reassignKeys();
+            this.toast.info('Instruction deleted.');
+        },
+        reassignKeys() {
+            const newSteps = new Map();
+            let index = 1;
+            this.steps.forEach((value) => {
+                newSteps.set(index, value);
+                index++;
+            });
+            this.steps = newSteps;
         },
         moveInstructionUp(key) {
             // the indicated key won't be the first and not the only one
@@ -453,7 +500,7 @@ export default {
             if (step) {
                 console.log(`Details of step ${index}:`);
                 for (let [key, value] of step.entries()) {
-                    stepInfo += `-${value}`;
+                    stepInfo += `| ${value} `;
                     console.log(`${key}: ${value}`);
                 }
 

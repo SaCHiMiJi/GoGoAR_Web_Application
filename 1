@@ -16,73 +16,9 @@
             </div>
 
             <!-- Form container on 2nd column -->
-            <div>
+            <div >
                 <!-- Assignment name -->
-                <div class="bg-[#322653] rounded-md p-8">
-                    <div v-if="formCreating" class="flex justify-end">
-                       {{ displayInstructionOrder() }}
-                    </div>
-
-                    <label for="large-input" class="block mb-2 text-sm font-medium text-white">Assignment Name</label>
-                    <input v-model="assignmentName" type="text" id="large-input" class="block w-full p-4 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 text-base focus:ring-blue-500 focus:border-blue-500" readonly>
-                    <!-- Description -->
-                    <label for="large-input" class="block mb-2 text-sm font-medium text-white">Description</label>
-                    <input v-model="description" type="text" id="large-input" class="block w-full p-4 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 text-base focus:ring-blue-500 focus:border-blue-500" readonly>
-
-                    <!-- Assignment Reference URL -->
-                    <label for="large-input" class="block mb-2 text-sm font-medium text-white">Reference Link</label>
-                   <input v-model="ref_url" type="text" id="large-input" class="block w-full p-4 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 text-base focus:ring-blue-500 focus:border-blue-500" readonly>
-                    </div>
-
-                    <div class="mb-5 bg-slate-300 rounded-md p-8" className="instructionContainer">
-                    <!-- Instruction View page -->
-                    <div>
-                        <div v-for="[key] in steps" :key="key">
-                          <div class="p-4 bg-gray-100 rounded-lg shadow-md flex items-center justify-between mb-2">
-                            <div class="flex items-center">
-                              <span class="bg-gray-200 text-gray-700 text-xs font-medium px-2 py-1 rounded-full mr-2">{{ key }}</span>
-                              <span class="text-lg font-medium text-purple-700">{{ getStepFunctionDetails(key) }}</span>
-                          </div>
-                            
-                          </div>
-                    </div>
-                  </div>
-                </div>
-            </div>
-        </div>
-        <!-- preview assignment's mobile url -->
-        <div class="gap-8 items-center py-8 px-4 mx-auto max-w-screen-xl xl:gap-16 md:grid md:grid-cols-2 sm:py-16 lg:px-6" v-else>
-        <!-- 1st column -->
-          <div class="">
-            <div v-if="mobileAppURL !== '' && mobileAppURL !== false" class=" text-center">
-              <img src="/tick-circle.svg" class="mx-auto mb-4"/>
-              <p>The assignment's presence, You can try the assignment on the button.</p>
-
-              <div class="pb-6">
-                Preview this Assignment.
-              </div>
-              <button class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 focus:outline-none">
-                <a v-bind:href="mobileAppURL">Here</a>
-              </button>
-            </div>
-            <div v-else class="text-center">
-              <img class="mx-auto mb-4" src="/error.jpg"/>
-              <div>This assignment doesn't have an app's URL yet, Please wait for the author to add this app later.</div>
-             </div>
-              <!-- view the assignment's detail -->
-            <div class="fixed bottom-0 left-0">
-              <button 
-                class="mb-5 p-8 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 focus:outline-none" v-on:click="detailView = !detailView">
-                Assignment Detail
-              </button>
-            </div>
-          </div>
-          <!-- 2nd column -->
-          <div>
-            <!-- if assignment URL is present -->
-            <div v-if="mobileAppURL !== '' && mobileAppURL !== false">
-                  <!-- Assignment name -->
-                  <div class="bg-slate-300 rounded-md p-8">
+                <div class="bg-slate-300 rounded-md p-8">
                     <div v-if="formCreating" class="flex justify-end">
                        {{ displayInstructionOrder() }}
                     </div>
@@ -112,7 +48,38 @@
                     </div>
                   </div>
                 </div>
-
+            </div>
+        </div>
+        <!-- preview assignment's mobile url -->
+        <div class="gap-8 items-center py-8 px-4 mx-auto max-w-screen-xl xl:gap-16 md:grid md:grid-cols-2 sm:py-16 lg:px-6" v-else>
+        <!-- 1st column -->
+          <div class="">
+            <div v-if="mobileAppURL !== '' && mobileAppURL !== false" class=" text-center">
+              <img src="/tick-circle.svg" class="mx-auto mb-4"/>
+              <p>The assignment's presence, You can try the assignment on the button.</p>
+            </div>
+            <div v-else class="text-center">
+              <img class="mx-auto mb-4" src="/error.jpg"/>
+              <div>This assignment doesn't have an app's URL yet, Please wait for the author to add this app later.</div>
+             </div>
+              <!-- view the assignment's detail -->
+            <div class="fixed bottom-0 left-0">
+              <button 
+                class="mb-5 p-8 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 focus:outline-none" v-on:click="detailView = !detailView">
+                Assignment Detail
+              </button>
+            </div>
+          </div>
+          <!-- 2nd column -->
+          <div class="flex flex-col items-center min-w-[675px] w-full md:w-1/2 p-4">
+            <!-- if assignment URL is present -->
+            <div v-if="mobileAppURL !== '' && mobileAppURL !== false" class="text-center">
+                    <div class="pb-6">
+                      Preview this Assignment.
+                    </div>
+                    <button class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 focus:outline-none">
+                        <a v-bind:href="mobileAppURL">Here</a>
+                    </button>
             </div>
             <!-- if assignment URL is absent, let the user manually fetch the data -->
             <div v-else class="text-center">
@@ -193,7 +160,7 @@ export default {
             if (step) {
                 console.log(`Details of step ${index}:`);
                 for (let [key, value] of step.entries()) {
-                    stepInfo += `| ${value} `;
+                    stepInfo += `-${value}`;
                     console.log(`${key}: ${value}`);
                 }
                 return stepInfo;

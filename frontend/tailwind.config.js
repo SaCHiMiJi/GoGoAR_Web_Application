@@ -8,6 +8,8 @@ export default {
     extend: {},
   },
   plugins: [
-	require('flowbite/plugin')
+    require('tailwindcss'),
+    require('autoprefixer'),
+	  require('flowbite/plugin')
   ],
 }

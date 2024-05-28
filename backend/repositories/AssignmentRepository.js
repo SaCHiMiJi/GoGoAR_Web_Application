@@ -14,12 +14,12 @@ class AsssignmentRepository {
   create(object) {
     const newAssignment = {
         assignment_name: object.assignment_name,
-	description: object.description,
+	      description: object.description,
         creator_id: object.creator_id,
         ref_url: object.ref_url,
-	mobileapp_url: null,
-	created_date: object.created_date,
-	modified_date: null,
+      	mobileapp_url: null,
+      	created_date: object.created_date,
+      	modified_date: null,
         steps: object.steps
     };
 
@@ -39,9 +39,10 @@ class AsssignmentRepository {
     return this.model.findById(id);
   }
   
-  findUnityURL(id) {
-    return this.model.findById(id);
-  }
+  findByName(name) {
+    return this.model.find({
+      "assignment_name": name
+    });  }
   
   /**
    * @param {integer} id

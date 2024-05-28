@@ -1,8 +1,8 @@
 const express = require('express');
 
 const app = express.Router();
-const assignment_repository = require('../respositories/AssignmentRepository.js');
-const creator_repository = require('../respositories/CreatorRepository.js');
+const assignment_repository = require('../repositories/AssignmentRepository.js');
+const creator_repository = require('../repositories/CreatorRepository.js');
 
 // securities for authentication route.
 const jwt = require('jsonwebtoken');
@@ -18,12 +18,16 @@ app.get('/getall', (req, res) => {
 
 
 // create the new assignment.
-app.post('/create', (req, res) => {
-  console.log(req.body);
+app.post('/create', async (req, res) => {
   // Destructure properties from req.body directly
   let { assignment_name, description, creator_id, ref_url, steps } = req.body; 
   const createdDate = new Date();
   
+  const nameValidation = await assignment_repository.findByName(assignment_name);
+  console.log(nameValidation.length);
+  if(nameValidation.length > 0) {
+    return res.status(200).json({"message": "the name is already used."})
+  }
   
   // the steps value would be string if it received from frontend, but JSON from body.
   if(typeof steps === "string") {
@@ -42,12 +46,26 @@ app.post('/create', (req, res) => {
   
   // Call repository.create() to save the todo item
   assignment_repository.create(assignment)
-  .then((createassignment) => {
-	  const id = createassignment._id;
-	  console.log("new assignment id is the: " + id); // Log the created assignment
-	  res.send(id);
-  })
-  .catch((error) => console.log(error)); // Log any errors that occur
+    .then((createassignment) => {
+	    const id = createassignment._id;
+	    console.log("new assignment id is the: " + id); // Log the created assignment.
+      // update the mobile app url
+      assignment_repository.updateURL(id, "unitydl://mylink?" + id)
+        .then(updatedDocument => {
+          if (!updatedDocument) {
+            // If no assignment was updated, send a 404 response
+            return res.status(404).json({ message: 'No assignment found with the given ID' });
+          }
+          // Send back the updated assignment
+          res.send(id);
+        })
+        .catch((error) => {
+          // Log the error and send a 500 response
+          console.error(error);
+          res.status(500).json({ message: 'Error updating assignment', error: error.toString() });
+        });
+  	})
+    .catch((error) => console.log(error)); // Log any errors that occur
 });
 
 
@@ -57,7 +75,7 @@ app.delete('/delete/:id', (req, res) => {
   const { id } = req.params;
   assignment_repository.deleteById(id).then(() => {
     console.log(`Deleted record with id: ${id}`);
-    res.status(200).json([]);
+    res.status(200).send("Delete Complete");
   }).catch((error) => console.log(error));
 });
 
@@ -247,6 +265,7 @@ app.post('/login', async (req, res) => {
     res.status(200).json({ 
       _id: user._id,
       creator_username: user.creator_username,
+      creator_email: user.creator_email,
       token: token 
     });
 });
@@ -258,7 +277,7 @@ app.get('/getredirectionurl/:id', (req, res) => {
     const url = dburl.mobileapp_url;
     if(url) {
       console.log(`send the URL: ${ url }`);
-      res.send("http://localhost:3030/appredirection?url=" + url);
+      res.send("http://127.0.0.1:3030/appredirection?url=" + url);
     } else {
       res.send(false)
     }

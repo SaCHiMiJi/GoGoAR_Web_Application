@@ -3,9 +3,11 @@ import axios from 'axios';
 import App from './App.vue';
 import router from './router';
 import mitt from 'mitt';
+
 import './index.css';
 import Toast, { POSITION } from "vue-toastification";
 import "vue-toastification/dist/index.css";
+import '../node_modules/flowbite-vue/dist/index.css'
 
 const http = axios.create({
 	baseURL: import.meta.env.BACKEND_URL || 'http://127.0.0.1:3000/assignment',

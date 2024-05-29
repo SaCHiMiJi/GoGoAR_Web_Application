@@ -43,12 +43,12 @@
             <!-- User Dropdown -->
             <div class="relative">
               <button 
-                @click="toggleDropdown" type="button" class="border-2 border-white text-white bg-[#322653] hover:bg-white hover:text-black focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mb-2 focus:outline-none" id="user-menu-button" aria-expanded="false">
+                @click="toggleDropdown" ref="button" type="button" class="border-2 border-white text-white bg-[#322653] hover:bg-white hover:text-black focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mb-2 focus:outline-none" id="user-menu-button" aria-expanded="false">
                   <span class="sr-only">Open user menu</span>
                   {{ userInfo.creator_email }}
               </button>
               <!-- Dropdown menu -->
-              <div :class="{'hidden': !isDropdownOpen, 'block': isDropdownOpen}" class="absolute right-0 z-50 my-4 text-base list-none bg-white divide-y divide-gray-100 rounded-lg shadow" id="user-dropdown">
+              <div :class="{'hidden': !isDropdownOpen, 'block': isDropdownOpen}" ref="dropdown" class="absolute right-0 z-50 my-4 text-base list-none bg-white divide-y divide-gray-100 rounded-lg shadow" id="user-dropdown">
                 <div class="px-4 py-3">
                   <span class="block text-sm text-gray-900">{{ userInfo.creator_username }}</span>
                   <span class="block text-sm text-gray-500 truncate">{{ userInfo.creator_email }}</span>
@@ -65,9 +65,9 @@
       </div>
 
       <!-- Sign out Modal -->
-      <div v-if="isModalOpen" class="fixed inset-0 z-50 flex items-center justify-center overflow-y-auto overflow-x-hidden">
-        <div class="relative p-4 w-full max-w-md max-h-full">
-          <div class="relative bg-white rounded-lg shadow">
+      <div v-if="isModalOpen" class="fixed inset-0 z-50 flex items-center justify-center overflow-y-auto overflow-x-hidden w-full bg-black/50">
+        <div class="relative p-4 w-screen max-w-md max-h-full">
+          <div class="relative bg-white rounded-lg shadow-2xl">
             <button @click="closeModal" type="button" class="absolute top-3 right-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white">
               <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
                 <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
@@ -129,6 +129,7 @@ export default {
       this.isModalOpen = false;
     },
     signOut() {
+      this.$router.replace({ path:"/" });
       this.closeModal();
       localStorage.removeItem('userInfo');
       this.userInfo = null;
@@ -137,6 +138,21 @@ export default {
       const storedUserInfo = localStorage.getItem('userInfo');
       this.userInfo = storedUserInfo ? JSON.parse(storedUserInfo) : null;
     },
+    handleClickOutside(event) {
+      const dropdown = this.$refs.dropdown;
+      const button = this.$refs.button;
+      if(dropdown && button) {
+        if (!dropdown.contains(event.target) && !button.contains(event.target)) {
+          this.isDropdownOpen = false;
+        }
+      }
+    }
   },
+  mounted() {
+    document.addEventListener('click', this.handleClickOutside);
+  },
+  beforeDestroy() {
+    document.removeEventListener('click', this.handleClickOutside);
+  }
 };
 </script>

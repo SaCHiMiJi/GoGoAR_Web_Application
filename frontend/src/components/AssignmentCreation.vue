@@ -1,18 +1,70 @@
-  <template>
+<template>
   <div class="align-self-center;"> 
-        <div class="columns-lg" v-if="!isAssignmentSubmit">
+        <!-- Save Assignment Modal -->
+        <div v-if="saveConfirmationModal" class="fixed inset-0 z-50 flex items-center justify-center overflow-y-auto overflow-x-hidden w-full bg-black/50">
+          <div class="relative p-4 w-full max-w-md max-h-full">
+            <div class="relative bg-white rounded-lg shadow">
+              <button v-on:click="saveConfirmationModal = false" type="button" class="absolute top-3 right-2.5 text-gray-400hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 inline-flex justify-center items-center">
+                <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
+                  <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
+                </svg>
+                <span class="sr-only">Close modal</span>
+              </button>
+              <div class="p-4 md:p-5 text-center">
+                <h3 class="my-5 text-lg font-normal text-gray-500">
+                  Are you sure you want to proceed? Please confirm that all details and instructions are complete and accurate before submitting.
+                </h3>
+                <button v-on:click="submitAssignment" type="button" class="text-white bg-[#50C878] hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-red-300font-medium rounded-lg text-sm inline-flex items-center px-5 py-2.5 text-center">
+                  Yes
+                </button>
+                <button v-on:click="saveConfirmationModal = false" type="button" class="py-2.5 px-5 ml-3 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100">
+                  No
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Delete Instruction Modal -->
+        <div v-if="focusDeleteInstruction > 0" class="fixed inset-0 z-50 flex items-center justify-center overflow-y-auto overflow-x-hidden w-full bg-black/50">
+          <div class="relative p-4 w-full max-w-md max-h-full">
+            <div class="relative bg-white rounded-lg shadow">
+              <button v-on:click="focusDeleteInstruction = 0" type="button" class="absolute top-3 right-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 inline-flex justify-center items-center">
+                <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
+                  <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
+                </svg>
+                <span class="sr-only">Close modal</span>
+              </button>
+              <div class="p-4 md:p-5 text-center">
+                <svg class="mx-auto mb-4 text-gray-400 w-12 h-12" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+                  <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 11V6m0 8h.01M19 10a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"/>
+                </svg>
+                <h3 class="mb-5 text-lg font-normal text-gray-500">Are you sure you want to delete this instruction?</h3>
+                <button v-on:click="deleteInstruction(focusDeleteInstruction)" type="button" class="text-white bg-red-600 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300font-medium rounded-lg text-sm inline-flex items-center px-5 py-2.5 text-center">
+                  Yes
+                </button>
+                <button v-on:click="focusDeleteInstruction = 0" type="button" class="py-2.5 px-5 ml-3 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100">
+                  No
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+       
+        <!-- Assignments -->
+        <div class="gap-8 items-center py-8 px-4 max-w-screen-2xl xl:gap-16 md:grid md:grid-cols-2 lg:px-6 max-h-screen-xl" v-if="!isAssignmentSubmit">
             <!-- Image container on 1st column -->
-            <div class="flex-grow flex items-center justify-center">
+            <div class="flex-grow flex items-center justify-center self-start">
               <div class="relative">
                 <img class="object-none self-center" src="/gogoboard.png" usemap="#image_map"/>
                 <map name="image_map">
                     <area v-for="(area, index) in areas" :key="index" :alt="area.alt" :title="area.title" :coords="area.coords" :shape="area.shape" @click="handleAreaClick(index)" :class="{ 'selected-area': areaClicked === index }"/>
                 </map>
 
-                <div class="fixed bottom-0 left-0">
+                <div class="fixed bottom-0 left-0" v-if="!formCreating">
                     <button 
-                        class="mb-5 p-8 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 focus:outline-none" 
-                        v-on:click="submitAssignment">
+                        class="mb-5 p-8 text-white bg-[#50C878] hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 focus:outline-none" 
+                        v-on:click="saveConfirmationModal = true">
                         Save Assignment
                     </button>
                 </div>
@@ -20,46 +72,46 @@
             </div>
 
             <!-- Form container on 2nd column -->
-            <div class="pr-24 max-h-100vh form-container flex flex-col justify-center overflow-auto">
+            <div class="items-start">
                 <!-- Assignment Detail -->
-                <div class="bg-[#322653] rounded-md p-8 mt-8">
+                <div class="bg-[#322653] rounded-md p-8">
                     <div v-if="formCreating" class="flex justify-end text-white">
                        {{ displayInstructionOrder() }}
                     </div>
 
-                    <label for="large-input" class="block mb-2 text-sm font-medium text-white">Assignment Name</label>
-                    <input v-model="assignmentName" type="text" id="large-input" class="block w-full p-4 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 text-base focus:ring-blue-500 focus:border-blue-500">
+                    <label for="default-input" class="block mb-2 text-sm font-medium text-white">Assignment Name</label>
+                    <input v-model="assignmentName" type="text" id="default-input" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 mb-2">
                     <!-- Description -->
                     <label for="large-input" class="block mb-2 text-sm font-medium text-white">Description</label>
-                    <input v-model="description" type="text" id="large-input" class="block w-full p-4 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 text-base focus:ring-blue-500 focus:border-blue-500">
+                    <textarea maxlength="75" v-model="description" id="message" rows="1" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 mb-2"></textarea>
 
                     <!-- Assignment Reference URL -->
-                    <label for="large-input" class="block mb-2 text-sm font-medium text-white">Reference Link</label>
-                   <input v-model="ref_url" type="text" id="large-input" class="block w-full p-4 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 text-base focus:ring-blue-500 focus:border-blue-500">
+                    <label for="default-input" class="block mb-2 text-sm font-medium text-white">Reference Link</label>
+                    <input v-model="ref_url" type="text" id="default-input" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
                 </div>
 
                 <!-- Assignment form -->
-                <div class="mb-5 bg-[#EDE7F0] rounded-md p-8" className="instructionContainer">
+                <div class="mb-5 bg-[#EDE7F0] rounded-md p-8">
                     <!-- Add form button -->
-                    <div className="addInstructionButton" v-if="!formCreating">
+                    <div v-if="!formCreating">
                         <div v-for="[key] in steps" :key="key">
-                          <div class="p-4 bg-gray-100 rounded-lg shadow-md flex items-center justify-between mb-2">
-                            <div class="flex items-center">
+                          <div class="p-4 rounded-lg bg-gray-100 shadow-md flex items-center justify-between mb-2">
+                            <div class="flex items-center flex-grow">
                               <span class="bg-gray-200 text-gray-700 text-xs font-medium px-2 py-1 rounded-full mr-2">{{ key }}</span>
                               <span class="text-lg font-medium text-purple-700">{{ getStepFunctionDetails(key) }}</span>
-                          </div>
-                            <div class="flex items-center space-x-2">
+                            </div>
+                            <div class="flex items-center space-x-2 flex-shrink-0">
                               <button class="text-gray-700 hover:text-gray-900" v-on:click="openInstructionForm(key)">
-                                <img class="w-5 h-5 md-5 pd-5" src="/edit_image.svg" />
+                                <img class="w-5 h-5" src="/edit_image.svg" />
                               </button>
-                              <button class="text-gray-700 hover:text-gray-900" v-on:click="deleteInstruction(key)">
-                                <img class="w-5 h-5 md-5 pd-5" src="/delete_image.svg" />
+                              <button @click="focusDeleteInstruction = key;" class="text-gray-700 hover:text-gray-900">
+                                <img class="w-5 h-5" src="/delete_image.svg" />
                               </button>
-                              <div class="flex flex-col space-y-5 md-5 pd-5 " >
+                              <div class="flex flex-col space-y-1 flex-shrink-0">
                                 <button class="text-gray-700 hover:text-gray-900" v-on:click="moveInstructionUp(key)">
                                   <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 15l7-7 7 7"></path>
-                                </svg>
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 15l7-7 7 7"></path>
+                                  </svg>
                                 </button>
                                 <button class="text-gray-700 hover:text-gray-900" v-on:click="moveInstructionDown(key)">
                                   <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
@@ -75,18 +127,17 @@
                         <div class="grid content-center place-items-center bg-[#EDE7F0]">
 
                             <button 
-                                class="my-5 px-10 w-10/12 text-black bg-white hover:bg-white focus:ring-4 focus:ring-slate-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2" 
+                                class="my-5 px-10 w-full text-black bg-gray-100 shadow-md hover:bg-white focus:ring-4 focus:ring-slate-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2" 
                                 v-on:click="openInstructionForm(0)">
                                 +
                             </button>
                         </div>
                     </div>
+
                     <!-- Instruction forms -->
-                    <div className="instructionForm" class="block bg-[#EDE7F0] p-16" v-else>
-                        <div>
-                            <div>
-                                Function
-                            </div>
+                    <div class="block bg-[#EDE7F0] px-16" v-else>
+                        <div class="pb-4">
+                            <div>Function</div>
                             <select v-model="assignmentFunction">
                                 <option selected disabled>Please choose...</option>
                                 <option value="highlight">highlight</option>
@@ -96,7 +147,7 @@
                         </div>
                     
                         <!-- Component -->
-                        <div v-if="assignmentFunction !== 'context' && assignmentFunction !== null">
+                        <div v-if="assignmentFunction !== 'context' && assignmentFunction !== null" class="pb-4">
                             <div for="base-input" class="text-sm font-medium text-gray-900">
                                 Gogoboard's port
                             </div>
@@ -129,16 +180,16 @@
                         </div>
                         
                         <!-- Description -->
-                        <div v-if="assignmentFunction !== 'connect' && assignmentFunction !== null">
+                        <div v-if="assignmentFunction !== 'connect' && assignmentFunction !== null" class="pb-4">
                             <div for="small-input" class="text-sm font-medium text-gray-900">
                                 Context
                             </div>
-                            <input v-model="assignmentContext" type="textarea" id="small-input" 
-                            class="block w-full p-2 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 text-xs focus:ring-blue-500 focus:border-blue-500">
+                            <textarea maxlength="75"v-model="assignmentContext" id="textarea" 
+                            rows="2" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 mb-2"></textarea>
                         </div>
 
                         <!-- External Component -->
-                        <div v-if="assignmentFunction === 'connect' && assignmentFunction !== null">
+                        <div v-if="assignmentFunction === 'connect' && assignmentFunction !== null" class="pb-4">
                             <div>
                                 External Component
                             </div>
@@ -160,9 +211,9 @@
                         
                         <!-- Buttons -->
                         <div class="flex justify-center">
-                            <button @click="closeInstruction" class="items-center text-white bg-[#D65F5F] hover:bg-white-800 focus:ring-4 focus:ring-white-300 font-medium rounded-lg text-sm px-5 py-2.5 m-6 p-8">Cancel</button>
+                            <button @click="cancelInstruction" class="items-center text-white bg-[#D65F5F] hover:bg-white-800 focus:ring-4 focus:ring-white-300 font-medium rounded-lg text-sm px-5 py-2.5 m-6 p-8">Cancel</button>
                             <button 
-                                class="items-center text-white bg-[#50C878] hover:bg-white-800 focus:ring-4 focus:ring-white-300 font-medium rounded-lg text-sm px-5 py-2.5 m-6 p-8" @click="saveInstructionForm" :disabled="!isFormValid">Save</button>
+                                class="items-center text-white bg-[#50C878] hover:bg-white-800 focus:ring-4 focus:ring-white-300 font-medium rounded-lg text-sm px-5 py-2.5 m-6 p-8" @click="saveInstructionForm">Save</button>
                         </div>
                     </div>
                 </div>
@@ -171,24 +222,30 @@
         <!-- Post form submission -->
         <div class="gap-8 items-center py-8 px-4 mx-auto max-w-screen-xl xl:gap-16 md:grid md:grid-cols-2 sm:py-16 lg:px-6" v-else>
             <!-- 1st column -->
-                <div class="object-none self-center w-325 h-325 text-center text-sm" v-if="mobileAppURL !== '' && mobileAppURL !== false ">
+                <div class="object-none self-start w-325 h-325 text-center text-sm" v-if="mobileAppURL !== '' && mobileAppURL !== false ">
                     <img src="/tick-circle.svg" class="mx-auto mb-4"/>
-                    <p>The assignment is now presence mobile app's URL.
-                        You can try the assignment on the right.
+                    <p>
+                      The assignment is now presence mobile app's URL.
+                      You can try the assignment on the right.
                     </p>
-                    <div class="flex justify-center text-center text-lg">
-                      <div>
-                        <div class="py-6">
-                          Preview your Assignment.
-                        </div>
-                        <button class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 focus:outline-none">
-                          <a v-bind:href="mobileAppURL">Here</a>
+                    <div class="text-lg">
+                      <div class="py-6">
+                        Preview your Assignment.
+                      </div>
+                      <div class="relative">
+                        <input v-model="mobileAppURL" class="col-span-6 bg-gray-50 border border-gray-300 text-gray-500 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" disabled readonly>
+                        <button v-on:click="copyLink()" class="absolute end-2 top-1/2 -translate-y-1/2 text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg p-2 inline-flex items-center justify-center">
+                          <span id="default-icon">
+                            <svg class="w-3.5 h-3.5" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 18 20">
+                              <path d="M16 1h-3.278A1.992 1.992 0 0 0 11 0H7a1.993 1.993 0 0 0-1.722 1H2a2 2 0 0 0-2 2v15a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V3a2 2 0 0 0-2-2Zm-3 14H5a1 1 0 0 1 0-2h8a1 1 0 0 1 0 2Zm0-4H5a1 1 0 0 1 0-2h8a1 1 0 1 1 0 2Zm0-5H5a1 1 0 0 1 0-2h2V2h4v2h2a1 1 0 1 1 0 2Z"/>
+                            </svg>
+                          </span>
                         </button>
                       </div>
                     </div>
                 </div>
                 <div class="object-none self-center w-325 h-325 text-center text-sm" v-else>
-                    <img  src="/error.jpg"/>
+                    <img src="/error.jpg" class="mx-auto mb-4"/>
                     <p> 
                         This assignment is yet to have mobile app's URL.
                         Please create url via mobile application and try to refetch again.
@@ -214,20 +271,20 @@
                    <input v-model="ref_url" type="text" id="large-input" class="block w-full p-4 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 text-base focus:ring-blue-500 focus:border-blue-500" readonly>
                     </div>
 
-                    <div class="mb-5 bg-slate-300 rounded-md p-8" className="instructionContainer">
-                    <!-- Instruction View page -->
-                    <div>
+                    <div class="mb-5 bg-slate-300 rounded-md p-8">
+                      <!-- Instruction View page -->
+                      <div>
                         <div v-for="[key] in steps" :key="key">
                           <div class="p-4 bg-gray-100 rounded-lg shadow-md flex items-center justify-between mb-2">
                             <div class="flex items-center">
-                              <span class="bg-gray-200 text-gray-700 text-xs font-medium px-2 py-1 rounded-full mr-2">{{ key }}</span>
+                              <span class="text-gray-700 text-xs font-medium px-2 py-1 rounded-full mr-2">{{ key }}</span>
                               <span class="text-lg font-medium text-purple-700">{{ getStepFunctionDetails(key) }}</span>
                             </div>
                           </div>
                         </div>
+                      </div>
                     </div>
                   </div>
-                </div>
 
                 <div v-else>
                     <button v-on:click="getMobileAppURL()"> Re-fetch the URL</button>
@@ -235,8 +292,8 @@
                     <div class="w-full max-w-[26rem]">
                       <div class="relative">
                         <label for="npm-install-copy-text" class="sr-only">Label</label>
-                        <input v-model="assignment_id" id="npm-install-copy-text" type="text" class="col-span-6 bg-gray-50 border border-gray-300 text-gray-500 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full px-2.5 py-4 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500" disabled readonly>
-                        <button data-copy-to-clipboard-target="npm-install-copy-text" class="absolute end-2.5 top-1/2 -translate-y-1/2 text-gray-900 dark:text-gray-400 hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-600 dark:hover:bg-gray-700 rounded-lg py-2 px-2.5 inline-flex items-center justify-center bg-white border-gray-200 border">
+                        <input v-model="assignment_id" id="npm-install-copy-text" type="text" class="col-span-6 bg-gray-50 border border-gray-300 text-gray-500 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full px-2.5 py-4" disabled readonly>
+                        <button data-copy-to-clipboard-target="npm-install-copy-text" class="absolute end-2.5 top-1/2 -translate-y-1/2 text-gray-900 hover:bg-gray-100 rounded-lg py-2 px-2.5 inline-flex items-center justify-center bg-white border-gray-200 border">
                           <span id="default-message" class="inline-flex items-center">
                             <svg class="w-3 h-3 me-1.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 18 20">
                               <path d="M16 1h-3.278A1.992 1.992 0 0 0 11 0H7a1.993 1.993 0 0 0-1.722 1H2a2 2 0 0 0-2 2v15a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V3a2 2 0 0 0-2-2Zm-3 14H5a1 1 0 0 1 0-2h8a1 1 0 0 1 0 2Zm0-4H5a1 1 0 0 1 0-2h8a1 1 0 1 1 0 2Zm0-5H5a1 1 0 0 1 0-2h2V2h4v2h2a1 1 0 1 1 0 2Z"/>
@@ -244,10 +301,10 @@
                             <span class="text-xs font-semibold">Copy</span>
                         </span>
                         <span id="success-message" class="hidden inline-flex items-center">
-                          <svg class="w-3 h-3 text-blue-700 dark:text-blue-500 me-1.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 16 12">
+                          <svg class="w-3 h-3 text-blue-700 me-1.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 16 12">
                             <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 5.917 5.724 10.5 15 1.5"/>
                           </svg>
-                          <span class="text-xs font-semibold text-blue-700 dark:text-blue-500">Copied</span>   
+                          <span class="text-xs font-semibold text-blue-700">Copied</span>   
                         </span>
                       </button>
                     </div>
@@ -261,6 +318,7 @@
 import ImageMap from 'image-map';
 import qs from 'qs';
 import { useToast } from "vue-toastification";
+import copy from 'copy-to-clipboard';
 
 export default {
     data() {
@@ -285,6 +343,9 @@ export default {
             assignmentPort: null,
             assignmentContext: null,
             assignmentExternalComponent: null,
+            focusDeleteInstruction: null,
+            saveConfirmationModal: false,
+            finishDownload: false,
 
             // this value will ensure how many instruction have existed.
             currentIndex: 0,
@@ -293,15 +354,28 @@ export default {
             assignmentName: "",
             description: "",
             ref_url: "",
-            creator_id: "guestuser0000",
+            creator_id: "",
             steps: new Map(),
             isExist: false,
 
             isAssignmentSubmit: false,
             mobileAppURL: ""
-        };
+
+       };
     },
     methods: {
+        showModal() {
+          const modal = document.getElementById('popup-modal');
+          if (modal) {
+            modal.classList.remove('hidden');
+          }
+        },
+        hideModal() {
+          const modal = document.getElementById('popup-modal');
+          if (modal) {
+            modal.classList.add('hidden');
+          }
+        },
         // fetch assignment's detail
         getAssignmentDetail() {
             this.$http.get("/getassignment/" + this.assignment_id)
@@ -313,13 +387,13 @@ export default {
 		            this.ref_url = data.ref_url;
                 this.steps = this.objectToMap(data.steps);
 
-                console.log("fetched name as: " + this.assignmentName
-                    + ", fetch creator's mail as : " + this.creator_mail);
+                // console.log("fetched name as: " + this.assignmentName+ ", fetch creator's mail as : " + this.creator_mail);
 
-                // this.displayInstructions();
+                this.displayInstructions();
             })
             .catch(error => {
                 console.error('Error fetching data:', error);
+                useToast().error(error.response.data.error)
             });
         },
         // get subMap with Map's key as indicator on eaches.
@@ -351,9 +425,16 @@ export default {
                 this.assignmentContext = this.getSubValue(index, "context");
             }
         },
+        isFormValid() {
+            if(this.assignmentFunction === "highlight") {
+                return (this.assignmentPort !== null) && (this.assignmentContext !== null);
+            } else if (this.assignmentFunction === "connect") {
+                return (this.assignmentPort !== null) && (this.assignmentExternalComponent !== null);
+            } else if(this.assignmentFunction === "context") {
+                return this.assignmentContext !== null;
+            } 
+        },
         closeInstruction() {
-
-            useToast().info('instruction done.');
             // prevent unexpected error for next operation.
             this.formCreating = false;
             this.assignmentFunction = null;
@@ -362,8 +443,16 @@ export default {
             this.assignmentExternalComponent = null;
             this.currentIndex = 0;
         },
+        cancelInstruction() {
+            useToast().error("Instruction Cancelled.");
+            this.closeInstruction();
+        },
         saveInstructionForm() {
             var elementIndex = this.currentIndex;
+            
+            if(!this.isFormValid) {
+                return useToast().error("Please complete the detail propery.");
+            }
             
             // element is a zero, proceed to create the new instruction.
             if (elementIndex === 0) {
@@ -385,6 +474,7 @@ export default {
 
             // add map element
             this.steps.set(elementIndex, stepsInfo);
+            useToast().success("Instruction Created");
             // reset values in form.
             this.closeInstruction();
         },
@@ -409,8 +499,11 @@ export default {
             this.steps.delete(key);
             
             // reassign the order of all instructions.
-            this.reassignKeys();
-            this.toast.info('Instruction deleted.');
+            if(this.steps.size > 0) {
+              this.reassignKeys();
+            }
+            useToast().info('instruction deleted.');
+            this.focusDeleteInstruction = 0;
         },
         reassignKeys() {
             const newSteps = new Map();
@@ -449,6 +542,12 @@ export default {
           }
         },
         submitAssignment() {
+            // Close confirmation modal.
+            this.saveConfirmationModal = false;
+            
+            if(this.assignmentName === null || this.assignmentName === "" || this.getInstructionAmount === 0) {
+              return useToast().error("Please complete the Assignment ID or create the instruction atleast one.");
+            }
             // convert the "steps" map into nested object
             let stepsObject = {};
             this.steps.forEach((subMap, key) => {
@@ -467,7 +566,7 @@ export default {
                 "steps": JSON.stringify(stepsObject)
             };
 	    
-            console.log(data);
+            // console.log(data);
                 
             // Edit the assignment in database.
             if(this.isExist) {
@@ -477,7 +576,7 @@ export default {
                         this.getMobileAppURL();
                     })
                     .catch(error => {
-                        useToast().error(error);
+                        useToast().error(error.response.data.message);
                     });    
             } else {
 
@@ -488,63 +587,69 @@ export default {
                         this.getMobileAppURL();
                     })
                     .catch(error => {
-                        useToast().error(error);
+                        useToast().error(error.response.data.message);
                     });
             }
         },
         // Return them as text for overall displays.
         getStepFunctionDetails(index) {
-            // Convert the step number to a string if it's passed as a number
-            const step = this.steps.get(index);
-            let stepInfo = "";
-            if (step) {
-                console.log(`Details of step ${index}:`);
-                for (let [key, value] of step.entries()) {
-                    stepInfo += `| ${value} `;
-                    console.log(`${key}: ${value}`);
-                }
-
-                return stepInfo;
-            } else {
-                console.log(`Step ${index} not found.`);
+          // Convert the step number to a string if it's passed as a number
+          const step = this.steps.get(index);
+          let stepInfo = "";
+          console.log(typeof step + "\n" + step);
+          if (step) {
+            console.log(`Details of step ${index}:`);
+            for (let [key, value] of step.entries()) {
+              if (value instanceof Map) {
+                  for (let [subKey, subValue] of value.entries()) {
+                      stepInfo += `| ${subKey}: ${subValue} `;
+                      console.log(`${subKey}: ${subValue}`);
+                  }
+              } else {
+                  stepInfo += `| ${key}: ${value} `;
+                  console.log(`${key}: ${value}`);
+              }
             }
+            return stepInfo;
+          } else {
+            console.log(`Step ${index} not found.`);
+          }
         },
         objectToMap(obj) {
-            const result = new Map();
-            Object.keys(obj).forEach(key => {
-                const value = obj[key];
-                if (value && typeof value === 'object' && !Array.isArray(value) && value !== null) {
-                result.set(key, this.objectToMap(value)); // Recursively convert nested objects
-                } else {
-                result.set(key, value);
-                }
-            });
-            return result;
+          const result = new Map();
+          Object.keys(obj).forEach(key => {
+            const value = obj[key];
+            console.log(`Key: ${key}, Type of value: ${typeof value}, Value: ${JSON.stringify(value, null, 2)}`);
+        
+            if (value && typeof value === 'object' && !Array.isArray(value) && value !== null) {
+              result.set(key, this.objectToMap(value)); // Recursively convert nested objects
+            } else {
+              result.set(key, value);
+            }
+          });
+          return result;
         },
         getMobileAppURL() {
-            this.isAssignmentSubmit = true;
-            this.$http.get('/getredirectionurl/' + this.assignment_id)
-                .then((response) => {
-                    this.mobileAppURL = response.data;
-            		    console.log(this.mobileAppURL + " == " + response);
-                })
-                .catch((error) => {
-                    console.log(error); 
-                });
+          this.isAssignmentSubmit = true;
+          this.$http.get('/getredirectionurl/' + this.assignment_id)
+              .then((response) => {
+                  this.mobileAppURL = response.data;
+          		    console.log(this.mobileAppURL + " == " + response);
+              })
+              .catch((error) => {
+                  console.log(error); 
+              });
         },
         resizeImageMaps() {
-            ImageMap('img[usemap]');
+          ImageMap('img[usemap]');
         },
-    },
-    computed: {
-        isFormValid() {
-            if(this.assignmentFunction === "highlight") {
-                return (this.assignmentPort !== null) && (this.assignmentContext !== null);
-            } else if (this.assignmentFunction === "connect") {
-                return (this.assignmentPort !== null) && (this.assignmentExternalComponent !== null);
-            } else if(this.assignmentFunction === "context") {
-                return this.assignmentContext !== null;
-            } 
+        async copyLink() {
+          try {
+            await copy(this.mobileAppURL);
+            useToast().success("Copied");
+          } catch($e) {
+            useToast().error('Cannot copy: ' + $e);
+          }
         }
     },
     mounted() {

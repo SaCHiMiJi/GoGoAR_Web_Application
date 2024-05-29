@@ -68,21 +68,28 @@ class CreatorRepository {
           console.error("Error updating document:", error);
           throw error;
       });
-  }
-
-  //    SECURITY PURPOSE FUNCTIONS
-  tokenizeNewPassword() {
-    // operate with the registry account
-    return 1; // as placeholder
-  }
-
-  checkLogin(inputPassword) {
-    
   }*/
 	findByEmail(email) {
 		return this.model.findOne({ creator_email: email });
 	}
 
+  // change password to the new one, which validated by otp.
+  changePassword(email, password) {
+    const query = { creator_email: email };
+
+    return this.model.findOneAndUpdate(query,{
+      $set: {
+        creator_password: password
+      }
+    }, {
+      new: true, 
+      useFindAndModify: false
+    })
+    .catch(error => {
+          console.error("Error updating password:", error);
+          throw error;
+      });
+  }
 }
 
 module.exports = new CreatorRepository(Creator);

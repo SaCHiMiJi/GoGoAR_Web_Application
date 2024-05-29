@@ -3,6 +3,7 @@ const express = require('express');
 const app = express.Router();
 const assignment_repository = require('../repositories/AssignmentRepository.js');
 const creator_repository = require('../repositories/CreatorRepository.js');
+const otpController = require('../controllers/otpController');
 
 // securities for authentication route.
 const jwt = require('jsonwebtoken');
@@ -23,10 +24,11 @@ app.post('/create', async (req, res) => {
   let { assignment_name, description, creator_id, ref_url, steps } = req.body; 
   const createdDate = new Date();
   
+  // This prevent creator to use the same assignment name.
   const nameValidation = await assignment_repository.findByName(assignment_name);
   console.log(nameValidation.length);
   if(nameValidation.length > 0) {
-    return res.status(200).json({"message": "the name is already used."})
+    return res.status(400).json({"message": "the name is already used."})
   }
   
   // the steps value would be string if it received from frontend, but JSON from body.
@@ -80,12 +82,20 @@ app.delete('/delete/:id', (req, res) => {
 });
 
 // update a assignment item
-app.put('/modify/:id', (req, res) => {
+app.put('/modify/:id', async (req, res) => {
   const id = req.params.id; // Get the ID from the URL parameter
   let { assignment_name, description, creator_id, ref_url, steps } = req.body; // Extract other details from the body
   const newDate = new Date();
 
+  // This prevent creator to use the same assignment name.
+  const nameValidation = await assignment_repository.findByName(assignment_name);
+  console.log(nameValidation.length);
   
+  // there should be the one left if user kept using the old assignment name.
+  if(nameValidation.length > 1) {
+    return res.status(400).json({"message": "the name is already used."})
+  }
+
   // the steps value would be string if it received from frontend, but JSON from body.
   if(typeof steps === "string") {
   	steps = JSON.parse(steps);
@@ -211,6 +221,26 @@ app.post('/getassignmentgroup', async (req, res) => {
 }
 );
 
+app.get('/getredirectionurl/:id', (req, res) => {
+  const id = req.params.id;
+  assignment_repository.getMobileAppURL(id)
+  .then((dburl) => {
+    const url = dburl.mobileapp_url;
+    if(url) {
+      console.log(`send the URL: ${ url }`);
+      res.send("http://127.0.0.1:3030/appredirection?url=" + url);
+    } else {
+      res.send(false)
+    }
+  })
+  .catch((error) => {
+    // Log the error and send a 500 response
+    console.error(error);
+    res.status(500).send(error.toString());
+  });
+});	
+
+
 // Authentication
 // User registration
 app.post('/register', async (req, res) => {
@@ -270,23 +300,58 @@ app.post('/login', async (req, res) => {
     });
 });
 
-app.get('/getredirectionurl/:id', (req, res) => {
-  const id = req.params.id;
-  assignment_repository.getMobileAppURL(id)
-  .then((dburl) => {
-    const url = dburl.mobileapp_url;
-    if(url) {
-      console.log(`send the URL: ${ url }`);
-      res.send("http://127.0.0.1:3030/appredirection?url=" + url);
-    } else {
-      res.send(false)
+app.post('/send-otp', otpController.sendOTP);
+
+// Route to initiate password reset
+app.post('/forgotpassword', async (req, res) => {
+  try {
+    const { newPassword, otp } = req.body;
+    
+    // Check if all details are provided
+    if (!newPassword || !otp) {
+      return res.status(403).json({
+        message: 'All fields are required',
+      });
     }
-  })
-  .catch((error) => {
-    // Log the error and send a 500 response
-    console.error(error);
-    res.status(500).send(error.toString());
-  });
-});	
+    
+    // Check if user exists
+    const existingUser = await creator_repository.findByEmail(email);
+    if (!existingUser) {
+      return res.status(400).json({
+        message: 'User is not exists',
+      });
+    }
+    
+    // Find the most recent OTP for the email
+    const response = await OTP.find({ email }).sort({ createdAt: -1 }).limit(1);
+    if (response.length === 0 || otp !== response[0].otp) {
+      return res.status(400).json({
+        message: 'The OTP is not valid',
+      });
+    }
+    
+    // Hash password
+    let hashedPassword;
+    try {
+      hashedPassword = await bcrypt.hash(newPassword, 10);
+    } catch (error) {
+      return res.status(500).json({
+        message: `Hashing password error for ${password}: ` + error.message,
+      });
+    }
+    
+    // update the password of user. 
+    await creator_repository.changePassword();
+
+    return res.status(201).json({
+      message: 'User registered successfully',
+    });
+
+  } catch (error) {
+    console.log(error.message);
+    return res.status(500).json({ error: error.message });
+  }
+});
+
 
 module.exports = app;

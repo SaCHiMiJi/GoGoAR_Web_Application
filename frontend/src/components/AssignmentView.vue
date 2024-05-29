@@ -1,9 +1,9 @@
 <template>
   <div class="align-self-center;"> 
         <!-- view assignment's details and instructions -->
-        <div class="gap-8 items-center py-8 px-4 mx-auto max-w-screen-xl xl:gap-16 md:grid md:grid-cols-2 sm:py-16 lg:px-6" v-if="detailView">
+        <div class="gap-8 items- py-8 px-4 mx-auto max-w-screen-xl xl:gap-16 md:grid md:grid-cols-2 sm:py-16 lg:px-6" v-if="detailView">
             <!-- Image container on 1st column -->
-            <div class="">
+            <div>
                 <img class="object-none self-center" src="/gogoboard.png" usemap="#image_map"/>
                 <!-- view the assignment's url -->
                 <div class="fixed bottom-0 left-0">
@@ -16,7 +16,7 @@
             </div>
 
             <!-- Form container on 2nd column -->
-            <div>
+            <div class="items-start">
                 <!-- Assignment name -->
                 <div class="bg-[#322653] rounded-md p-8">
                     <div v-if="formCreating" class="flex justify-end">
@@ -34,9 +34,9 @@
                    <input v-model="ref_url" type="text" id="large-input" class="block w-full p-4 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 text-base focus:ring-blue-500 focus:border-blue-500" readonly>
                     </div>
 
-                    <div class="mb-5 bg-slate-300 rounded-md p-8" className="instructionContainer">
+                    <div class="mb-5 bg-[#EDE7F0] rounded-md p-8">
                     <!-- Instruction View page -->
-                    <div>
+                      <div>
                         <div v-for="[key] in steps" :key="key">
                           <div class="p-4 bg-gray-100 rounded-lg shadow-md flex items-center justify-between mb-2">
                             <div class="flex items-center">
@@ -82,23 +82,23 @@
             <!-- if assignment URL is present -->
             <div v-if="mobileAppURL !== '' && mobileAppURL !== false">
                   <!-- Assignment name -->
-                  <div class="bg-slate-300 rounded-md p-8">
+                  <div class="bg-[#322653] rounded-md p-8">
                     <div v-if="formCreating" class="flex justify-end">
                        {{ displayInstructionOrder() }}
                     </div>
 
-                    <label for="large-input" class="block mb-2 text-sm font-medium text-gray-900">Assignment Name</label>
+                    <label for="large-input" class="block mb-2 text-sm font-medium text-white">Assignment Name</label>
                     <input v-model="assignmentName" type="text" id="large-input" class="block w-full p-4 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 text-base focus:ring-blue-500 focus:border-blue-500" readonly>
                     <!-- Description -->
-                    <label for="large-input" class="block mb-2 text-sm font-medium text-gray-900">Description</label>
+                    <label for="large-input" class="block mb-2 text-sm font-medium text-white">Description</label>
                     <input v-model="description" type="text" id="large-input" class="block w-full p-4 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 text-base focus:ring-blue-500 focus:border-blue-500" readonly>
 
                     <!-- Assignment Reference URL -->
-                    <label for="large-input" class="block mb-2 text-sm font-medium text-gray-900">Reference Link</label>
+                    <label for="large-input" class="block mb-2 text-sm font-medium text-white">Reference Link</label>
                    <input v-model="ref_url" type="text" id="large-input" class="block w-full p-4 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 text-base focus:ring-blue-500 focus:border-blue-500" readonly>
                     </div>
 
-                    <div class="mb-5 bg-slate-300 rounded-md p-8" className="instructionContainer">
+                    <div class="mb-5 bg-[#EDE7F0] rounded-md p-8">
                     <!-- Instruction View page -->
                     <div>
                         <div v-for="[key] in steps" :key="key">

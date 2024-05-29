@@ -38,7 +38,9 @@ app.use((req, res, next) => {
     // Instead of creating a 404 error here, just pass control to the next middleware
     next();
 }); 
-console.log(process.env.JWT_TOKEN);
+
+// console.log(process.env.JWT_TOKEN);
+
 // catch 404 and forward to error handler
 app.use((req, res, next) => {
 	next(createError(404));

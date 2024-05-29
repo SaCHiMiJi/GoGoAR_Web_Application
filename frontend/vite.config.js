@@ -12,7 +12,7 @@ const config = {
   },
   server: {
     host: true,
-    port: 3030,
+    port: 3030, 
     strictPort: true,
     watch: {
     	usePolling: true

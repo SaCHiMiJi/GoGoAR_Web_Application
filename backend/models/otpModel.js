@@ -22,7 +22,7 @@ async function sendVerificationEmail(email, otp) {
   try {
     const mailResponse = await mailSender(
       email,
-      "Verification Email",
+      "Verification Email" +
       `<h1>Please confirm your OTP</h1>
        <p>Here is your OTP code: ${otp}</p>`
     );
@@ -40,4 +40,5 @@ otpSchema.pre("save", async function (next) {
   }
   next();
 });
+
 module.exports = mongoose.model("OTP", otpSchema);

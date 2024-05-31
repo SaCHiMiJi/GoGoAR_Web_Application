@@ -7,17 +7,19 @@ const config = {
     vue(),
   ],
   preview: {
-    port: 3030,
-    strictPort: true,
+        host: '0.0.0.0',
+        port: 3030,
   },
   server: {
-    host: true,
-    port: 3030, 
-    strictPort: true,
+    hmr: {
+            host: '0.0.0.0',
+    },
+    port: 3030,
     watch: {
-    	usePolling: true
+        usePolling: true
     }
-  }
+  },
 }
 
 export default defineConfig(config)
+

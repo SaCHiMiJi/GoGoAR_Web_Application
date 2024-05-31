@@ -55,6 +55,11 @@
                 </div>
                 <ul class="py-2" aria-labelledby="user-menu-button">
                   <li>
+                    <RouterLink to="/resetpassword">
+                      <button class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full">Reset Password</button>
+                    </RouterLink>
+                  </li>
+                  <li>
                     <button @click="openModal" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full">Sign Out</button>
                   </li>
                 </ul>

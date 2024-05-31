@@ -1,11 +1,12 @@
 <template>
 <div>
 <section class="bg-gray-50">
-  <div v-if="isRegistered === false" class="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
-      <a href="#" class="flex items-center p-4 mb-6 text-2xl font-semibold bg-[#322653] text-gray-300 rounded-xl">
-          <img class=" mr-2" src="/weblogo.svg" alt="logo">
-      </a>
+  <div v-if="isRegistered === false" class="flex flex-col items-center justify-center px-6 py-4 mx-auto md:h-screen lg:py-0">
       <div class="w-full bg-white rounded-lg shaded md:mt-0 sm:max-w-md xl:p-0">
+          <div class="flex items-center p-4 text-2xl font-semibold bg-[#322653] text-gray-300 rounded-xl">
+              <img class="mx-auto" src="/weblogo.svg" alt="logo">
+          </div>
+
           <div class="p-6 space-y-4 md:space-y-6 sm:p-8">
               <h1 class="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl">
                   Create an account
@@ -57,7 +58,7 @@
             		</div>
 		
             		<!-- Register request button -->
-		            <button class="w-full text-black bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center"
+		            <button class="border border-black w-full text-dark bg-white hover:bg-gray-600 hover:text-white focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center"
 		@click="validateRegister()" >Create an account</button>
                 <p class="text-sm font-light text-gray-500">
                 	Already have an account? <a href="/signin" class="font-medium text-primary-600 hover:underline">Signin here</a>
@@ -68,16 +69,12 @@
   </div>
   <!-- Post submission panel -->
   <div v-else class="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
-  	<div class="pb-4">
-		  You have registered successfully!
-		  please login to continue.
-	  </div>
-	  <div>
-	    <button @click="$router.replace({ path: '/signin'}) " class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600">
-			  Login
-  		</button>
-	  </div>
-  </div>
+  	<h2 class="text-2xl font-bold text-gray-900 mb-4">Registration Successful</h2>
+        <p class="text-gray-700 mb-6">You have registered successfully! Please log in to continue.</p>
+        <button @click="$router.replace({ path: '/signin'})" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+          Login
+        </button>
+    </div>
 </section>  
 
 <!-- Pop-up modal -->

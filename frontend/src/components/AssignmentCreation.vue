@@ -195,17 +195,21 @@
                             </div>
                             <select v-model="assignmentExternalComponent">
                                 <option selected disabled>External Component</option>
-                                <option value="leverSwitch">Lever Switch</option>
+                                <option value="leverswitch">Lever Switch</option>
                                 <option value="button">Button</option>
                                 <option value="buttonSet">Button Set</option>
                                 <option value="proximity">Proximity</option>
-                                <option value="lightSensor">Light Sensor</option>
-                                <option value="digitalTEMPSensor">Digital TEMP Sensor</option>
-                                <option value="soilHumiditySensor">Soil Humidity Sensor</option>
-                                <option value="biColorLED">Bi-color LED</option>
-                                <option value="motorGear">Motor Gear</option>
-                                <option value="plasticWheels">Plastic wheels</option>
-                                <option value="servoMotor">Servo Motor</option>
+                                <option value="lightsensor">Light Sensor</option>
+                                <option value="tempsensor">Digital TEMP Sensor</option>
+                                <option value="groveextension">Grove Extension</option>
+                                <option value="temprelativehumidity">Temp/Relative/Humidity</option>
+                                <option value="soilhumiditysensor">Soil Humidity Sensor</option>
+                                <option value="led">LED</option>
+                                <option value="groveterminalblock">Grove Terminal Block</option>
+                                <option value="rainsensor">Rain Sensor</option>
+                                <option value="motorgear">Motor Gear</option>
+                                <option value="plasticwheels">Plastic wheels</option>
+                                <option value="servomotor">Servo Motor</option>
                             </select>
                         </div>
                         
@@ -271,7 +275,7 @@
                    <input v-model="ref_url" type="text" id="large-input" class="block w-full p-4 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 text-base focus:ring-blue-500 focus:border-blue-500" readonly>
                     </div>
 
-                    <div class="mb-5 bg-slate-300 rounded-md p-8">
+                    <div class="mb-5 bg-[#EDE7F0] rounded-md p-8">
                       <!-- Instruction View page -->
                       <div>
                         <div v-for="[key] in steps" :key="key">

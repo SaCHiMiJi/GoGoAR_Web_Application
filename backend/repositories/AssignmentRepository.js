@@ -18,6 +18,7 @@ class AsssignmentRepository {
         creator_id: object.creator_id,
         ref_url: object.ref_url,
       	mobileapp_url: null,
+	mobileapp_url_qrcode: null,
       	created_date: object.created_date,
       	modified_date: null,
         steps: object.steps
@@ -91,6 +92,7 @@ class AsssignmentRepository {
           throw error;
       });
   }
+
   /*
    * @param {integer} id
    * @param {string} mobileapp_url

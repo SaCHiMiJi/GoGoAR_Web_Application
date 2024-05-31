@@ -4,7 +4,7 @@ const app = express.Router();
 const assignment_repository = require('../repositories/AssignmentRepository.js');
 const creator_repository = require('../repositories/CreatorRepository.js');
 const otpController = require('../controllers/otpController');
-
+const OTP = require('../models/otpModel.js');
 // securities for authentication route.
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
@@ -305,10 +305,10 @@ app.post('/send-otp', otpController.sendOTP);
 // Route to initiate password reset
 app.post('/forgotpassword', async (req, res) => {
   try {
-    const { newPassword, otp } = req.body;
+    const { email, newPassword, otp } = req.body;
     
     // Check if all details are provided
-    if (!newPassword || !otp) {
+    if (!email || !newPassword || !otp) {
       return res.status(403).json({
         message: 'All fields are required',
       });
@@ -340,12 +340,30 @@ app.post('/forgotpassword', async (req, res) => {
       });
     }
     
-    // update the password of user. 
-    await creator_repository.changePassword();
+    // delete the otp model
+    try {
+        const deletedOtp = await OTP.findOneAndDelete({ email: email });
+        if (deletedOtp) {
+          console.log("OTP deleted successfully:", deletedOtp);
+        } else {
+          return res.status(400).json({ error: "User is not exist."});
+        }
+    } catch (error) {
+        console.log("Error occurred while deleting OTP:", error);
+        return res.status(500).json({ error: error.message });
+    }
 
-    return res.status(201).json({
-      message: 'User registered successfully',
-    });
+    // update the password of user. 
+    creator_repository.changePassword(email, hashedPassword)
+      .then(function() {
+        return res.status(201).json({
+          message: 'User reset password successfully',
+        });
+      })
+      .catch((error) => {
+          console.log(error.message);
+          return res.status(500).json({ error: error.message });
+      });
 
   } catch (error) {
     console.log(error.message);
@@ -353,5 +371,21 @@ app.post('/forgotpassword', async (req, res) => {
   }
 });
 
-
+app.get('/getcreatorname/:id', (req, res) => {
+  const id = req.params.id;
+  creator_repository.findById(id)
+  .then((name) => {
+    const displayingName = name.creator_username;
+    if(name) {
+      res.send(displayingName);
+    } else {
+      res.send(false)
+    }
+  })
+  .catch((error) => {
+    // Log the error and send a 500 response
+    console.error(error);
+    res.status(500).send(error.toString());
+  });
+});
 module.exports = app;

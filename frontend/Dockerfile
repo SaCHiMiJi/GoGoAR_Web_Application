@@ -1,6 +1,4 @@
-# Use a Node.js base image
 FROM node:lts-slim
-
 # Set working directory
 WORKDIR /app
 
@@ -28,4 +26,3 @@ EXPOSE 3030
 # Start the application using Vite's preview mode
 # CMD ["npm", "run", "dev"]
 CMD ["npm", "run", "preview"]
-

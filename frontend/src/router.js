@@ -2,8 +2,11 @@ import { createRouter, createWebHistory } from 'vue-router';
 import Home from './components/Home.vue';
 import AssignmentCreation from './components/AssignmentCreation.vue';
 import MyLibrary from  './components/MyLibrary.vue';
+
 import RegisterPage from './components/Register.vue';
 import LoginPage from './components/Login.vue';
+import ResetPasswordPage from './components/ForgotPassword.vue';
+
 import RedirectionPage from './components/RedirectPage.vue';
 
 import DiscoveryPage from './components/Discovery.vue';
@@ -52,6 +55,11 @@ const routes = [
       path: '/assignmentview/:id',
       props: true,
       component: AssignmentViewPage
+  },
+  {
+      // this page can be redirected form discovery page and required assignment ID to view, the assignment instruction are unable to be modify.
+      path: '/resetpassword',
+      component: ResetPasswordPage
   }
 ];
 

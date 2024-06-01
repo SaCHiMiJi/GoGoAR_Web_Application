@@ -54,21 +54,20 @@
         <!-- Assignments -->
         <div class="gap-8 items-center py-8 px-4 max-w-screen-2xl xl:gap-16 md:grid md:grid-cols-2 lg:px-6 max-h-screen-xl" v-if="!isAssignmentSubmit">
             <!-- Image container on 1st column -->
-            <div class="flex-grow flex items-center justify-center self-start">
-              <div class="relative">
-                <img class="object-none self-center" src="/gogoboard.png" usemap="#image_map"/>
+            <div class="relative flex-grow flex items-center justify-center self-start">
+        	<img class="object-none self-center" src="/gogoboard.png" usemap="#image_map"/>
                 <map name="image_map">
                     <area v-for="(area, index) in areas" :key="index" :alt="area.alt" :title="area.title" :coords="area.coords" :shape="area.shape" @click="handleAreaClick(index)" :class="{ 'selected-area': areaClicked === index }"/>
                 </map>
 
-                <div class="fixed bottom-0 left-0" v-if="!formCreating">
+                
+        	<div class="absolute bottom-0 left-0" v-if="!formCreating">
                     <button 
                         class="mb-5 p-8 text-white bg-[#50C878] hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 focus:outline-none" 
                         v-on:click="saveConfirmationModal = true">
                         Save Assignment
                     </button>
                 </div>
-              </div>
             </div>
 
             <!-- Form container on 2nd column -->
@@ -228,17 +227,21 @@
             <!-- 1st column -->
                 <div class="object-none self-start w-325 h-325 text-center text-sm" v-if="mobileAppURL !== '' && mobileAppURL !== false ">
                     <img src="/tick-circle.svg" class="mx-auto mb-4"/>
-                    <p>
-                      The assignment is now presence mobile app's URL.
-                      You can try the assignment on the right.
-                    </p>
                     <div class="text-lg">
                       <div class="py-6">
-                        Preview your Assignment.
+                		Saved! 
                       </div>
-                      <div class="relative">
+
+		      <!-- QRcode -->
+		      <div class="grid justify-items-center pb-6" v-if="mobileAppURL_qrcode !== false">
+				<img :src="mobileAppURL_qrcode" class="p-4 bg-[#322653]"/>
+		      </div>
+
+
+		      <!-- Copy to Clipboard -->
+                      <div class="relative bg-[#322653] mb-6 p-2">
                         <input v-model="mobileAppURL" class="col-span-6 bg-gray-50 border border-gray-300 text-gray-500 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" disabled readonly>
-                        <button v-on:click="copyLink()" class="absolute end-2 top-1/2 -translate-y-1/2 text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg p-2 inline-flex items-center justify-center">
+                        <button v-on:click="copyLink()" class="absolute end-2 top-1/2 -translate-y-1/2 text-gray-500 bg-[#322653] hover:bg-white rounded-lg p-4 inline-flex items-center justify-center">
                           <span id="default-icon">
                             <svg class="w-3.5 h-3.5" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 18 20">
                               <path d="M16 1h-3.278A1.992 1.992 0 0 0 11 0H7a1.993 1.993 0 0 0-1.722 1H2a2 2 0 0 0-2 2v15a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V3a2 2 0 0 0-2-2Zm-3 14H5a1 1 0 0 1 0-2h8a1 1 0 0 1 0 2Zm0-4H5a1 1 0 0 1 0-2h8a1 1 0 1 1 0 2Zm0-5H5a1 1 0 0 1 0-2h2V2h4v2h2a1 1 0 1 1 0 2Z"/>
@@ -246,6 +249,11 @@
                           </span>
                         </button>
                       </div>
+
+		      <!-- Back to Library -->
+		      <RouterLink to="/mylibrary">
+			      <button class="w-[325px] h-[80px] bg-[#322653] p-5 rounded-lg text-white text-lg hover:bg-slate-500 ">Back to Library</button>
+		      </RouterLink>
                     </div>
                 </div>
                 <div class="object-none self-center w-325 h-325 text-center text-sm" v-else>
@@ -363,7 +371,8 @@ export default {
             isExist: false,
 
             isAssignmentSubmit: false,
-            mobileAppURL: ""
+            mobileAppURL: "",
+	    mobileAppURL_qrcode: ""
 
        };
     },
@@ -578,6 +587,7 @@ export default {
                     .then(response => {
                         useToast().success("edit completed.");
                         this.getMobileAppURL();
+			this.getMobileAppQRCode();
                     })
                     .catch(error => {
                         useToast().error(error.response.data.message);
@@ -589,6 +599,7 @@ export default {
                         useToast().success("assignment creating completed.");
                   			this.assignment_id = response.data;
                         this.getMobileAppURL();
+			this.getMobileAppQRCode();
                     })
                     .catch(error => {
                         useToast().error(error.response.data.message);
@@ -654,7 +665,16 @@ export default {
           } catch($e) {
             useToast().error('Cannot copy: ' + $e);
           }
-        }
+        },
+	getMobileAppQRCode() {
+		this.$http.get("/getqrcode/" + this.assignment_id)
+			.then((response) => {
+				this.mobileAppURL_qrcode = response.data;
+			})
+			.catch((err) => {
+				useToast().error(err.response.data.error);
+			});
+	}
     },
     mounted() {
         this.resizeImageMaps();

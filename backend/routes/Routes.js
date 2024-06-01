@@ -1,4 +1,5 @@
 const express = require('express');
+const QRCode = require('qrcode');
 
 const app = express.Router();
 const assignment_repository = require('../repositories/AssignmentRepository.js');
@@ -240,6 +241,24 @@ app.get('/getredirectionurl/:id', (req, res) => {
   });
 });	
 
+app.get('/getqrcode/:id', async (req, res) => {
+  const id = req.params.id;
+  try {
+    const dburl = await assignment_repository.getMobileAppURL(id);
+    const url = dburl.mobileapp_url;
+    try {
+      const qrcode_img = await QRCode.toDataURL("http://127.0.0.1:3030/appredirection?url=" + url);
+      return res.send(qrcode_img);
+    } catch (err) {
+      console.log(err);
+      res.status(500).send('Error generating QR code');
+    }
+  } catch (error) {
+    // Log the error and send a 500 response
+    console.error(error);
+    res.status(500).send(error.toString());
+  }
+});
 
 // Authentication
 // User registration
@@ -388,4 +407,5 @@ app.get('/getcreatorname/:id', (req, res) => {
     res.status(500).send(error.toString());
   });
 });
+
 module.exports = app;

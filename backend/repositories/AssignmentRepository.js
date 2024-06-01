@@ -1,4 +1,5 @@
 const Assignment = require('../models/Assignment.js');
+const qrCode = require('qrcode');
 
 class AsssignmentRepository {
   /**
@@ -18,7 +19,6 @@ class AsssignmentRepository {
         creator_id: object.creator_id,
         ref_url: object.ref_url,
       	mobileapp_url: null,
-	mobileapp_url_qrcode: null,
       	created_date: object.created_date,
       	modified_date: null,
         steps: object.steps
@@ -104,13 +104,13 @@ class AsssignmentRepository {
         console.error("No ID provided for update.");
         return Promise.reject("No ID provided for update.");
     }
-
+    
     const query = { _id: id };
 
     return this.model.findOneAndUpdate(query,  
       { 
         $set: { 
-          mobileapp_url: mobileapp_url 
+        	mobileapp_url: mobileapp_url,
         } 
       },
       { 
@@ -144,7 +144,19 @@ class AsssignmentRepository {
    return this.model.findOne(query, 
       'mobileapp_url');
   }
+	
+	// QRCode image generator
+	getMobileAppQRcode(url) {
+		try {
+			return qrCode.toDataURL(url);
+		} catch (err) {
+			console.log(err);
+			return Promise.reject("Unable to generate QRCode, Please try again");
 
+		}
+
+	}
+	
   findMultiple(assignmentIds) {
     return this.model.find({
       '_id': { $in: assignmentIds }

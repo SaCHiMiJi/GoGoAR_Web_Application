@@ -3,12 +3,12 @@
         <!-- view assignment's details and instructions -->
         <div class="gap-8 items- py-8 px-4 mx-auto max-w-screen-xl xl:gap-16 md:grid md:grid-cols-2 sm:py-16 lg:px-6" v-if="detailView">
             <!-- Image container on 1st column -->
-            <div>
+            <div class="relative">
                 <img class="object-none self-center" src="/gogoboard.png" usemap="#image_map"/>
                 <!-- view the assignment's url -->
-                <div class="fixed bottom-0 left-0">
+                <div class="absolute bottom-0 left-0">
                     <button 
-                        class="mb-5 p-8 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 focus:outline-none" 
+                        class="mb-5 p-8 text-white bg-[#50C878] hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 focus:outline-none" 
                         v-on:click="detailView = !detailView;getMobileAppURL()">
                         Assignment URL
                     </button>
@@ -53,35 +53,38 @@
         <!-- preview assignment's mobile url -->
         <div class="gap-8 items-start py-8 px-4 mx-auto max-w-screen-xl xl:gap-16 md:grid md:grid-cols-2 sm:py-16 lg:px-6" v-else>
         <!-- 1st column -->
-          <div class="">
+          <div class="relative">
             <div v-if="mobileAppURL !== '' && mobileAppURL !== false" class=" text-center">
-              <img src="/tick-circle.svg" class="mx-auto mb-4"/>
-              <p>The assignment's presence, You can try the assignment on the button.</p>
+	        <img src="/tick-circle.svg" class="mx-auto mb-4"/>
+	        <div class="pb-6">
+                	Preview this Assignment.
+              	</div>
 
-              <div class="pb-6">
-                Preview this Assignment.
-              </div>
-                <div class="text-lg">
-                      <div class="relative">
+		<!-- QRcode -->
+		<div class="grid justify-items-center pb-6" v-if="mobileAppURL_qrcode !== false">
+		        <img :src="mobileAppURL_qrcode" class="bg-[#322653] p-4"/>
+		</div>
+
+		<!-- Copy to Clipboard -->
+                <div class="relative bg-[#322653] mb-16 p-2">
                         <input v-model="mobileAppURL" class="col-span-6 bg-gray-50 border border-gray-300 text-gray-500 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" disabled readonly>
-                        <button v-on:click="copyLink()" class="absolute end-2 top-1/2 -translate-y-1/2 text-gray-500 hover:bg-gray-100 rounded-lg p-2 inline-flex items-center justify-center">
+                        <button v-on:click="copyLink()" class="absolute end-2 top-1/2 -translate-y-1/2 text-gray-500 bg-[#322653] hover:bg-white rounded-lg p-4 inline-flex items-center justify-center">
                           <span id="default-icon">
                             <svg class="w-3.5 h-3.5" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 18 20">
                               <path d="M16 1h-3.278A1.992 1.992 0 0 0 11 0H7a1.993 1.993 0 0 0-1.722 1H2a2 2 0 0 0-2 2v15a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V3a2 2 0 0 0-2-2Zm-3 14H5a1 1 0 0 1 0-2h8a1 1 0 0 1 0 2Zm0-4H5a1 1 0 0 1 0-2h8a1 1 0 1 1 0 2Zm0-5H5a1 1 0 0 1 0-2h2V2h4v2h2a1 1 0 1 1 0 2Z"/>
                             </svg>
                           </span>
-                        </button>
-                      </div>
-                    </div>
+                	</button>
+                </div>
             </div>
             <div v-else class="text-center">
               <img class="mx-auto mb-4" src="/error.jpg"/>
               <div>This assignment doesn't have an app's URL yet, Please wait for the author to add this app later.</div>
              </div>
               <!-- view the assignment's detail -->
-            <div class="fixed bottom-0 left-0">
+            <div class="absolute bottom-0 left-0">
               <button 
-                class="mb-5 p-8 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 focus:outline-none" v-on:click="detailView = !detailView">
+                class="mb-5 p-8 text-white bg-[#50C878] hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 focus:outline-none" v-on:click="detailView = !detailView">
                 Assignment Detail
               </button>
             </div>
@@ -159,7 +162,8 @@ export default {
             detailView: true,
 
             isAssignmentSubmit: false,
-            mobileAppURL: ""
+            mobileAppURL: "",
+	    mobileAppURL_qrcode: "",
         };
     },
     methods: {
@@ -231,12 +235,21 @@ export default {
             this.$http.get('/getredirectionurl/' + this.assignment_id)
                 .then((response) => {
                     this.mobileAppURL = response.data;
-            		    console.log(this.mobileAppURL + " == " + response);
+            	    console.log(this.mobileAppURL + " == " + response);
                 })
                 .catch((error) => {
                     console.log(error); 
                 });
         },
+	getQRCode() {
+		this.$http.get('/getqrcode/' + this.assignment_id)
+			.then((response) => {
+				this.mobileAppURL_qrcode = response.data;
+			})
+			.catch((err) => {
+				console.log(err);
+			});
+	},
         copyLink() {
           try {
             copy(this.mobileAppURL);
@@ -250,6 +263,7 @@ export default {
         if (this.id) {
             this.assignment_id = this.id;
             this.getAssignmentDetail();
+	    this.getQRCode();
             this.isExist = true;
         } else {
           console.log("Couldn't get the parameter");

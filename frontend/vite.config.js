@@ -7,12 +7,12 @@ const config = {
     vue(),
   ],
   preview: {
-        host: '0.0.0.0',
+        host: true,
         port: 3030,
   },
   server: {
     hmr: {
-            host: '0.0.0.0',
+            host: true,
     },
     port: 3030,
     watch: {

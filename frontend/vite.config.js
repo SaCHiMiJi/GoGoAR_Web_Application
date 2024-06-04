@@ -6,13 +6,9 @@ const config = {
   plugins: [
     vue(),
   ],
-  preview: {
-        host: true,
-        port: 3030,
-  },
   server: {
     hmr: {
-            host: true,
+      host: "0.0.0.0",
     },
     port: 3030,
     watch: {

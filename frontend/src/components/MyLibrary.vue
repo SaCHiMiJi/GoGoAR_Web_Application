@@ -103,7 +103,14 @@ export default {
             });
         },
         deleteAssignment(id) {
-          this.$http.delete("/delete/" + id)
+            const jwtToken = JSON.parse(localStorage.getItem('userInfo')).token; 
+            
+            const config = {
+              headers: { 
+                'Authorization': `Bearer ${jwtToken}`
+              }
+            };
+          this.$http.delete("/delete/" + id, config)
             .then(response => {
                 // Handle success, such as updating the view or notifying the user
                 console.log('Assignment deleted successfully', response);

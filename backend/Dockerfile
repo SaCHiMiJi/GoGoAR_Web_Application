@@ -12,7 +12,6 @@ RUN npm i npm@latest -g
 RUN npm i
 
 COPY --chown=node:node package.json package-lock.json* ./
-RUN npm ci && npm cache clean --force
 
 COPY . . 
 

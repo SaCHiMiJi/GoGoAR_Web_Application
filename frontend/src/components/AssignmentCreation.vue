@@ -578,12 +578,18 @@ export default {
                 "ref_url": this.ref_url,
                 "steps": JSON.stringify(stepsObject)
             };
-	    
-            // console.log(data);
-                
+	          
+            const jwtToken = JSON.parse(localStorage.getItem('userInfo')).token; 
+            // console.log(jwtToken);
+            const config = {
+              headers: { 
+                'Authorization': `Bearer ${jwtToken}`
+              }
+            };
+
             // Edit the assignment in database.
             if(this.isExist) {
-                this.$http.put("/modify/"+this.assignment_id, qs.stringify(data))
+                this.$http.put("/modify/"+this.assignment_id, qs.stringify(data), config)
                     .then(response => {
                         useToast().success("edit completed.");
                         this.getMobileAppURL();
@@ -594,7 +600,7 @@ export default {
                     });    
             } else {
 
-		          this.$http.post("create", qs.stringify(data))
+		          this.$http.post("create", qs.stringify(data), config)
                     .then(response => {
                         useToast().success("assignment creating completed.");
                   			this.assignment_id = response.data;

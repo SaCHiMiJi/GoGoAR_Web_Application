@@ -22,6 +22,7 @@
                   <p class="text-sm font-light text-gray-500">
                       Don’t have an account yet? <a href="/signup" class="font-medium text-primary-600 hover:underline">Sign up</a>
                   </p>
+                  <a href="/resetpassword" class="text-sm font-medium text-primary-600 hover:underline">Forgot password?</a>
               </form>
           </div>
       </div>

@@ -1,6 +1,7 @@
 const express = require('express');
 const QRCode = require('qrcode');
 
+const verifyToken = require('../authmiddleware/authmiddleware');
 const app = express.Router();
 const assignment_repository = require('../repositories/AssignmentRepository.js');
 const creator_repository = require('../repositories/CreatorRepository.js');
@@ -11,6 +12,7 @@ const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 
 const jwt_token = process.env.JWT_TOKEN;
+
 // Retreive all existed assignment.
 app.get('/getall', (req, res) => {
   assignment_repository.findAll().then((assignments) => {
@@ -20,14 +22,14 @@ app.get('/getall', (req, res) => {
 
 
 // create the new assignment.
-app.post('/create', async (req, res) => {
+app.post('/create', verifyToken, async (req, res) => {
   // Destructure properties from req.body directly
   let { assignment_name, description, creator_id, ref_url, steps } = req.body; 
   const createdDate = new Date();
   
   // This prevent creator to use the same assignment name.
   const nameValidation = await assignment_repository.findByName(assignment_name);
-  console.log(nameValidation.length);
+  // console.log(nameValidation.length);
   if(nameValidation.length > 0) {
     return res.status(400).json({"message": "the name is already used."})
   }
@@ -45,7 +47,7 @@ app.post('/create', async (req, res) => {
     created_date: createdDate,
     steps: steps	 
   };
-  console.log(steps);
+  // console.log(steps);
   
   // Call repository.create() to save the todo item
   assignment_repository.create(assignment)
@@ -73,7 +75,7 @@ app.post('/create', async (req, res) => {
 
 
 // delete a assignment item by id
-app.delete('/delete/:id', (req, res) => {
+app.delete('/delete/:id', verifyToken, (req, res) => {
   console.log('delete');
   const { id } = req.params;
   assignment_repository.deleteById(id).then(() => {
@@ -83,7 +85,7 @@ app.delete('/delete/:id', (req, res) => {
 });
 
 // update a assignment item
-app.put('/modify/:id', async (req, res) => {
+app.put('/modify/:id', verifyToken, async (req, res) => {
   const id = req.params.id; // Get the ID from the URL parameter
   let { assignment_name, description, creator_id, ref_url, steps } = req.body; // Extract other details from the body
   const newDate = new Date();
@@ -227,12 +229,9 @@ app.get('/getredirectionurl/:id', (req, res) => {
   assignment_repository.getMobileAppURL(id)
   .then((dburl) => {
     const url = dburl.mobileapp_url;
-    if(url) {
-      console.log(`send the URL: ${ url }`);
-      res.send("http://127.0.0.1:3030/appredirection?url=" + url);
-    } else {
-      res.send(false)
-    }
+    const redirectURL = process.env.FRONTEND_URL + "/appredirection?url=" + url;
+    console.log(`send the URL: ${ redirectURL }`);
+    res.send(redirectURL);
   })
   .catch((error) => {
     // Log the error and send a 500 response
@@ -308,7 +307,7 @@ app.post('/login', async (req, res) => {
     if (!passwordMatch) {
       return res.status(401).json({ error: 'Wrong password, Please tried again.' });
     }
-    const token = jwt.sign({ userID: user._id }, process.env.JWT_TOKEN, {
+    const token = jwt.sign({ userID: user._id }, jwt_token, {
             expiresIn: '24h'
       });
     res.status(200).json({ 

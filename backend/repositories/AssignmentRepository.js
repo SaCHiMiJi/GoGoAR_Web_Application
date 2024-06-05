@@ -70,10 +70,10 @@ class AsssignmentRepository {
         { $set: 
             { 
               assignment_name: object.assignment_name,
-	      description: object.description,
+      	      description: object.description,
               creator_id: object.creator_id,
               ref_url: object.ref_url,
-	      modified_date: object.modified_date,
+	            modified_date: object.modified_date,
               steps: object.steps
             }
         },

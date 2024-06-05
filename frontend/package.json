@@ -6,7 +6,7 @@
  "scripts": {
   "dev": "vite --host",
   "build": "vite build",
-  "preview": "vite preview"
+  "preview": "vite preview --host"
  },
  "dependencies": {
   "@vitejs/plugin-vue": "^5.0.4",
@@ -28,6 +28,6 @@
   "@vue/compiler-sfc": "^3.4.21",
   "autoprefixer": "^10.4.19",
   "sass": "^1.74.1",
-  "vite": "^5.2.8"
+  "vite": "4.5.0"
  }
 }

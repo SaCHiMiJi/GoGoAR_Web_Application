@@ -6,14 +6,18 @@ const config = {
   plugins: [
     vue(),
   ],
-  server: {
-    hmr: {
-      host: "0.0.0.0",
-    },
+  preview: {
+    host: "127.0.0.1",
     port: 3030,
+  },
+  server: {
+    host: "127.0.0.1",
+     port: 3030,
+    /*
     watch: {
         usePolling: true
     }
+    */
   },
 }
 

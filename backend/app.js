@@ -39,7 +39,8 @@ app.use((req, res, next) => {
     next();
 }); 
 
-// console.log(process.env.JWT_TOKEN);
+// ensure the frontend application path.
+console.log("the url of frontend of application is:\n" + process.env.FRONTEND_URL);
 
 // catch 404 and forward to error handler
 app.use((req, res, next) => {

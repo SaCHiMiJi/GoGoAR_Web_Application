@@ -55,7 +55,7 @@
         <div class="gap-8 items-center py-8 px-4 max-w-screen-2xl xl:gap-16 md:grid md:grid-cols-2 lg:px-6 max-h-screen-xl" v-if="!isAssignmentSubmit">
             <!-- Image container on 1st column -->
             <div class="relative flex-grow flex items-center justify-center self-start">
-        	<img class="object-none self-center" src="/gogoboard.png" usemap="#image_map"/>
+        	<v-lazy-image class="object-none self-center" src="/gogoboard.png" usemap="#image_map"/>
                 <map name="image_map">
                     <area v-for="(area, index) in areas" :key="index" :alt="area.alt" :title="area.title" :coords="area.coords" :shape="area.shape" @click="handleAreaClick(index)" :class="{ 'selected-area': areaClicked === index }"/>
                 </map>
@@ -101,10 +101,10 @@
                             </div>
                             <div class="flex items-center space-x-2 flex-shrink-0">
                               <button class="text-gray-700 hover:text-gray-900" v-on:click="openInstructionForm(key)">
-                                <img class="w-5 h-5" src="/edit_image.svg" />
+                                <v-lazy-image class="w-5 h-5" src="/edit_image.svg" />
                               </button>
                               <button @click="focusDeleteInstruction = key;" class="text-gray-700 hover:text-gray-900">
-                                <img class="w-5 h-5" src="/delete_image.svg" />
+                                <v-lazy-image class="w-5 h-5" src="/delete_image.svg" />
                               </button>
                               <div class="flex flex-col space-y-1 flex-shrink-0">
                                 <button class="text-gray-700 hover:text-gray-900" v-on:click="moveInstructionUp(key)">
@@ -223,18 +223,18 @@
             </div>
         </div>
         <!-- Post form submission -->
-        <div class="gap-8 items-center py-8 px-4 mx-auto max-w-screen-xl xl:gap-16 md:grid md:grid-cols-2 sm:py-16 lg:px-6" v-else>
+        <div class="gap-8 py-8 px-4 mx-auto max-w-screen-xl xl:gap-16 md:grid md:grid-cols-2 sm:py-16 lg:px-6" v-else>
             <!-- 1st column -->
                 <div class="object-none self-start w-325 h-325 text-center text-sm" v-if="mobileAppURL !== '' && mobileAppURL !== false ">
-                    <img src="/tick-circle.svg" class="mx-auto mb-4"/>
+                    <v-lazy-image src="/tick-circle.svg" class="mx-auto mb-4"/>
                     <div class="text-lg">
                       <div class="py-6">
-                		Saved! 
+                		    Saved! 
                       </div>
 
 		      <!-- QRcode -->
 		      <div class="grid justify-items-center pb-6" v-if="mobileAppURL_qrcode !== false">
-				<img :src="mobileAppURL_qrcode" class="p-4 bg-[#322653]"/>
+				    <img :src="mobileAppURL_qrcode" class="p-4 bg-[#322653]"/>
 		      </div>
 
 
@@ -257,15 +257,17 @@
                     </div>
                 </div>
                 <div class="object-none self-center w-325 h-325 text-center text-sm" v-else>
-                    <img src="/error.jpg" class="mx-auto mb-4"/>
+                    <v-lazy-image src="/error.jpg" class="mx-auto mb-4"/>
                     <p> 
                         This assignment is yet to have mobile app's URL.
                         Please create url via mobile application and try to refetch again.
                     </p>
                 </div>
+
+
             <!-- 2nd column -->
                 <!-- Show the instructions -->
-                <div v-if="mobileAppURL !== '' && mobileAppURL !== false " >
+                <div v-if="mobileAppURL !== '' && mobileAppURL !== false" class="self-start" >
                   <!-- Assignment name -->
                   <div class="bg-[#322653] rounded-md p-8">
                     <div v-if="formCreating" class="flex justify-end">
@@ -327,12 +329,16 @@
 </template>
 
 <script>
+import VLazyImage from "v-lazy-image";
 import ImageMap from 'image-map';
 import qs from 'qs';
 import { useToast } from "vue-toastification";
 import copy from 'copy-to-clipboard';
 
 export default {
+    components: {
+      "v-lazy-image": VLazyImage
+    },
     data() {
         return {
             assignment_id: null,

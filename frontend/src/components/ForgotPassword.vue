@@ -3,7 +3,7 @@
     <div class="flex flex-col items-center justify-center px-6 py-4 mx-auto md:h-screen lg:py-0" v-if="!isPasswordReset">  
       <div class="w-full bg-white rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0">
         <div class="flex items-center p-4 text-2xl font-semibold bg-[#322653] text-gray-300 rounded-xl">
-          <img class="mx-auto" src="/weblogo.svg" alt="logo">
+          <v-lazy-image class="mx-auto" src="/weblogo.svg" alt="logo"/>
         </div>
 
         <!-- First Page for Starting Sent OTP -->
@@ -121,11 +121,15 @@
 </template>
 
 <script>
+import VLazyImage from "v-lazy-image";
 import { useToast } from "vue-toastification";
 import { useRouter } from "vue-router";
 import qs from 'qs';
 
 export default {
+  components: {
+      "v-lazy-image": VLazyImage,
+  },
 	data() {
 		return {
 			email: "",

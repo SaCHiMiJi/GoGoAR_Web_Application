@@ -1,11 +1,15 @@
 <template>
   <div>
-    <img src="/Home.png" class="object-cover w-full"></img>
+    <v-lazy-image src="/Home.png" class="w-full"/>
   </div>
 </template>
 
 <script>
-export default {
-  
-}
+  import VLazyImage from "v-lazy-image";
+
+  export default {
+    components: {
+      "v-lazy-image": VLazyImage,
+    }
+  }
 </script>

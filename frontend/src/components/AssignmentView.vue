@@ -4,7 +4,7 @@
         <div class="gap-8 items- py-8 px-4 mx-auto max-w-screen-xl xl:gap-16 md:grid md:grid-cols-2 sm:py-16 lg:px-6" v-if="detailView">
             <!-- Image container on 1st column -->
             <div class="relative">
-                <img class="object-none self-center" src="/gogoboard.png" usemap="#image_map"/>
+                <v-lazy-image class="object-none self-center" src="/gogoboard.png" usemap="#image_map"/>
                 <!-- view the assignment's url -->
                 <div class="absolute bottom-0 left-0">
                     <button 
@@ -55,17 +55,17 @@
         <!-- 1st column -->
           <div class="relative">
             <div v-if="mobileAppURL !== '' && mobileAppURL !== false" class=" text-center">
-	        <img src="/tick-circle.svg" class="mx-auto mb-4"/>
+	        <v-lazy-image src="/tick-circle.svg" class="mx-auto mb-4"/>
 	        <div class="pb-6">
-                	Preview this Assignment.
-              	</div>
+            Preview this Assignment.
+          </div>
 
-		<!-- QRcode -->
-		<div class="grid justify-items-center pb-6" v-if="mobileAppURL_qrcode !== false">
+      		<!-- QRcode -->
+		      <div class="grid justify-items-center pb-6" v-if="mobileAppURL_qrcode !== false">
 		        <img :src="mobileAppURL_qrcode" class="bg-[#322653] p-4"/>
-		</div>
+      		</div>
 
-		<!-- Copy to Clipboard -->
+		            <!-- Copy to Clipboard -->
                 <div class="relative bg-[#322653] mb-16 p-2">
                         <input v-model="mobileAppURL" class="col-span-6 bg-gray-50 border border-gray-300 text-gray-500 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" disabled readonly>
                         <button v-on:click="copyLink()" class="absolute end-2 top-1/2 -translate-y-1/2 text-gray-500 bg-[#322653] hover:bg-white rounded-lg p-4 inline-flex items-center justify-center">
@@ -78,7 +78,7 @@
                 </div>
             </div>
             <div v-else class="text-center">
-              <img class="mx-auto mb-4" src="/error.jpg"/>
+              <v-lazy-image class="mx-auto mb-4" src="/error.jpg"/>
               <div>This assignment doesn't have an app's URL yet, Please wait for the author to add this app later.</div>
              </div>
               <!-- view the assignment's detail -->
@@ -138,10 +138,14 @@ Re-fetch the URL</button>
 </template>
 
 <script>
+import VLazyImage from "v-lazy-image";
 import { useToast } from "vue-toastification";
 import copy from 'copy-to-clipboard';
 
 export default {
+    components: {
+      "v-lazy-image": VLazyImage
+    },
     props: {
       id: String
     },

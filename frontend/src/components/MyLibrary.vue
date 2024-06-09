@@ -66,13 +66,13 @@
                   <!-- Edit Button -->
                   <router-link :to="{path: '/assignmentcreation', query: { jsonData: JSON.stringify(assignment._id) } }">
                     <h5 class="border border-black inline-flex items-center px-5 py-4 text-sm font-medium text-center text-white rounded-lg hover:bg-gray-300 focus:ring-4 focus:outline-none focus:ring-blue-300">
-                      <img class="w-5 h-5 md-5 pd-5" src="/edit_image.svg" />
+                      <v-lazy-image class="w-5 h-5 md-5 pd-5" src="/edit_image.svg" />
                     </h5>
                   </router-link>
                   <!-- Remove Button -->
                   <button v-on:click="idToDelete = assignment._id">
                     <h5 class="border border-black inline-flex items-center px-5 py-4 text-sm font-medium text-center text-white rounded-lg hover:bg-gray-300 focus:ring-4 focus:outline-none focus:ring-blue-300">
-                      <img class="w-5 h-5 md-5 pd-5" src="/delete_image.svg" />
+                      <v-lazy-image class="w-5 h-5 md-5 pd-5" src="/delete_image.svg" />
                     </h5>
                   </button>
                 </div>
@@ -83,9 +83,11 @@
 </template>
   
 <script>
-import axios from 'axios';
-
+import VLazyImage from "v-lazy-image";
 export default {
+    components: {
+      "v-lazy-image": VLazyImage, 
+    },
     data() {
             return {
                 assignments: [],       

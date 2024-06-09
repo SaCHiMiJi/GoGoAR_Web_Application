@@ -21,7 +21,10 @@ const app = createApp(App); // Create a Vue app instance
 
 app.config.globalProperties.$http = http; // Attach axios instance to the app instance
 app.config.globalProperties.emitter = emitter;
+
 app.use(router);
+
+// toastification configs
 app.use(Toast, {
   position: POSITION.TOP_RIGHT,
   timeout: 5000,

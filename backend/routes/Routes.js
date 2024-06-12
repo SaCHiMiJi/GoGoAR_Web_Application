@@ -22,10 +22,13 @@ app.get('/getall', (req, res) => {
 
 
 // create the new assignment.
-app.post('/create', verifyToken, async (req, res) => {
+app.post('/create', async (req, res) => {
   // Destructure properties from req.body directly
   let { assignment_name, description, creator_id, ref_url, steps } = req.body; 
-  const createdDate = new Date();
+
+  // init the date.
+  const date = new Date();
+  const createdDate = new Date(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate()));
   
   // This prevent creator to use the same assignment name.
   const nameValidation = await assignment_repository.findByName(assignment_name);
@@ -75,7 +78,7 @@ app.post('/create', verifyToken, async (req, res) => {
 
 
 // delete a assignment item by id
-app.delete('/delete/:id', verifyToken, (req, res) => {
+app.delete('/delete/:id', (req, res) => {
   console.log('delete');
   const { id } = req.params;
   assignment_repository.deleteById(id).then(() => {
@@ -85,10 +88,11 @@ app.delete('/delete/:id', verifyToken, (req, res) => {
 });
 
 // update a assignment item
-app.put('/modify/:id', verifyToken, async (req, res) => {
+app.put('/modify/:id', async (req, res) => {
   const id = req.params.id; // Get the ID from the URL parameter
   let { assignment_name, description, creator_id, ref_url, steps } = req.body; // Extract other details from the body
-  const newDate = new Date();
+  const date = new Date();
+  const newDate = new Date(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate()));
 
   // This prevent creator to use the same assignment name.
   const nameValidation = await assignment_repository.findByName(assignment_name);

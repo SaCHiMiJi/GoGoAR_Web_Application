@@ -11,13 +11,14 @@ const config = {
     port: 3030,
   },
   server: {
-    host: "127.0.0.1",
-     port: 3030,
-    /*
-    watch: {
-        usePolling: true
+    host: true,
+    port: 3030,
+    protocol: 'ws',
+    hmr:{
+      host: true,
+      port: 3030,
+      protocol: 'ws',
     }
-    */
   },
 }
 

@@ -22,44 +22,48 @@
           </RouterLink>
 
           <!-- Available Page for Authenticated User -->
-          <RouterLink to="/signup" v-show="!userInfo">
-            <button class="text-white bg-[#322653] hover:bg-white hover:text-black focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mb-2 focus:outline-none">Sign Up</button>
-          </RouterLink>
-          <RouterLink to="/signin" v-show="!userInfo">
-            <button class="text-white bg-[#322653] hover:bg-white hover:text-black focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mb-2 focus:outline-none">Sign In</button>
-          </RouterLink>
+          <div v-if="!userInfo" class="flex items-center space-x-4">
+            <RouterLink to="/signup">
+              <button class="text-white bg-[#322653] hover:bg-white hover:text-black focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mb-2 focus:outline-none">Sign Up</button>
+            </RouterLink>
+            <RouterLink to="/signin">
+              <button class="text-white bg-[#322653] hover:bg-white hover:text-black focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mb-2 focus:outline-none">Sign In</button>
+            </RouterLink>
+          </div>
 
           <!-- Authenticated User Options -->
-          <RouterLink to="/mylibrary" v-show="userInfo">
-            <button class="text-white bg-[#322653] hover:bg-white hover:text-black focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mb-2 focus:outline-none">My Library</button>
-          </RouterLink>
-          <RouterLink to="/assignmentcreation" v-show="userInfo">
-            <button class="text-white bg-[#322653] hover:bg-white hover:text-black focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mb-2 focus:outline-none">AR creation</button>
-          </RouterLink>
+          <div v-else class="flex items-center space-x-4">
+            <RouterLink to="/assignmentcreation">
+              <button class="text-white bg-[#322653] hover:bg-white hover:text-black focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mb-2 focus:outline-none">AR creation</button>
+            </RouterLink>
+            <RouterLink to="/mylibrary">
+              <button class="text-white bg-[#322653] hover:bg-white hover:text-black focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mb-2 focus:outline-none">My Library</button>
+            </RouterLink>
 
-          <!-- User Dropdown -->
-          <div class="relative" v-show="userInfo">
-            <button 
-              @click="toggleDropdown" ref="button" type="button" class="border-2 border-white text-white bg-[#322653] hover:bg-white hover:text-black focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mb-2 focus:outline-none" id="user-menu-button" aria-expanded="false">
-                <span class="sr-only">Open user menu</span>
-                {{ userInfo.creator_email }}
-            </button>
-            <!-- Dropdown menu -->
-            <div :class="{'hidden': !isDropdownOpen, 'block': isDropdownOpen}" ref="dropdown" class="absolute right-0 z-50 my-4 text-base list-none bg-white divide-y divide-gray-100 rounded-lg shadow" id="user-dropdown">
-              <div class="px-4 py-3">
-                <span class="block text-sm text-gray-900">{{ userInfo.creator_username }}</span>
-                <span class="block text-sm text-gray-500 truncate">{{ userInfo.creator_email }}</span>
+            <!-- User Dropdown -->
+            <div class="relative">
+              <button 
+                @click="toggleDropdown" ref="button" type="button" class="border-2 border-white text-white bg-[#322653] hover:bg-white hover:text-black focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mb-2 focus:outline-none" id="user-menu-button" aria-expanded="false">
+                  <span class="sr-only">Open user menu</span>
+                  {{ userInfo.creator_email }}
+              </button>
+              <!-- Dropdown menu -->
+              <div :class="{'hidden': !isDropdownOpen, 'block': isDropdownOpen}" ref="dropdown" class="absolute right-0 z-50 my-4 text-base list-none bg-white divide-y divide-gray-100 rounded-lg shadow" id="user-dropdown">
+                <div class="px-4 py-3">
+                  <span class="block text-sm text-gray-900">{{ userInfo.creator_username }}</span>
+                  <span class="block text-sm text-gray-500 truncate">{{ userInfo.creator_email }}</span>
+                </div>
+                <ul class="py-2" aria-labelledby="user-menu-button">
+                  <li>
+                    <RouterLink to="/resetpassword">
+                      <button class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full">Reset Password</button>
+                    </RouterLink>
+                  </li>
+                  <li>
+                    <button @click="openModal" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full">Sign Out</button>
+                  </li>
+                </ul>
               </div>
-              <ul class="py-2" aria-labelledby="user-menu-button">
-                <li>
-                  <RouterLink to="/resetpassword">
-                    <button class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full">Reset Password</button>
-                  </RouterLink>
-                </li>
-                <li>
-                  <button @click="openModal" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full">Sign Out</button>
-                </li>
-              </ul>
             </div>
           </div>
         </div>

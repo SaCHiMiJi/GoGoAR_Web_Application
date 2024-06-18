@@ -401,7 +401,7 @@ app.get('/getcreatorname/:id', (req, res) => {
     if(name) {
       res.send(displayingName);
     } else {
-      res.send(false)
+      res.send(false);
     }
   })
   .catch((error) => {
@@ -409,6 +409,10 @@ app.get('/getcreatorname/:id', (req, res) => {
     console.error(error);
     res.status(500).send(error.toString());
   });
+});
+
+app.get('checkvalidcreator', verifyToken, (req, res) => {
+  res.send(true);
 });
 
 module.exports = app;

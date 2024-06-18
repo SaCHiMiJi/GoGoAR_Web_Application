@@ -2,7 +2,7 @@ import { createRouter, createWebHistory } from 'vue-router';
 import Home from './components/Home.vue';
 import AssignmentCreation from './components/AssignmentCreation.vue';
 import MyLibrary from  './components/MyLibrary.vue';
-
+import axios from 'axios';
 import RegisterPage from './components/Register.vue';
 import LoginPage from './components/Login.vue';
 import ResetPasswordPage from './components/ForgotPassword.vue';
@@ -80,7 +80,13 @@ router.beforeEach((to, from, next) => {
   	if (localStorage.getItem('userInfo') === null) {
     		router.push({ path: '/signin'});
 	  } else {
-  		next();
+      axios.get('/checkvalidcreator')
+        .then(() => {
+          next();
+        })
+        .catch((e) => {
+    		  router.push({ path: '/signin'});
+        });
 	  }
   } else {
     next()

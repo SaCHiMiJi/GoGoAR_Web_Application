@@ -165,7 +165,7 @@
                   <!-- Buttons Row -->
                   <div class="flex justify-end space-x-2 mt-4">
                     <!-- Edit Button -->
-                    <router-link :to="{path: '/assignmentcreation', query: { jsonData: JSON.stringify(assignment._id) } }">
+                    <router-link :to="{path: '/assignmentcreation/' + assignment._id }">
                       <h5 class="border border-black inline-flex items-center px-5 py-4 text-sm font-medium text-center text-white rounded-lg hover:bg-gray-300 focus:ring-4 focus:outline-none focus:ring-blue-300">
                         <v-lazy-image class="w-5 h-5 md-5 pd-5" src="/edit_image.svg" />
                       </h5>
@@ -209,7 +209,7 @@
             <!-- Buttons Row -->
             <div class="flex justify-end space-x-2 mt-4">
               <!-- Edit Button -->
-              <router-link :to="{path: '/assignmentcreation', query: { jsonData: JSON.stringify(assignment._id) } }">
+              <router-link :to="{path: '/assignmentcreation/' + assignment._id }">
                 <h5 class="border border-black inline-flex items-center px-5 py-4 text-sm font-medium text-center text-white rounded-lg hover:bg-gray-300 focus:ring-4 focus:outline-none focus:ring-blue-300">
                   <v-lazy-image class="w-5 h-5 md-5 pd-5" src="/edit_image.svg" />
                 </h5>
@@ -355,11 +355,12 @@ export default {
       isValidFilter(name) {
         const filtering = name.toLowerCase().replace(/\s/g, '');
 
-        if( this.nameFilter && name.includes(this.nameFilter.toLowerCase().replace(/\s/g, '')) ) {
+        if( this.nameFilter && filtering.includes(this.nameFilter.toLowerCase().replace(/\s/g, '')) ) {
           return true;
         } else if(!this.nameFilter) {
           return true
         } else {
+          console.log(this.nameFilter + " - " + filtering);
           return false;
         }
       }

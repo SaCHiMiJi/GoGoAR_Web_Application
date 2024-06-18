@@ -18,7 +18,14 @@ const routes = [
     	component: Home
   },
   {
-    	path: '/assignmentcreation',
+    path: '/assignmentcreation',
+    	component: AssignmentCreation,
+	    meta: {
+		    requiresAuth: true
+	    }
+  },
+  {
+    path: '/assignmentcreation/:id',
     	component: AssignmentCreation,
     	props: true,
 	    meta: {

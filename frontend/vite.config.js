@@ -11,11 +11,10 @@ const config = {
     port: 3030,
   },
   server: {
-    host: "0.0.0.0",
+    host: true,
     port: 3030,
-    protocol: 'ws',
     hmr:{
-      host: "0.0.0.0",
+      host: "localhost",
       port: 3030,
       protocol: 'ws',
     }

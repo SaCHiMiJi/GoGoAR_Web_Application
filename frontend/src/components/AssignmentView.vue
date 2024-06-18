@@ -150,25 +150,25 @@ export default {
       id: String
     },
     data() {
-        return {
-            assignment_id: null,
-	    
-            // this value will ensure how many instruction have existed.
-            currentIndex: 0,
+      return {
+        assignment_id: null,
+	 
+        // this value will ensure how many instruction have existed.
+        currentIndex: 0,
 
-            // POST datas
-            assignmentName: "",
-            description: "",
-            ref_url: "",
-            creator_id: "guestuser0000",
-            steps: new Map(),
-            isExist: false,
-            detailView: true,
+        // POST datas
+        assignmentName: "",
+        description: "",
+        ref_url: "",
+        creator_id: "guestuser0000",
+        steps: new Map(),
+        isExist: false,
+        detailView: true,
 
-            isAssignmentSubmit: false,
-            mobileAppURL: "",
-	    mobileAppURL_qrcode: "",
-        };
+        isAssignmentSubmit: false,
+        mobileAppURL: "",
+        mobileAppURL_qrcode: "",
+      };
     },
     methods: {
         // fetch assignment's detail
@@ -235,25 +235,25 @@ export default {
             return result;
         },
         getMobileAppURL() {
-            this.isAssignmentSubmit = true;
-            this.$http.get('/getredirectionurl/' + this.assignment_id)
-                .then((response) => {
-                    this.mobileAppURL = response.data;
-            	    console.log(this.mobileAppURL + " == " + response);
-                })
-                .catch((error) => {
-                    console.log(error); 
-                });
+          this.isAssignmentSubmit = true;
+          this.$http.get('/getredirectionurl/' + this.assignment_id)
+            .then((response) => {
+              this.mobileAppURL = response.data;
+        	    console.log(this.mobileAppURL + " == " + response);
+            })
+            .catch((error) => {
+              console.log(error); 
+            });
         },
-	getQRCode() {
-		this.$http.get('/getqrcode/' + this.assignment_id)
-			.then((response) => {
-				this.mobileAppURL_qrcode = response.data;
-			})
-			.catch((err) => {
-				console.log(err);
-			});
-	},
+      	getQRCode() {
+	      	this.$http.get('/getqrcode/' + this.assignment_id)
+		      	.then((response) => {
+			      	this.mobileAppURL_qrcode = response.data;
+    			  })
+    	  		.catch((err) => {
+	    	  		console.log(err);
+		    	  });
+    	  },
         copyLink() {
           try {
             copy(this.mobileAppURL);
@@ -264,11 +264,11 @@ export default {
         }
     },
     created() {
-        if (this.id) {
-            this.assignment_id = this.id;
-            this.getAssignmentDetail();
+      if (this.id) {
+        this.assignment_id = this.id;
+        this.getAssignmentDetail();
 	    this.getQRCode();
-            this.isExist = true;
+        this.isExist = true;
         } else {
           console.log("Couldn't get the parameter");
         }

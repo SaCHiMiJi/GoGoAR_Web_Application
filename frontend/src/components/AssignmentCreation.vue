@@ -137,7 +137,7 @@
                     <div class="block bg-[#EDE7F0] px-16" v-else>
                         <div class="pb-4">
                             <div>Function</div>
-                            <select v-model="assignmentFunction">
+                            <select v-model="assignmentFunction" class="rounded-lg p-2">
                                 <option selected disabled>Please choose...</option>
                                 <option value="highlight">highlight</option>
                                 <option value="context">context</option>
@@ -150,7 +150,7 @@
                             <div for="base-input" class="text-sm font-medium text-gray-900">
                                 Gogoboard's port
                             </div>
-                            <select v-model="assignmentPort">
+                            <select v-model="assignmentPort" class="rounded-lg p-2">
                                 <option selected disabled>Gogoboard ports</option>
                                 <option value="allinput">All input</option>
                                 <option value="input1">input 1</option>
@@ -192,7 +192,7 @@
                             <div>
                                 External Component
                             </div>
-                            <select v-model="assignmentExternalComponent">
+                            <select v-model="assignmentExternalComponent" class="rounded-lg p-2">
                                 <option selected disabled>External Component</option>
                                 <option value="leverswitch">Lever Switch</option>
                                 <option value="button">Button</option>
@@ -339,6 +339,9 @@ export default {
     components: {
       "v-lazy-image": VLazyImage
     },
+    props: {
+      id: String
+    },
     data() {
         return {
             assignment_id: null,
@@ -378,8 +381,7 @@ export default {
 
             isAssignmentSubmit: false,
             mobileAppURL: "",
-	    mobileAppURL_qrcode: ""
-
+      	    mobileAppURL_qrcode: ""
        };
     },
     methods: {
@@ -599,19 +601,18 @@ export default {
                     .then(response => {
                         useToast().success("edit completed.");
                         this.getMobileAppURL();
-			this.getMobileAppQRCode();
+                  			this.getMobileAppQRCode();
                     })
                     .catch(error => {
                         useToast().error(error.response.data.message);
                     });    
             } else {
-
 		          this.$http.post("create", qs.stringify(data), config)
                     .then(response => {
                         useToast().success("assignment creating completed.");
                   			this.assignment_id = response.data;
                         this.getMobileAppURL();
-			this.getMobileAppQRCode();
+                  			this.getMobileAppQRCode();
                     })
                     .catch(error => {
                         useToast().error(error.response.data.message);
@@ -692,8 +693,8 @@ export default {
         this.resizeImageMaps();
     },
     created() {
-        if (this.$route.query.jsonData) {
-            this.assignment_id = JSON.parse(this.$route.query.jsonData);
+        if (this.id) {
+            this.assignment_id = this.id;
             this.getAssignmentDetail();
             this.isExist = true;
         }

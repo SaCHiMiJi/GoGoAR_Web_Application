@@ -1,14 +1,24 @@
+<script setup>
+import { onMounted } from 'vue'
+import { initFlowbite } from 'flowbite'
+
+// initialize components based on data attribute selectors
+onMounted(() => {
+    initFlowbite();
+})
+</script>
+
 <template>
   <div id="app">
     <nav class="bg-[#322653] border-gray-200">
-      <div class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
+      <div class="w-full flex flex-wrap items-center justify-between p-4">
         <!-- Left Logo -->
         <a href="/" class="flex items-center space-x-3 rtl:space-x-reverse">
           <img src="/weblogo.svg" class="h-8" alt="Gogoboard Logo" />
         </a>
 
         <!-- Dropdown on mobile device -->
-        <button @click="toggleNavbar" type="button" class="inline-flex items-center p-2 w-10 h-10 justify-center text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200" aria-controls="navbar-default" aria-expanded="false">
+        <button data-collapse-toggle="navbar-default" type="button" class="inline-flex items-center p-2 w-10 h-10 justify-center text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200" aria-controls="navbar-default" aria-expanded="false">
           <span class="sr-only">Open main menu</span>
           <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 17 14">
             <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 1h15M1 7h15M1 13h15"/>
@@ -16,55 +26,48 @@
         </button>
 
         <!-- Navigation Buttons -->
-        <div :class="{'hidden': !isNavbarOpen, 'flex': isNavbarOpen}" class="w-full md:flex md:w-auto items-center space-x-4" id="navbar-default">
+        <div class="hidden w-full md:block md:w-auto flex flex-col" id="navbar-default">
           <RouterLink to="/discovery">
             <button class="text-white bg-[#322653] hover:bg-white hover:text-black focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mb-2 focus:outline-none">Discovery</button>
           </RouterLink>
 
           <!-- Available Page for Authenticated User -->
-          <div v-if="!userInfo" class="flex items-center space-x-4">
-            <RouterLink to="/signup">
-              <button class="text-white bg-[#322653] hover:bg-white hover:text-black focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mb-2 focus:outline-none">Sign Up</button>
-            </RouterLink>
-            <RouterLink to="/signin">
-              <button class="text-white bg-[#322653] hover:bg-white hover:text-black focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mb-2 focus:outline-none">Sign In</button>
-            </RouterLink>
-          </div>
+          <RouterLink to="/signup" v-show="!userInfo">
+            <button class="text-white bg-[#322653] hover:bg-white hover:text-black focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mb-2 focus:outline-none">Sign Up</button>
+          </RouterLink>
+          <RouterLink to="/signin" v-show="!userInfo">
+            <button class="text-white bg-[#322653] hover:bg-white hover:text-black focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mb-2 focus:outline-none">Sign In</button>
+          </RouterLink>
 
           <!-- Authenticated User Options -->
-          <div v-else class="flex items-center space-x-4">
-            <RouterLink to="/assignmentcreation">
-              <button class="text-white bg-[#322653] hover:bg-white hover:text-black focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mb-2 focus:outline-none">AR creation</button>
-            </RouterLink>
-            <RouterLink to="/mylibrary">
-              <button class="text-white bg-[#322653] hover:bg-white hover:text-black focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mb-2 focus:outline-none">My Library</button>
-            </RouterLink>
+          <RouterLink v-show="userInfo" to="/assignmentcreation">
+            <button class="text-white bg-[#322653] hover:bg-white hover:text-black focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mb-2 focus:outline-none">AR creation</button>
+          </RouterLink>
+          <RouterLink v-show="userInfo" to="/mylibrary">
+            <button class="text-white bg-[#322653] hover:bg-white hover:text-black focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mb-2 focus:outline-none">My Library</button>
+          </RouterLink>
 
-            <!-- User Dropdown -->
-            <div class="relative">
-              <button 
-                @click="toggleDropdown" ref="button" type="button" class="border-2 border-white text-white bg-[#322653] hover:bg-white hover:text-black focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mb-2 focus:outline-none" id="user-menu-button" aria-expanded="false">
-                  <span class="sr-only">Open user menu</span>
-                  {{ userInfo.creator_email }}
-              </button>
-              <!-- Dropdown menu -->
-              <div :class="{'hidden': !isDropdownOpen, 'block': isDropdownOpen}" ref="dropdown" class="absolute right-0 z-50 my-4 text-base list-none bg-white divide-y divide-gray-100 rounded-lg shadow" id="user-dropdown">
-                <div class="px-4 py-3">
-                  <span class="block text-sm text-gray-900">{{ userInfo.creator_username }}</span>
-                  <span class="block text-sm text-gray-500 truncate">{{ userInfo.creator_email }}</span>
-                </div>
-                <ul class="py-2" aria-labelledby="user-menu-button">
-                  <li>
-                    <RouterLink to="/resetpassword">
-                      <button class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full">Reset Password</button>
-                    </RouterLink>
-                  </li>
-                  <li>
-                    <button @click="openModal" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full">Sign Out</button>
-                  </li>
-                </ul>
-              </div>
+          <button v-if="userInfo"
+          @click="toggleDropdown" ref="button" type="button" class="border-2 border-white text-white bg-[#322653] hover:bg-white hover:text-black focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mb-2 focus:outline-none" id="user-menu-button" aria-expanded="false">
+            <span class="sr-only">Open user menu</span>
+            {{ getCreatorEmail() }}
+          </button>
+          <!-- Dropdown menu -->
+          <div :class="{'hidden': !isDropdownOpen, 'block': isDropdownOpen}" ref="dropdown" class="absolute right-0 z-50 my-4 text-base list-none bg-white divide-y divide-gray-100 rounded-lg shadow" id="user-dropdown">
+            <div class="px-4 py-3">
+              <span class="block text-sm text-gray-900">{{ getCreatorName() }}</span>
+              <span class="block text-sm text-gray-500 truncate">{{ getCreatorEmail() }}</span>
             </div>
+            <ul class="py-2" aria-labelledby="user-menu-button">
+              <li>
+                <RouterLink to="/resetpassword">
+                  <button class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full">Reset Password</button>
+                </RouterLink>
+              </li>
+              <li>
+                <button @click="openModal" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full">Sign Out</button>
+              </li>
+            </ul>
           </div>
         </div>
       </div>
@@ -103,7 +106,6 @@
 export default {
   data() {
     return {
-      isNavbarOpen: false,
       isDropdownOpen: false,
       isModalOpen: false,
       userInfo: null,
@@ -121,10 +123,7 @@ export default {
     });
   },
   methods: {
-    toggleNavbar() {
-      this.isNavbarOpen = !this.isNavbarOpen;
-    },
-    toggleDropdown() {
+   toggleDropdown() {
       this.isDropdownOpen = !this.isDropdownOpen;
     },
     openModal() {
@@ -151,6 +150,20 @@ export default {
           this.isDropdownOpen = false;
         }
       }
+    },
+    getCreatorEmail() {
+      if(!this.userInfo) {
+        return '';
+      }
+
+      return this.userInfo.creator_email;
+    },
+    getCreatorName() {
+      if(!this.userInfo) {
+        return '';
+      }
+
+      return this.userInfo.creator_name;
     }
   },
   mounted() {

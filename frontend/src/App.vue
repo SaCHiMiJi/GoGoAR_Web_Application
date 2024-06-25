@@ -134,6 +134,7 @@ export default {
     },
     signOut() {
       this.$router.replace({ path:"/" });
+      this.isDropdownOpen = false;
       this.closeModal();
       localStorage.removeItem('userInfo');
       this.userInfo = null;

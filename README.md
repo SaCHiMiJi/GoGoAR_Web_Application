@@ -10,7 +10,7 @@ This app contains both the backend and the frontend in a single repository.
 ### Clone Repository
 
 ```bash
-git clone git@github.com:SaCHiMiJi/WebGL_AR_Project.git
+git clone https://github.com/SaCHiMiJi/GoGoAR_Web_Application.git
 ```
 ### Start app containers
 

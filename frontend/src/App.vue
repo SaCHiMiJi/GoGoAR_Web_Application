@@ -50,7 +50,7 @@ onMounted(() => {
           <button v-if="userInfo"
           @click="toggleDropdown" ref="button" type="button" class="border-2 border-white text-white bg-[#322653] hover:bg-white hover:text-black focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mb-2 focus:outline-none" id="user-menu-button" aria-expanded="false">
             <span class="sr-only">Open user menu</span>
-            {{ getCreatorEmail() }}
+            {{ getCreatorName() }}
           </button>
           <!-- Dropdown menu -->
           <div :class="{'hidden': !isDropdownOpen, 'block': isDropdownOpen}" ref="dropdown" class="absolute right-0 z-50 my-4 text-base list-none bg-white divide-y divide-gray-100 rounded-lg shadow" id="user-dropdown">
@@ -164,7 +164,7 @@ export default {
         return '';
       }
 
-      return this.userInfo.creator_name;
+      return this.userInfo.creator_username;
     }
   },
   mounted() {

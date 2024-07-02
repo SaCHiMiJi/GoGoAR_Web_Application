@@ -10,7 +10,7 @@ onMounted(() => {
 
 <template>
   <div id="app">
-    <nav class="bg-[#322653] border-gray-200">
+    <nav class="bg-[#322653] border-gray-200 sticky top-0">
       <div class="w-full flex flex-wrap items-center justify-between p-4">
         <!-- Left Logo -->
         <a href="/" class="flex items-center space-x-3 rtl:space-x-reverse">
@@ -172,6 +172,6 @@ export default {
   },
   beforeDestroy() {
     document.removeEventListener('click', this.handleClickOutside);
-  }
+  },
 };
 </script>

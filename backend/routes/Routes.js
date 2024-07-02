@@ -268,7 +268,6 @@ app.get('/getqrcode/:id', async (req, res) => {
 app.post('/register', async (req, res) => {
   try {
     const { username, email, password } = req.body;
-    console.log(req.body);
 
     const hashedPassword = await bcrypt.hash(password, 10);
 
@@ -277,7 +276,8 @@ app.post('/register', async (req, res) => {
       creator_email: email, 
       creator_password: hashedPassword 
     };
-    console.log(creatorDetail);
+
+    // console.log(creatorDetail);
     console.log("find existing email...");
     const user = await creator_repository.findByEmail(email);
     console.log("finding complete.");

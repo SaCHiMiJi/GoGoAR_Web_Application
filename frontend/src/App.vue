@@ -14,7 +14,7 @@ onMounted(() => {
       <div class="w-full flex flex-wrap items-center justify-between p-4">
         <!-- Left Logo -->
         <a href="/" class="flex items-center space-x-3 rtl:space-x-reverse">
-          <img src="/weblogo.svg" class="h-8" alt="Gogoboard Logo" />
+          <img src="/weblogo.svg" class="h-[54px]" alt="Gogoboard Logo" />
         </a>
 
         <!-- Dropdown on mobile device -->

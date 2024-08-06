@@ -168,7 +168,7 @@ export default {
           this.isOTPSent = true;
 				})
 				.catch((error) => {
-					useToast().error(error.response.data.error);
+					useToast().error(error.response.data.message);
 				});
 		},
 

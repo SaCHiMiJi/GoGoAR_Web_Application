@@ -170,10 +170,10 @@
                                 <option value="allcon">All configurable</option>
                                 <option value="con1">configurable 1</option>
                                 <option value="con2">configurable 2</option>
-                                <option value="con3">configurable 3</option>
+                                <option value="multi">multi</option>
                                 <option value="i2c">I2C</option>
-                                <option value="chian">chian</option>
-                                <option value="uart">UART</option>
+                                <option value="addon1">Addon 1</option>
+                                <option value="addon2">Addon 2</option>
                             </select>
 
                         </div>
@@ -209,6 +209,20 @@
                                 <option value="motorgear">Motor Gear</option>
                                 <option value="plasticwheels">Plastic wheels</option>
                                 <option value="servomotor">Servo Motor</option>
+                                <option value="luminosity">Luminosity</option>
+                                <option value="extensioninput">Extension Input</option>
+                                <option value="extensionoutput">Extention Output</option>
+                                <option value="servo">Servo</option>
+                                <option value="pinbreakout2">Pinbreakout 2</option>
+                                <option value="pinbreakout4">Pinbreakout 4</option>
+                                <option value="joystick">Joystick</option>
+                                <option value="knob">Knob</option>
+                                <option value="ledwhite">LED White</option>
+                                <option value="ledredblue">LED Red and Blue</option>
+                                <option value="proximity">Proximity</option>
+                                <option value="limitswitch">Limit Switch</option>
+                                <option value="rainsensor">Rain Sensor</option>
+                                <option value="digitaltempandrh">Digital Temp and RH</option>
                             </select>
                         </div>
                         
@@ -224,55 +238,53 @@
         </div>
         <!-- Post form submission -->
         <div class="gap-8 py-8 px-4 mx-auto max-w-screen-xl xl:gap-16 md:grid md:grid-cols-2 sm:py-16 lg:px-6" v-else>
-            <!-- 1st column -->
-                <div class="object-none self-start w-325 h-325 text-center text-sm" v-if="mobileAppURL !== '' && mobileAppURL !== false ">
-                    <v-lazy-image src="/tick-circle.svg" class="mx-auto mb-4"/>
-                    <div class="text-lg">
-                      <div class="py-6">
-                		    Saved! 
-                      </div>
-
-		      <!-- QRcode -->
-		      <div class="grid justify-items-center pb-6" v-if="mobileAppURL_qrcode !== false">
-				    <img :src="mobileAppURL_qrcode" class="p-4 bg-[#322653]"/>
-		      </div>
-
-
-		      <!-- Copy to Clipboard -->
-                      <div class="relative bg-[#322653] mb-6 p-2">
-                        <input v-model="mobileAppURL" class="col-span-6 bg-gray-50 border border-gray-300 text-gray-500 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" disabled readonly>
-                        <button v-on:click="copyLink()" class="absolute end-2 top-1/2 -translate-y-1/2 text-gray-500 bg-[#322653] hover:bg-white rounded-lg p-4 inline-flex items-center justify-center">
-                          <span id="default-icon">
-                            <svg class="w-3.5 h-3.5" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 18 20">
-                              <path d="M16 1h-3.278A1.992 1.992 0 0 0 11 0H7a1.993 1.993 0 0 0-1.722 1H2a2 2 0 0 0-2 2v15a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V3a2 2 0 0 0-2-2Zm-3 14H5a1 1 0 0 1 0-2h8a1 1 0 0 1 0 2Zm0-4H5a1 1 0 0 1 0-2h8a1 1 0 1 1 0 2Zm0-5H5a1 1 0 0 1 0-2h2V2h4v2h2a1 1 0 1 1 0 2Z"/>
-                            </svg>
-                          </span>
-                        </button>
-                      </div>
-
-		      <!-- Back to Library -->
-		      <RouterLink to="/mylibrary">
-			      <button class="w-[325px] h-[80px] bg-[#322653] p-5 rounded-lg text-white text-lg hover:bg-slate-500 ">Back to Library</button>
-		      </RouterLink>
-                    </div>
-                </div>
-                <div class="object-none self-center w-325 h-325 text-center text-sm" v-else>
-                    <v-lazy-image src="/error.jpg" class="mx-auto mb-4"/>
-                    <p> 
-                        This assignment is yet to have mobile app's URL.
-                        Please create url via mobile application and try to refetch again.
-                    </p>
+          <!-- 1st column -->
+          <div class="object-none self-start w-325 h-325 text-center text-sm" v-if="mobileAppURL !== '' && mobileAppURL !== false ">
+            <v-lazy-image src="/tick-circle.svg" class="mx-auto mb-4"/>
+              <div class="text-lg">
+                <div class="py-6">
+           		    Saved! 
                 </div>
 
+    		      <!-- QRcode -->
+		          <div class="grid justify-items-center pb-6" v-if="mobileAppURL_qrcode !== false">
+				        <img :src="mobileAppURL_qrcode" class="p-4 bg-[#322653]"/>
+    		      </div>
+
+    		      <!-- Copy to Clipboard -->
+              <div class="relative bg-[#322653] mb-6 p-2">
+                <input v-model="mobileAppURL" class="col-span-6 bg-gray-50 border border-gray-300 text-gray-500 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" disabled readonly>
+                <button v-on:click="copyLink()" class="absolute end-2 top-1/2 -translate-y-1/2 text-gray-500 bg-[#322653] hover:bg-white rounded-lg p-4 inline-flex items-center justify-center">
+                  <span id="default-icon">
+                    <svg class="w-3.5 h-3.5" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 18 20">
+                      <path d="M16 1h-3.278A1.992 1.992 0 0 0 11 0H7a1.993 1.993 0 0 0-1.722 1H2a2 2 0 0 0-2 2v15a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V3a2 2 0 0 0-2-2Zm-3 14H5a1 1 0 0 1 0-2h8a1 1 0 0 1 0 2Zm0-4H5a1 1 0 0 1 0-2h8a1 1 0 1 1 0 2Zm0-5H5a1 1 0 0 1 0-2h2V2h4v2h2a1 1 0 1 1 0 2Z"/>
+                    </svg>
+                  </span>
+                </button>
+              </div>
+
+	  	      <!-- Back to Library -->
+		        <RouterLink to="/mylibrary">
+			        <button class="w-[325px] h-[80px] bg-[#322653] p-5 rounded-lg text-white text-lg hover:bg-slate-500 ">Back to Library</button>
+		        </RouterLink>
+          </div>                
+        </div>
+          <div class="object-none self-center w-325 h-325 text-center text-sm" v-else>
+            <v-lazy-image src="/error.jpg" class="mx-auto mb-4"/>
+            <p> 
+              This assignment is yet to have mobile app's URL.
+              Please create url via mobile application and try to refetch again.
+            </p>
+          </div>
 
             <!-- 2nd column -->
-                <!-- Show the instructions -->
-                <div v-if="mobileAppURL !== '' && mobileAppURL !== false" class="self-start" >
-                  <!-- Assignment name -->
-                  <div class="bg-[#322653] rounded-md p-8">
-                    <div v-if="formCreating" class="flex justify-end">
-                       {{ displayInstructionOrder() }}
-                    </div>
+            <!-- Show the instructions -->
+            <div v-if="mobileAppURL !== '' && mobileAppURL !== false" class="self-start" >
+              <!-- Assignment name -->
+              <div class="bg-[#322653] rounded-md p-8">
+                <div v-if="formCreating" class="flex justify-end">
+                   {{ displayInstructionOrder() }}
+                </div>
 
                     <label for="large-input" class="block mb-2 text-sm font-medium text-white">Assignment Name</label>
                     <input v-model="assignmentName" type="text" id="large-input" class="block w-full p-4 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 text-base focus:ring-blue-500 focus:border-blue-500" readonly>

@@ -16,6 +16,7 @@ services:
       - GMAIL_ADDRESS=ggbarassignmentcreation@gmail.com
       - GMAIL_APP_PASSWORD=kqnt qpmh tfpr jrbt
       - GMAIL_PASSWORD=Dyq?=%Fm}0G&=;f-9?*mi%ShY6qjB#W(
+      - EMBEDDED_USER=cf1fd5d6e2dbbc765e3b128bda187d26
     ports:
       - '3000:3000'  # Update the port mapping
 

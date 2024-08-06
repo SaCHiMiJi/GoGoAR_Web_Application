@@ -7,6 +7,7 @@ const assignment_repository = require('../repositories/AssignmentRepository.js')
 const creator_repository = require('../repositories/CreatorRepository.js');
 const otpController = require('../controllers/otpController');
 const OTP = require('../models/otpModel.js');
+
 // securities for authentication route.
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
@@ -395,6 +396,12 @@ app.post('/forgotpassword', async (req, res) => {
 
 app.get('/getcreatorname/:id', (req, res) => {
   const id = req.params.id;
+
+  // check if user is seeded user.
+  if(id === process.env.EMBEDDED_USER) {
+    return res.send('GoGo Board AR');
+  }
+
   creator_repository.findById(id)
   .then((name) => {
     const displayingName = name.creator_username;

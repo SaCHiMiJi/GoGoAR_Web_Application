@@ -6,6 +6,7 @@ const path = require('path');
 const mongoose = require('mongoose');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
+const { seedAssignment } = require('./seeder/seedAssignment.js')
 
 // connection related.
 const cors = require('cors');
@@ -21,7 +22,11 @@ mongoose.connect(config.DB, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
   useFindAndModify: false
-});
+  }).then(async () => {
+    console.log("Connected MongoDB");
+
+    await seedAssignment();
+  });
 app.use(cors());  //enable cors
 
 app.use(logger('dev'));
@@ -35,6 +40,7 @@ app.use('/assignment', routes);
 // Error handling and logging middleware
 app.use((req, res, next) => {
     console.log(`FullRequest URL: ${req.protocol}://${req.get('host')}${req.originalUrl}`);
+    
     // Instead of creating a 404 error here, just pass control to the next middleware
     next();
 }); 
@@ -58,6 +64,7 @@ app.use((err, req, res) => {
   res.render('error');
 });
 
+// prevent server shutdown after one api calls.
 const server = http.createServer(app);
 server.keepAliveTimeout = 30000;
 server.headerTimeout = 35000;

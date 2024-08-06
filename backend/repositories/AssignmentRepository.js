@@ -1,5 +1,6 @@
 const Assignment = require('../models/Assignment.js');
 const qrCode = require('qrcode');
+const mongoose = require('mongoose');
 
 class AsssignmentRepository {
   /**
@@ -13,7 +14,7 @@ class AsssignmentRepository {
    * @params {*} object
    */
   create(object) {
-    const newAssignment = {
+    let newAssignment = {
         assignment_name: object.assignment_name,
 	      description: object.description,
         creator_id: object.creator_id,
@@ -23,7 +24,7 @@ class AsssignmentRepository {
       	modified_date: null,
         steps: object.steps
     };
-
+    
     const assignment = new this.model(newAssignment);
   
     return assignment.save();

@@ -28,27 +28,27 @@ onMounted(() => {
         <!-- Navigation Buttons -->
         <div class="hidden w-full md:block md:w-auto flex flex-col" id="navbar-default">
           <RouterLink to="/discovery">
-            <button class="text-white bg-[#322653] hover:bg-white hover:text-black focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mb-2 focus:outline-none">Discovery</button>
+            <button class="mx-4 text-white bg-[#322653] hover:bg-white hover:text-black focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mb-2 focus:outline-none">Discovery</button>
           </RouterLink>
 
           <!-- Available Page for Authenticated User -->
           <RouterLink to="/signup" v-show="!userInfo">
-            <button class="text-white bg-[#322653] hover:bg-white hover:text-black focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mb-2 focus:outline-none">Sign Up</button>
+            <button class="mx-4 text-white bg-[#322653] hover:bg-white hover:text-black focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mb-2 focus:outline-none">Sign Up</button>
           </RouterLink>
           <RouterLink to="/signin" v-show="!userInfo">
-            <button class="text-white bg-[#322653] hover:bg-white hover:text-black focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mb-2 focus:outline-none">Sign In</button>
+            <button class="mx-4 text-white bg-[#322653] hover:bg-white hover:text-black focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mb-2 focus:outline-none">Sign In</button>
           </RouterLink>
 
           <!-- Authenticated User Options -->
           <RouterLink v-show="userInfo" to="/assignmentcreation">
-            <button class="text-white bg-[#322653] hover:bg-white hover:text-black focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mb-2 focus:outline-none">AR creation</button>
+            <button class="mx-4 text-white bg-[#322653] hover:bg-white hover:text-black focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mb-2 focus:outline-none">AR creation</button>
           </RouterLink>
           <RouterLink v-show="userInfo" to="/mylibrary">
-            <button class="text-white bg-[#322653] hover:bg-white hover:text-black focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mb-2 focus:outline-none">My Library</button>
+            <button class="mx-4 text-white bg-[#322653] hover:bg-white hover:text-black focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mb-2 focus:outline-none">My Library</button>
           </RouterLink>
 
           <button v-if="userInfo"
-          @click="toggleDropdown" ref="button" type="button" class="border-2 border-white text-white bg-[#322653] hover:bg-white hover:text-black focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mb-2 focus:outline-none" id="user-menu-button" aria-expanded="false">
+          @click="toggleDropdown" ref="button" type="button" class="mx-4 border-2 border-white text-white bg-[#322653] hover:bg-white hover:text-black focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mb-2 focus:outline-none" id="user-menu-button" aria-expanded="false">
             <span class="sr-only">Open user menu</span>
             {{ getCreatorName() }}
           </button>

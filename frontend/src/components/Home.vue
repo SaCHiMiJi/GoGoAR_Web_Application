@@ -1,19 +1,18 @@
 <template>
   <div>
-        <v-lazy-image 
-      src="/Home.png" 
+    <v-lazy-image 
+      src="/home_splited_1.png" 
       src-placeholder="/rolling_load.gif"
       :class="imageClass"
       @load="onLoad()"
       />
-    <!--
 
     <v-lazy-image 
-      src="/rolling_load.gif" 
-      class="mx-auto my-65 bg-red-500"
+      src="/home_splited_2.png" 
+      src-placeholder="/rolling_load.gif"
+      :class="imageClass"
+      @load="onLoad()"
       />
-    -->
-
   </div>
 </template>
 

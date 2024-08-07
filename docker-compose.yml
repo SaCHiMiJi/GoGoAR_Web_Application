@@ -9,7 +9,7 @@ services:
       - ./backend:/usr/app
       - /usr/app/node_modules
     environment:
-      - FRONTEND_URL=http://localhost:3030
+      - FRONTEND_URL=https://gogo-ar.tlic.ac.th
       - MONGO_URL=mongodb://db:27017/assignment
       - APP_PORT=3000  # Change the port to 3000
       - JWT_TOKEN=024f5966a0596e76a9c9a57b2b3deac1d3b587fd3d6483c080bbcf0e0e2041a1
@@ -35,4 +35,4 @@ services:
     ports:
       - '3030:3030'  # Change the port mapping
     environment:
-      - BACKEND_URL=http://localhost:3000
+      - BACKEND_URL=http://gogo-ar.tlic.ac.th

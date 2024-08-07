@@ -10,7 +10,7 @@ import "vue-toastification/dist/index.css";
 import '../node_modules/flowbite-vue/dist/index.css'
 
 const http = axios.create({
-	baseURL: import.meta.env.BACKEND_URL || 'http://127.0.0.1:3000/assignment',
+  baseURL: import.meta.env.BACKEND_URL || 'https://gogo-ar.tlic.ac.th/assignment',
 	headers: {
 		'Connection': 'keep-alive'
 	}

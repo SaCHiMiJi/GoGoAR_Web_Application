@@ -1,5 +1,6 @@
 const express = require('express');
 const QRCode = require('qrcode');
+const dns = require('dns');
 
 const verifyToken = require('../authmiddleware/authmiddleware');
 const app = express.Router();
@@ -251,7 +252,7 @@ app.get('/getqrcode/:id', async (req, res) => {
     const dburl = await assignment_repository.getMobileAppURL(id);
     const url = dburl.mobileapp_url;
     try {
-      const qrcode_img = await QRCode.toDataURL("http://127.0.0.1:3030/appredirection?url=" + url);
+      const qrcode_img = await QRCode.toDataURL(process.env.FRONTEND_URL + "/appredirection?url=" + url);
       return res.send(qrcode_img);
     } catch (err) {
       console.log(err);
@@ -269,6 +270,25 @@ app.get('/getqrcode/:id', async (req, res) => {
 app.post('/register', async (req, res) => {
   try {
     const { username, email, password } = req.body;
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_])[a-zA-Z\d\W_]{8,}$/;
+    const domain = email.split('@')[1];
+    
+    // validate the email.
+    if (!emailRegex.test(email)) {
+      return res.status(400).json({ error: 'Invalid email format.' });
+    }
+    
+    dns.resolveMx(domain, (err, addresses) => {
+      if (err || addresses.length === 0) {
+        return res.status(400).json({ error: 'Email does not exist.' });
+      }
+    });
+    
+    // validate the password.
+    if (!passwordRegex.test(password)) {
+      return res.status(400).json({ error: 'Password must include lowercase, uppercase, number, special character, and be at least 8 characters.' });
+    }
 
     const hashedPassword = await bcrypt.hash(password, 10);
 
@@ -289,9 +309,9 @@ app.post('/register', async (req, res) => {
     }
 
     creator_repository.create(creatorDetail).
-    then(() =>{
-      res.status(201).json({ message: 'User registered successfully' });
-    });
+     then(() =>{
+        res.status(201).json({ message: 'User registered successfully' });
+      });
   } catch(error) {
       console.log(error.toString());
         res.status(500).json({ error: 'Internal Server Error.' });

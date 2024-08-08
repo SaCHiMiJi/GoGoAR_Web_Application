@@ -30,7 +30,7 @@
     },
     methods: {
       onLoad() {
-        this.imageClass = "w-full"
+        this.imageClass = "w-full";
       },
     }
   }

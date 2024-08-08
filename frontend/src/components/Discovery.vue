@@ -124,10 +124,10 @@
 
             <tr class="bg-white border-b" v-for="assignment in assignments" :key="assignment._id" v-show="isValidFilter(assignment.assignment_name, assignment.creator_name)">
                 <!-- Name -->
-                <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
+                <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap truncate">
                     {{ assignment.assignment_name }}
                     <span class="text-gray-400 text-sm">
-                      {{ assignment.description }}
+                      {{ assignment.description.length > 25 ? assignment.description.substring(0, 25) + '...' : assignment.description }}
                     </span>
                 </th>
 

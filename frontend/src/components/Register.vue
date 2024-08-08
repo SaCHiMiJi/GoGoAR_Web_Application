@@ -135,20 +135,27 @@ export default {
 		validateRegister() {
 			// validate the email format.
 			const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        		if (!emailRegex.test(this.email)) {
-		        	return this.errorCard("Please enter a valid email address.");
+      const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_])[a-zA-Z\d\W_]{8,}$/;
+
+      if (!emailRegex.test(this.email)) {
+		    return this.errorCard("Please enter a valid email address.");
 			}
 			
+      // validate the password
 			if(this.password !== this.confirmaryPassword) {
 				return this.errorCard("Your confirmary password is not the same, please retry again.")
 			}
+
+      if (!passwordRegex.test(this.password)) {
+        return this.errorCard("Password must include lowercase, uppercase, number, special character, and be at least 8 characters.")
+      }
 			
 			this.showPopup = true;
 		},
 		register() {
 			this.showPopup = false;
 
-			 const registerDetail = qs.stringify({
+			const registerDetail = qs.stringify({
                                 "username": this.username,
                                 "email": this.email,
                                 "password": this.password

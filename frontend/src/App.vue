@@ -10,7 +10,7 @@ onMounted(() => {
 
 <template>
   <div id="app">
-    <nav class="bg-[#322653] border-gray-200 sticky top-0">
+    <nav class="bg-[#322653] border-gray-200 sticky top-0 z-[100]">
       <div class="w-full flex flex-wrap items-center justify-between p-4">
         <!-- Left Logo -->
         <a href="/" class="flex items-center space-x-3 rtl:space-x-reverse">

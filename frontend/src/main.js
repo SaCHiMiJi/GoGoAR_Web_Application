@@ -10,7 +10,7 @@ import "vue-toastification/dist/index.css";
 import '../node_modules/flowbite-vue/dist/index.css'
 
 const http = axios.create({
-  baseURL: import.meta.env.BACKEND_URL || 'https://backend-gogo.tlic.cmu.ac.th/assignment',
+  baseURL: import.meta.env.VITE_BACKEND_URL || 'https://backend-gogo.tlic.cmu.ac.th/assignment',
   headers: {
     'Connection': 'keep-alive',
   }

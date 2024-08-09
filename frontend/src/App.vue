@@ -109,6 +109,7 @@ export default {
       isDropdownOpen: false,
       isModalOpen: false,
       userInfo: null,
+      url: import.meta.env.BACKEND_URL
     };
   },
   created() {

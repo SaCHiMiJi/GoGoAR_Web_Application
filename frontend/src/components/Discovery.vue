@@ -259,7 +259,7 @@ export default {
 
         // Fetch and assign creator names
         for (let assignment of assignments) {
-          assignment.creator_name = await this.getCreatorName(assignment.creator_id);
+          console.log(assignment.modified_date ?? assignment.created_date);
           assignment.modified_date = this.formatDate(assignment.modified_date ?? assignment.created_date);
         }
 

@@ -43,11 +43,21 @@ app.post('/create', async (req, res) => {
   if(typeof steps === "string") {
   	steps = JSON.parse(steps);
   }
+  
+  // create creator name.
+  let creator_name;
+  try{
+    const creatorDetail = await creator_repository.findById(creator_id);
+    creator_name = creatorDetail.creator_username;
+  } catch(e) {
+    creator_name = 'anonymous';
+  }
 
   let assignment = { 
     assignment_name: assignment_name, 
     description: description,
     creator_id: creator_id,
+    creator_name: creator_name,
     ref_url: ref_url,
     created_date: createdDate,
     steps: steps	 

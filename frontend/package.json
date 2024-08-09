@@ -12,6 +12,7 @@
   "@vitejs/plugin-vue": "^5.0.4",
   "axios": "^1.6.8",
   "copy-to-clipboard": "^3.3.3",
+  "dotenv": "^16.4.5",
   "flowbite": "^2.3.0",
   "flowbite-vue": "^0.1.4",
   "image-map": "^2.0.1",

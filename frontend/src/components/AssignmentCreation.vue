@@ -175,16 +175,6 @@
                                 <option value="addon1">Addon 1</option>
                                 <option value="addon2">Addon 2</option>
                             </select>
-
-                        </div>
-                        
-                        <!-- Description -->
-                        <div v-if="assignmentFunction !== 'connect' && assignmentFunction !== null" class="pb-4">
-                            <div for="small-input" class="text-sm font-medium text-gray-900">
-                                Context
-                            </div>
-                            <textarea maxlength="75"v-model="assignmentContext" id="textarea" 
-                            rows="2" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 mb-2"></textarea>
                         </div>
 
                         <!-- External Component -->
@@ -226,6 +216,15 @@
                             </select>
                         </div>
                         
+                        <!-- Description -->
+                        <div v-if="assignmentFunction !== null" class="pb-4">
+                            <div for="small-input" class="text-sm font-medium text-gray-900">
+                                Context
+                            </div>
+                            <textarea maxlength="75"v-model="assignmentContext" id="textarea" 
+                            rows="2" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 mb-2"></textarea>
+                        </div>
+
                         <!-- Buttons -->
                         <div class="flex justify-center">
                             <button @click="cancelInstruction" class="items-center text-white bg-[#D65F5F] hover:bg-white-800 focus:ring-4 focus:ring-white-300 font-medium rounded-lg text-sm px-5 py-2.5 m-6 p-8">Cancel</button>
@@ -454,7 +453,8 @@ export default {
             // if index is not a zero, the instruction presence to be edited the existing one.
             if(index > 0) {
                 this.assignmentFunction = this.getSubValue(index, "function");
-                this.assignmentPort = this.getSubValue(index, "port");
+                this.assignmentPort = this.getSubValue(index, "component");
+                this.assignmentExternalComponent = this.getSubValue(index, "externalComponent");
                 this.assignmentContext = this.getSubValue(index, "context");
             }
         },
@@ -494,15 +494,13 @@ export default {
 
             let stepsInfo = new Map();
             stepsInfo.set("function", this.assignmentFunction);
+            stepsInfo.set("context", this.assignmentContext);
             
             if(this.assignmentFunction === "highlight") {
                 stepsInfo.set("component", this.assignmentPort);
-                stepsInfo.set("context", this.assignmentContext);
             } else if (this.assignmentFunction === "connect") {
                 stepsInfo.set("component", this.assignmentPort);
                 stepsInfo.set("externalComponent", this.assignmentExternalComponent);
-            } else {
-                stepsInfo.set("context", this.assignmentContext);
             }
 
             // add map element

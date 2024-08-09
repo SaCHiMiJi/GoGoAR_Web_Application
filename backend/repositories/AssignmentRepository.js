@@ -18,6 +18,7 @@ class AsssignmentRepository {
         assignment_name: object.assignment_name,
 	      description: object.description,
         creator_id: object.creator_id,
+        creator_name: object.creator_name,
         ref_url: object.ref_url,
       	mobileapp_url: null,
       	created_date: object.created_date,

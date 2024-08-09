@@ -11,10 +11,9 @@ import '../node_modules/flowbite-vue/dist/index.css'
 
 const http = axios.create({
   baseURL: import.meta.env.BACKEND_URL || 'https://backend-gogo.tlic.cmu.ac.th/assignment',
-	headers: {
-		'Connection': 'keep-alive',
-    // 'schme': 'https'
-	}
+  headers: {
+    'Connection': 'keep-alive',
+  }
 });
 
 const emitter = mitt();

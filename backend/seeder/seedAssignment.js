@@ -9,6 +9,7 @@ const seedAssignments = [
     "assignment_name": "Learn to read sensor values (Input).",
     "description": "Learn to read sensor values (Input).",
     "creator_id": embeddedCreator,
+    "creator_name": "GoGo Board AR",
     "created_date": createdDate,
     "ref_url": null,
     "steps": {
@@ -28,6 +29,7 @@ const seedAssignments = [
     "assignment_name": "Learn to operate equipment (Output).",
     "description": "Learn to operate equipment (Output).",
     "creator_id": embeddedCreator,
+    "creator_name": "GoGo Board AR",
     "created_date": createdDate,
     "ref_url": null,
     "steps": {
@@ -51,6 +53,7 @@ const seedAssignments = [
     "assignment_name": "Automatic street light",
     "description": "Creating an automatic lighting control system that is highly sensitive and can respond quickly and accurately to changes in light.",
     "creator_id": embeddedCreator,
+    "creator_name": "GoGo Board AR",
     "created_date": createdDate,
     "ref_url": null,
     "steps": {
@@ -90,7 +93,7 @@ try {
           const createdAssignment = await assignment_repository.create(assignment);
           const id = createdAssignment._id;
           await assignment_repository.updateURL(id, "unitydl://mylink?" + id);
-          console.log("Successfully created the first set of assignments.");
+          console.log("Successfully created the assignment.");
         } catch (error) {
           console.error("Unable to create the initiated assignment because:\n" + error.toString());
         }

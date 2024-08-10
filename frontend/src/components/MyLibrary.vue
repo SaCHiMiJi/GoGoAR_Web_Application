@@ -166,13 +166,13 @@
                   <div class="flex justify-end space-x-2 mt-4">
                     <!-- Edit Button -->
                     <router-link :to="{path: '/assignmentcreation/' + assignment._id }">
-                      <h5 class="border border-black inline-flex items-center px-5 py-4 text-sm font-medium text-center text-white rounded-lg hover:bg-gray-300 focus:ring-4 focus:outline-none focus:ring-blue-300">
+                      <h5 class="w-[62px] h-[62px] border border-black inline-flex items-center px-5 py-4 text-sm font-medium text-center text-white rounded-lg hover:bg-gray-300 focus:ring-4 focus:outline-none focus:ring-blue-300">
                         <v-lazy-image class="w-5 h-5 md-5 pd-5" src="/edit_image.svg" />
                       </h5>
                     </router-link>
                     <!-- Remove Button -->
                     <button v-on:click="idToDelete = assignment._id">
-                      <h5 class="border border-black inline-flex items-center px-5 py-4 text-sm font-medium text-center text-white rounded-lg hover:bg-gray-300 focus:ring-4 focus:outline-none focus:ring-blue-300">
+                      <h5 class="w-[62px] h-[62px] border border-black inline-flex items-center px-5 py-4 text-sm font-medium text-center text-white rounded-lg hover:bg-gray-300 focus:ring-4 focus:outline-none focus:ring-blue-300">
                         <v-lazy-image class="w-5 h-5 md-5 pd-5" src="/delete_image.svg" />
                       </h5>
                     </button>
@@ -185,10 +185,10 @@
       </div>
 
       <!-- Card View -->
-      <div v-else class="grid grid-cols-4 gap-4 m-10">
+      <div v-else class="grid gap-4 m-10" style="grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));">
         <div class="form-row align-items-center text-left" v-bind:key="assignment" v-for="assignment in assignments" v-show="isValidFilter(assignment.assignment_name)">
           <!-- Topic -->
-          <div class="max-w-sm h-full p-6 bg-white border border-gray-200 rounded-lg shadow">
+          <div class="p-6 bg-white border border-gray-200 rounded-lg shadow">
             {{ assignment.assignment_name }}
             <br>
 

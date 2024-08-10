@@ -3,10 +3,10 @@
         <!-- view assignment's details and instructions -->
         <div class="gap-8 items- py-8 px-4 mx-auto max-w-screen-xl xl:gap-16 md:grid md:grid-cols-2 sm:py-16 lg:px-6" v-if="detailView">
             <!-- Image container on 1st column -->
-            <div class="relative">
+            <div class="sm:relative">
                 <v-lazy-image class="object-none self-center" src="/gogoboard.png" usemap="#image_map"/>
                 <!-- view the assignment's url -->
-                <div class="absolute bottom-0 left-0">
+                <div class="sm:absolute sm:bottom-0 sm:left-0">
                     <button 
                         class="mb-5 p-8 text-white bg-[#50C878] hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 focus:outline-none" 
                         v-on:click="detailView = !detailView;getMobileAppURL()">
@@ -65,30 +65,35 @@
 		        <img :src="mobileAppURL_qrcode" class="bg-[#322653] p-4"/>
       		</div>
 
-		            <!-- Copy to Clipboard -->
-                <div class="relative bg-[#322653] mb-16 p-2">
-                        <input v-model="mobileAppURL" class="col-span-6 bg-gray-50 border border-gray-300 text-gray-500 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" disabled readonly>
-                        <button v-on:click="copyLink()" class="absolute end-2 top-1/2 -translate-y-1/2 text-gray-500 bg-[#322653] hover:bg-white rounded-lg p-4 inline-flex items-center justify-center">
-                          <span id="default-icon">
-                            <svg class="w-3.5 h-3.5" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 18 20">
-                              <path d="M16 1h-3.278A1.992 1.992 0 0 0 11 0H7a1.993 1.993 0 0 0-1.722 1H2a2 2 0 0 0-2 2v15a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V3a2 2 0 0 0-2-2Zm-3 14H5a1 1 0 0 1 0-2h8a1 1 0 0 1 0 2Zm0-4H5a1 1 0 0 1 0-2h8a1 1 0 1 1 0 2Zm0-5H5a1 1 0 0 1 0-2h2V2h4v2h2a1 1 0 1 1 0 2Z"/>
-                            </svg>
-                          </span>
-                	</button>
-                </div>
-            </div>
-            <div v-else class="text-center">
-              <v-lazy-image class="mx-auto mb-4" src="/error.jpg"/>
-              <div>This assignment doesn't have an app's URL yet, Please wait for the author to add this app later.</div>
-             </div>
-              <!-- view the assignment's detail -->
-            <div class="absolute bottom-0 left-0">
-              <button 
-                class="mb-5 p-8 text-white bg-[#50C878] hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 focus:outline-none" v-on:click="detailView = !detailView">
-                Assignment Detail
-              </button>
-            </div>
+		      <!-- Copy to Clipboard -->
+          <div class="relative bg-[#322653] p-2">
+            <input v-model="mobileAppURL" class="col-span-6 bg-gray-50 border border-gray-300 text-gray-500 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" disabled readonly>
+            <button v-on:click="copyLink()" class="absolute end-2 top-1/2 -translate-y-1/2 text-gray-500 bg-[#322653] hover:bg-white rounded-lg p-4 inline-flex items-center justify-center">
+              <span id="default-icon">
+                <svg class="w-3.5 h-3.5" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 18 20">
+                  <path d="M16 1h-3.278A1.992 1.992 0 0 0 11 0H7a1.993 1.993 0 0 0-1.722 1H2a2 2 0 0 0-2 2v15a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V3a2 2 0 0 0-2-2Zm-3 14H5a1 1 0 0 1 0-2h8a1 1 0 0 1 0 2Zm0-4H5a1 1 0 0 1 0-2h8a1 1 0 1 1 0 2Zm0-5H5a1 1 0 0 1 0-2h2V2h4v2h2a1 1 0 1 1 0 2Z"/>
+                </svg>
+              </span>
+           	</button>
           </div>
+
+          <!-- navigate to the link -->
+          <button class="mb-16 text-blue-700 hover:text-white border border-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2" @click="redirectToLink()">
+            Try Now
+          </button>
+        </div>
+        <div v-else class="text-center">
+          <v-lazy-image class="mx-auto mb-4" src="/error.jpg"/>
+          <div>This assignment doesn't have an app's URL yet, Please wait for the author to add this app later.</div>
+        </div>
+        <!-- view the assignment's detail -->
+        <div class="sm:absolute sm:bottom-0 sm:left-0">
+          <button 
+            class="mb-5 p-8 text-white bg-[#50C878] hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 focus:outline-none" v-on:click="detailView = !detailView">
+            Assignment Detail
+          </button>
+        </div>
+      </div>
           <!-- 2nd column -->
           <div>
             <!-- if assignment URL is present -->
@@ -107,30 +112,29 @@
 
                     <!-- Assignment Reference URL -->
                     <label for="large-input" class="block mb-2 text-sm font-medium text-white">Reference Link</label>
-                   <input v-model="ref_url" type="text" id="large-input" class="block w-full p-4 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 text-base focus:ring-blue-500 focus:border-blue-500" readonly>
+                    <input v-model="ref_url" type="text" id="large-input" class="block w-full p-4 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 text-base focus:ring-blue-500 focus:border-blue-500" readonly>
                     </div>
 
                     <div class="mb-5 bg-[#EDE7F0] rounded-md p-8">
                     <!-- Instruction View page -->
                     <div>
-                        <div v-for="[key] in steps" :key="key">
-                          <div class="p-4 bg-gray-100 rounded-lg shadow-md flex items-center justify-between mb-2">
-                            <div class="flex items-center">
-                              <span class="bg-gray-200 text-gray-700 text-xs font-medium px-2 py-1 rounded-full mr-2">{{ key }}</span>
-                              <span class="text-lg font-medium text-purple-700">{{ getStepFunctionDetails(key) }}</span>
-                          </div>
-                            
-                          </div>
+                      <div v-for="[key] in steps" :key="key">
+                        <div class="p-4 bg-gray-100 rounded-lg shadow-md flex items-center justify-between mb-2">
+                          <div class="flex items-center">
+                            <span class="bg-gray-200 text-gray-700 text-xs font-medium px-2 py-1 rounded-full mr-2">{{ key }}</span>
+                            <span class="text-lg font-medium text-purple-700">{{ getStepFunctionDetails(key) }}</span>
+                        </div>                
+                      </div>
                     </div>
                   </div>
                 </div>
-
             </div>
             <!-- if assignment URL is absent, let the user manually fetch the data -->
             <div v-else class="text-center">
               <button v-on:click="getMobileAppURL()" 
-class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 focus:outline-none">
-Re-fetch the URL</button>
+                class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 focus:outline-none">
+                Re-fetch the URL
+              </button>
            </div>
         </div>
       </div>
@@ -176,16 +180,12 @@ export default {
             this.$http.get("/getassignment/" + this.assignment_id)
             .then(response => {
                 const data = response.data;
-                console.log(data);
                 this.assignmentName = data.assignment_name;
                 this.description = data.description;
                 this.creator_id = data.creator_id;
 		            this.ref_url = data.ref_url;
                 this.mobileAppURL = data.mobileapp_url,
                 this.steps = this.objectToMap(data.steps);
-
-                console.log("fetched name as: " + this.assignmentName
-                    + ", fetch creator's mail as : " + this.creator_mail);
 
                 // this.displayInstructions();
             })
@@ -211,10 +211,8 @@ export default {
             const step = this.steps.get(index);
             let stepInfo = "";
             if (step) {
-                console.log(`Details of step ${index}:`);
                 for (let [key, value] of step.entries()) {
                     stepInfo += `| ${value} `;
-                    console.log(`${key}: ${value}`);
                 }
                 return stepInfo;
             } else {
@@ -239,7 +237,7 @@ export default {
           this.$http.get('/getredirectionurl/' + this.assignment_id)
             .then((response) => {
               this.mobileAppURL = response.data;
-        	    console.log(this.mobileAppURL + " == " + response);
+        	    // console.log(this.mobileAppURL + " == " + response);
             })
             .catch((error) => {
               console.log(error); 
@@ -261,13 +259,16 @@ export default {
           } catch($e) {
             useToast().error('Cannot copy: ' + $e);
           }
-        }
+        },
+      redirectToLink() {
+        window.location.href = this.mobileAppURL;
+      }
     },
     created() {
       if (this.id) {
         this.assignment_id = this.id;
         this.getAssignmentDetail();
-	    this.getQRCode();
+  	    this.getQRCode();
         this.isExist = true;
         } else {
           console.log("Couldn't get the parameter");

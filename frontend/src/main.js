@@ -1,19 +1,19 @@
-import { createApp } from 'vue'; // Import createApp from Vue 3
-import axios from 'axios';
-import App from './App.vue';
-import router from './router';
-import mitt from 'mitt';
+import { createApp } from "vue"; // Import createApp from Vue 3
+import axios from "axios";
+import App from "./App.vue";
+import router from "./router";
+import mitt from "mitt";
 
-import './index.css';
+import "./index.css";
 import Toast, { POSITION } from "vue-toastification";
 import "vue-toastification/dist/index.css";
-import '../node_modules/flowbite-vue/dist/index.css'
+import "../node_modules/flowbite-vue/dist/index.css";
 
 const http = axios.create({
-  baseURL: import.meta.env.VITE_BACKEND_URL || 'https://backend-gogo.tlic.cmu.ac.th/assignment',
+  baseURL: import.meta.env.VITE_BACKEND_URL,
   headers: {
-    'Connection': 'keep-alive',
-  }
+    Connection: "keep-alive",
+  },
 });
 
 const emitter = mitt();
@@ -35,9 +35,9 @@ app.use(Toast, {
   draggablePercent: 0.6,
   showCloseButtonOnHover: false,
   hideProgressBar: true,
-  closeButton: 'button',
+  closeButton: "button",
   icon: true,
-  rtl: false
+  rtl: false,
 });
 
-app.mount('#app'); // Mount the app to the DOM element with id 'app'
+app.mount("#app"); // Mount the app to the DOM element with id 'app'

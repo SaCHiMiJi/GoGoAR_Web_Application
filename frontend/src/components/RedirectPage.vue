@@ -1,11 +1,15 @@
 <template>
-  <div class="flex justify justify-center items-center align-middle content-center h-dvh">
-    <button class="text-blue-700 hover:text-white border border-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2" v-if="mobileAppURL !== null" @click="redirectApp()"> 
+  <div
+    class="flex justify justify-center items-center align-middle content-center h-dvh"
+  >
+    <button
+      class="text-blue-700 hover:text-white border border-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2"
+      v-if="mobileAppURL !== null"
+      @click="redirectApp()"
+    >
       Open App
     </button>
-    <div v-else>
-      This page didn't receive any url, please try again later.
-    </div>
+    <div v-else>This page didn't receive any url, please try again later.</div>
   </div>
 </template>
 
@@ -13,20 +17,18 @@
 export default {
   data() {
     return {
-      mobileAppURL: ''
+      mobileAppURL: "",
     };
   },
   methods: {
-   redirectApp() {
-    // redirect to app
-    console.log(this.mobileAppURL);
-    window.location.href = this.mobileAppURL;
-   }
+    redirectApp() {
+      window.location.href = this.mobileAppURL;
+    },
   },
   created() {
-    if(this.$route.query.url) {
-      this.mobileAppURL = this.$route.query.url; 
+    if (this.$route.query.url) {
+      this.mobileAppURL = this.$route.query.url;
     }
-  }
-}
+  },
+};
 </script>

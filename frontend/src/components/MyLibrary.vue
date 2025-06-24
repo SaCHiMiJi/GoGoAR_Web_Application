@@ -1,5 +1,5 @@
 <template>
-  <section>
+  <section class="min-h-screen">
     <!-- Delete Assignment Modal -->
     <div
       v-if="idToDelete !== null"
@@ -121,7 +121,7 @@
         <label
           for="default-search"
           class="mb-2 text-sm font-medium text-gray-900 sr-only"
-          >Search</label
+        >Search</label
         >
         <div class="relative mb-4">
           <div
@@ -229,7 +229,7 @@
         class="py-2 mx-auto max-w-screen-2xl text-center lg:py-8"
       >
         <div class="relative overflow-x-auto sm:rounded-lg">
-          <table class="w-full text-sm text-left rtl:text-right text-gray-500">
+          <table class="w-full text-sm text-left rtl:text-right text-gray-500 border-[#322653]">
             <thead class="text-l text-white uppercase bg-[#322653]">
               <!-- Topic -->
               <tr>
@@ -289,7 +289,7 @@
             </thead>
 
             <!-- Content -->
-            <tbody>
+            <tbody class="border-[#322653]">
               <tr
                 class="bg-white border-b"
                 v-for="assignment in assignments"
@@ -317,9 +317,9 @@
                 <td class="px-6 py-4">{{ assignment.ref_url }}</td>
 
                 <!-- View Assignment -->
-                <td class="px-6 py-4 text-right">
+                <td class="text-right">
                   <!-- Buttons Row -->
-                  <div class="flex justify-end space-x-2 mt-4">
+                  <div class="flex justify-center mx-auto my-2">
                     <!-- Edit Button -->
                     <router-link
                       :to="{ path: '/assignmentcreation/' + assignment._id }"
@@ -485,7 +485,7 @@ export default {
           var errMsg = error.response.data.message.toString();
           if (
             errMsg === "No token Received." ||
-            errMsg === "Outdated or Invalid token"
+              errMsg === "Outdated or Invalid token"
           ) {
             this.emiiter.emit("signout");
             this.$router.replace({ path: "/signin" });
@@ -562,7 +562,7 @@ export default {
 
       if (
         this.nameFilter &&
-        filtering.includes(this.nameFilter.toLowerCase().replace(/\s/g, ""))
+          filtering.includes(this.nameFilter.toLowerCase().replace(/\s/g, ""))
       ) {
         return true;
       } else if (!this.nameFilter) {

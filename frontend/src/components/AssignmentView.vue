@@ -30,22 +30,18 @@
       <div class="items-start">
         <!-- Assignment name -->
         <div class="bg-[#322653] rounded-md p-8">
-          <div v-if="formCreating" class="flex justify-end">
-            {{ displayInstructionOrder() }}
-          </div>
+          <div v-if="formCreating" class="flex justify-end">{{ displayInstructionOrder() }}</div>
 
           <label
             for="large-input"
             class="block mb-2 text-sm font-medium text-white"
-            >Assignment Name</label
-          >
+            >Assignment Name</label>
           <input
             v-model="assignmentName"
             type="text"
             id="large-input"
-            class="block w-full p-4 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 text-base focus:ring-blue-500 focus:border-blue-500"
-            readonly
-          />
+            class="block w-full p-4 mb-4 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 text-base focus:ring-blue-500 focus:border-blue-500"
+            readonly/>
           <!-- Description -->
           <label
             for="large-input"
@@ -56,7 +52,7 @@
             v-model="description"
             type="text"
             id="large-input"
-            class="block w-full p-4 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 text-base focus:ring-blue-500 focus:border-blue-500"
+            class="block w-full p-4 mb-4 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 text-base focus:ring-blue-500 focus:border-blue-500"
             readonly
           />
 
@@ -70,7 +66,7 @@
             v-model="ref_url"
             type="text"
             id="large-input"
-            class="block w-full p-4 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 text-base focus:ring-blue-500 focus:border-blue-500"
+            class="block w-full p-4 mb-4 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 text-base focus:ring-blue-500 focus:border-blue-500"
             readonly
           />
         </div>
@@ -120,7 +116,7 @@
           </div>
 
           <!-- Copy to Clipboard -->
-          <div class="relative bg-[#322653] p-2">
+          <div class="relative bg-[#322653] mb-6 p-2">
             <input
               v-model="mobileAppURL"
               class="col-span-6 bg-gray-50 border border-gray-300 text-gray-500 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
@@ -146,14 +142,24 @@
             </button>
           </div>
 
-          <!-- navigate to the link -->
-          <button
-            class="mb-16 text-blue-700 hover:text-white border border-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2"
-            @click="redirectToLink()"
-          >
-            Try Now
-          </button>
+          <div>
+            <!-- view the assignment's detail -->
+            <button
+              class="px-5 py-2.5 me-8 text-md text-white font-medium rounded-lg
+              bg-[#50C878] hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 focus:outline-none"
+              v-on:click="detailView = !detailView">
+              Assignment Detail
+            </button>
+
+            <!-- navigate to the link -->
+            <button
+              class="mb-16 text-blue-700 hover:text-white border border-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2"
+              @click="redirectToLink()">
+              Try Now
+            </button>
+          </div>
         </div>
+
         <div v-else class="text-center">
           <v-lazy-image class="mx-auto mb-4" src="/error.jpg" />
           <div>
@@ -161,16 +167,8 @@
             author to add this app later.
           </div>
         </div>
-        <!-- view the assignment's detail -->
-        <div class="sm:absolute sm:bottom-0 sm:left-0">
-          <button
-            class="mb-5 p-8 text-white bg-[#50C878] hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 focus:outline-none"
-            v-on:click="detailView = !detailView"
-          >
-            Assignment Detail
-          </button>
-        </div>
       </div>
+
       <!-- 2nd column -->
       <div>
         <!-- if assignment URL is present -->
@@ -190,7 +188,7 @@
               v-model="assignmentName"
               type="text"
               id="large-input"
-              class="block w-full p-4 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 text-base focus:ring-blue-500 focus:border-blue-500"
+              class="block w-full p-4 mb-4 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 text-base focus:ring-blue-500 focus:border-blue-500"
               readonly
             />
             <!-- Description -->
@@ -203,7 +201,7 @@
               v-model="description"
               type="text"
               id="large-input"
-              class="block w-full p-4 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 text-base focus:ring-blue-500 focus:border-blue-500"
+              class="block w-full p-4 mb-4 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 text-base focus:ring-blue-500 focus:border-blue-500"
               readonly
             />
 
@@ -217,7 +215,7 @@
               v-model="ref_url"
               type="text"
               id="large-input"
-              class="block w-full p-4 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 text-base focus:ring-blue-500 focus:border-blue-500"
+              class="block w-full p-4 mb-4 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 text-base focus:ring-blue-500 focus:border-blue-500"
               readonly
             />
           </div>

@@ -2,13 +2,12 @@
 import { onMounted } from "vue";
 import { initFlowbite } from "flowbite";
 
-// initialize components based on data attribute selectors
 onMounted(() => {
   initFlowbite();
 });
 </script>
 
-<template>
+<template style="background-color: #322653;">
   <div id="app">
     <nav class="bg-[#322653] border-gray-200 sticky top-0 z-[100]">
       <div class="w-full flex flex-wrap items-center justify-between p-4">
@@ -108,7 +107,7 @@ onMounted(() => {
             id="user-dropdown"
           >
             <div class="px-4 py-3">
-              <span class="block text-sm text-gray-900">{{
+              <span class="block text-sm text-gray-100">{{
                 getCreatorName()
               }}</span>
               <span class="block text-sm text-gray-500 truncate">{{
@@ -148,7 +147,7 @@ onMounted(() => {
             <button
               @click="closeModal"
               type="button"
-              class="absolute top-3 right-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white"
+              class="absolute top-3 right-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-100 rounded-lg text-sm w-8 h-8 inline-flex justify-center items-center dark:hover:bg-gray-600 "
             >
               <svg
                 class="w-3 h-3"
@@ -196,7 +195,7 @@ onMounted(() => {
               <button
                 @click="closeModal"
                 type="button"
-                class="py-2.5 px-5 ml-3 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100"
+                class="py-2.5 px-5 ml-3 text-sm font-medium text-gray-100 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100"
               >
                 No, cancel
               </button>
@@ -205,7 +204,35 @@ onMounted(() => {
         </div>
       </div>
     </nav>
+
     <router-view></router-view>
+    
+    <footer class="bg-[#322653] text-white">
+      <div class="mx-auto w-full max-w-screen-xl px-4 py-6 lg:py-8 sm:py-2">
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div>
+            <h2 class="mb-6 text-sm font-semibold text-gray-100 uppercase">Contact Us</h2>
+            <ul class="text-gray-300 font-medium">
+              <li class="mb-4">
+                <a class="hover:underline">vrlab.cmu@gmail.com</a>
+              </li>
+            </ul>
+          </div>
+          <div>
+            <h2 class="mb-6 text-sm font-semibold text-gray-100 uppercase">Legal</h2>
+            <ul class="text-gray-300 font-medium">
+              <li class="mb-4">
+                <a href="/privacypolicy" class="hover:underline">Privacy Policy</a>
+              </li>
+              <li class="mb-4">
+                <a href="/termandcondition" class="hover:underline">Terms &amp; Conditions</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </footer>
+
   </div>
 </template>
 

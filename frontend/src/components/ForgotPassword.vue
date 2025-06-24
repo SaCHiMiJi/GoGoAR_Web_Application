@@ -1,5 +1,5 @@
 <template>
-  <section class="bg-gray-50">
+  <section class="min-h-screen bg-gray-50">
     <div class="flex flex-col items-center justify-center px-6 py-4 mx-auto md:h-screen lg:py-0" v-if="!isPasswordReset">  
       <div class="w-full bg-white rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0">
         <div class="flex items-center p-4 text-2xl font-semibold bg-[#322653] text-gray-300 rounded-xl">

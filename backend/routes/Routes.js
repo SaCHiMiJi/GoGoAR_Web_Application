@@ -122,12 +122,14 @@ app.put("/modify/:id", verifyToken, async (req, res) => {
   let { assignment_name, description, creator_id, ref_url, steps } = req.body; // Extract other details from the body
   const date = new Date();
   const newDate = new Date(
-    Date.UTC(date.getFullYear(), date.getMonth(), date.getDate()),
-  );
+    Date.UTC(date.getFullYear(), date.getMonth(), date.getDate()) );
 
-  // This prevent creator to use the same assignment name.
-  const nameValidation =
-    await assignment_repository.findByName(assignment_name);
+  var nameValidation;
+  try {
+    nameValidation = await assignment_repository.findByName(assignment_name);
+  } catch (error) {
+    return res.status(400).json({ message: "could not find assignment by name." });
+  }
 
   // there should be the one left if user kept using the old assignment name.
   if (nameValidation.length > 1) {
@@ -166,8 +168,7 @@ app.put("/modify/:id", verifyToken, async (req, res) => {
       console.error(error);
       res.status(500).json({
         message: "Error updating assignment",
-        error: error.toString(),
-      });
+        error: error.toString() });
     });
 });
 

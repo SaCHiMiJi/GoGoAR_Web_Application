@@ -148,7 +148,7 @@
         </map>
         <div class="sm:absolute sm:bottom-0 sm:left-0" v-if="!formCreating">
           <button
-            class="mb-5 p-8 text-white bg-[#50C878] hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 focus:outline-none"
+            class="p-8 text-white bg-[#50C878] hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 focus:outline-none"
             v-on:click="saveConfirmationModal = true"
           >
             Save Assignment
@@ -447,6 +447,7 @@
               disabled
               readonly
             />
+
             <button
               v-on:click="copyLink()"
               class="absolute end-2 top-1/2 -translate-y-1/2 text-gray-500 bg-[#322653] hover:bg-white rounded-lg p-4 inline-flex items-center justify-center"
@@ -468,55 +469,41 @@
 
           <!-- navigate to the link -->
           <button
-            class="mb-16 text-blue-700 hover:text-white border border-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2"
-            @click="redirectToLink()"
-          >
-            Try Now
-          </button>
+            class="px-5 py-2.5 me-8 font-medium rounded-lg text-m text-center text-blue-700 hover:text-white border border-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300"
+            @click="redirectToLink()">Try Now</button>
 
           <!-- Back to Library -->
           <RouterLink to="/mylibrary">
             <button
-              class="w-[325px] h-[80px] bg-[#322653] p-5 rounded-lg text-white text-lg hover:bg-slate-500"
-            >
-              Back to Library
-            </button>
+              class="px-5 py-2.5 font-medium rounded-lg text-center text-white text-m bg-[#322653] hover:bg-slate-500">
+              Back to Library</button>
           </RouterLink>
         </div>
       </div>
       <div
         class="object-none self-center w-325 h-325 text-center text-sm"
-        v-else
-      >
+        v-else>
         <v-lazy-image src="/error.jpg" class="mx-auto mb-4" />
-        <p>
-          This assignment is yet to have mobile app's URL. Please create url via
-          mobile application and try to refetch again.
-        </p>
+        <p>This assignment is yet to have mobile app's URL. Please create url via mobile application and try to refetch again.</p>
       </div>
 
       <!-- 2nd column -->
       <!-- Show the instructions -->
       <div
         v-if="mobileAppURL !== '' && mobileAppURL !== false"
-        class="self-start"
-      >
+        class="self-start">
         <!-- Assignment name -->
         <div class="bg-[#322653] rounded-md p-8">
-          <div v-if="formCreating" class="flex justify-end">
-            {{ displayInstructionOrder() }}
-          </div>
-
+          <div v-if="formCreating" class="flex justify-end">{{ displayInstructionOrder() }}</div>
           <label
             for="large-input"
             class="block mb-2 text-sm font-medium text-white"
-            >Assignment Name</label
-          >
+            >Assignment Name</label>
           <input
             v-model="assignmentName"
             type="text"
             id="large-input"
-            class="block w-full p-4 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 text-base focus:ring-blue-500 focus:border-blue-500"
+            class="block w-full p-4 mb-4 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 text-base focus:ring-blue-500 focus:border-blue-500"
             readonly
           />
           <!-- Description -->
@@ -529,7 +516,7 @@
             v-model="description"
             type="text"
             id="large-input"
-            class="block w-full p-4 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 text-base focus:ring-blue-500 focus:border-blue-500"
+            class="block w-full p-4 mb-4 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 text-base focus:ring-blue-500 focus:border-blue-500"
             readonly
           />
 
@@ -543,7 +530,7 @@
             v-model="ref_url"
             type="text"
             id="large-input"
-            class="block w-full p-4 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 text-base focus:ring-blue-500 focus:border-blue-500"
+            class="block w-full p-4 mb-4 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 text-base focus:ring-blue-500 focus:border-blue-500"
             readonly
           />
         </div>
@@ -967,7 +954,7 @@ export default {
               errMsg === "No token Received." ||
               errMsg === "Outdated or Invalid token"
             ) {
-              this.emiiter.emit("signout");
+              this.emitter.emit("signout");
               this.$router.replace({ path: "/signin" });
             }
             useToast().error(errMsg);

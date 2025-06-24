@@ -1,5 +1,5 @@
 <template>
-  <section>
+  <section class="min-h-screen">
     <div
       v-show="assignments.length > 0"
       class="py-4 px-4 mx-auto max-w-screen-xl text-center lg:py-16"
@@ -22,7 +22,7 @@
         <label
           for="default-search"
           class="mb-2 text-sm font-medium text-gray-900 sr-only"
-          >Search</label
+        >Search</label
         >
         <div class="relative mb-4">
           <div
@@ -252,10 +252,10 @@
                 v-for="assignment in assignments"
                 :key="assignment._id"
                 v-show="
-                  isValidFilter(
-                    assignment.assignment_name,
-                    assignment.creator_name,
-                  )
+                isValidFilter(
+                  assignment.assignment_name,
+                  assignment.creator_name,
+                )
                 "
               >
                 <!-- Name -->
@@ -268,7 +268,7 @@
                     assignment.description.length > 25
                       ? assignment.description.substring(0, 25) + "..."
                       : assignment.description
-                  }}</span>
+                    }}</span>
                 </th>
 
                 <!-- Creator -->
@@ -287,19 +287,19 @@
 
                 <!-- View Assignment -->
                 <td class="px-6 py-4 text-right">
-                  <div class="flex justify-end mt-4">
+                  <div class="flex justify-center">
                     <router-link
                       :to="{ path: '/assignmentview/' + assignment._id }"
                     >
                       <div
-                        class="w-[62px] h-[62px] p-4 text-sm font-medium flex items-center text-black bg-white border border-black rounded-lg hover:bg-gray-300 focus:ring-4 focus:outline-none focus:ring-gray-800"
+                        class="w-[56px] h-[56px] p-2 text-sm font-medium flex items-center text-black bg-white border border-black rounded-lg hover:bg-gray-300 focus:ring-4 focus:outline-none focus:ring-gray-800"
                       >
                         <svg
                           xmlns="http://www.w3.org/2000/svg"
                           width="16"
                           height="16"
                           fill="currentColor"
-                          class="bi bi-eye"
+                          class="bi bi-eye mx-auto"
                           viewBox="0 0 16 16"
                         >
                           <path
@@ -330,7 +330,7 @@
           v-for="assignment in assignments"
           :key="assignment._id"
           v-show="
-            isValidFilter(assignment.assignment_name, assignment.creator_name)
+          isValidFilter(assignment.assignment_name, assignment.creator_name)
           "
         >
           <div
@@ -364,7 +364,7 @@
                     width="16"
                     height="16"
                     fill="currentColor"
-                    class="bi bi-eye"
+                    class="bi bi-eye mx-auto"
                     viewBox="0 0 16 16"
                   >
                     <path
@@ -529,14 +529,14 @@ export default {
 
       if (
         this.nameFilter &&
-        nameFilts.includes(this.nameFilter.toLowerCase().replace(/\s/g, ""))
+          nameFilts.includes(this.nameFilter.toLowerCase().replace(/\s/g, ""))
       ) {
         return true;
       } else if (
         this.creatorFilter &&
-        creatorFilts.includes(
-          this.creatorFilter.toLowerCase().replace(/\s/g, ""),
-        )
+          creatorFilts.includes(
+            this.creatorFilter.toLowerCase().replace(/\s/g, ""),
+          )
       ) {
         return true;
       } else if (!this.nameFilter && !this.creatorFilter) {

@@ -144,6 +144,7 @@ onMounted(() => {
       >
         <div class="relative p-4 w-screen max-w-md max-h-full">
           <div class="relative bg-white rounded-lg shadow-2xl">
+               <!-- close modal -->
             <button
               @click="closeModal"
               type="button"
@@ -182,20 +183,24 @@ onMounted(() => {
                   d="M10 11V6m0 8h.01M19 10a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
                 />
               </svg>
-              <h3 class="mb-5 text-lg font-normal text-gray-500">
+
+              <!-- modal's body -->
+              <body class="mb-5 text-lg font-normal text-gray-500">
                 Are you sure you want to sign out?
-              </h3>
+              </body>
+
+              <!-- confirm -->
               <button
                 @click="signOut"
                 type="button"
-                class="text-white bg-red-600 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300font-medium rounded-lg text-sm inline-flex items-center px-5 py-2.5 text-center"
+                class="text-white bg-red-600 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm inline-flex items-center px-5 py-2.5 text-center"
               >
                 Yes, I'm sure
               </button>
               <button
                 @click="closeModal"
                 type="button"
-                class="py-2.5 px-5 ml-3 text-sm font-medium text-gray-100 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100"
+                class="text-gray-600 py-2.5 px-5 ml-3 text-sm font-medium text-gray-100 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 focus:z-10 focus:ring-4 focus:ring-gray-100"
               >
                 No, cancel
               </button>

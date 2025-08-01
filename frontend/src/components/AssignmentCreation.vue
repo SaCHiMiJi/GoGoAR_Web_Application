@@ -44,7 +44,7 @@
             <button
               v-on:click="saveConfirmationModal = false"
               type="button"
-              class="py-2.5 px-5 ml-3 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100"
+              class="py-2.5 px-5 ml-3 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 focus:z-10 focus:ring-4 focus:ring-gray-100"
             >
               No
             </button>
@@ -111,7 +111,7 @@
             <button
               v-on:click="focusDeleteInstruction = 0"
               type="button"
-              class="py-2.5 px-5 ml-3 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100"
+              class="py-2.5 px-5 ml-3 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 focus:z-10 focus:ring-4 focus:ring-gray-100"
             >
               No
             </button>
@@ -339,16 +339,10 @@
 
             <!-- External Component -->
             <div
-              v-if="
-                assignmentFunction === 'connect' && assignmentFunction !== null
-              "
-              class="pb-4"
-            >
+              v-if="assignmentFunction === 'connect' && assignmentFunction !== null"
+              class="pb-4">
               <div>External Component</div>
-              <select
-                v-model="assignmentExternalComponent"
-                class="rounded-lg p-2"
-              >
+              <select v-model="assignmentExternalComponent" class="rounded-lg p-2">
                 <option selected disabled>External Component</option>
                 <option value="leverswitch">Lever Switch</option>
                 <option value="button">Button</option>
@@ -357,9 +351,7 @@
                 <option value="lightsensor">Light Sensor</option>
                 <option value="tempsensor">Digital TEMP Sensor</option>
                 <option value="groveextension">Grove Extension</option>
-                <option value="temprelativehumidity">
-                  Temp/Relative/Humidity
-                </option>
+                <option value="temprelativehumidity">Temp/Relative/Humidity</option>
                 <option value="soilhumiditysensor">Soil Humidity Sensor</option>
                 <option value="led">LED</option>
                 <option value="groveterminalblock">Grove Terminal Block</option>
@@ -975,7 +967,7 @@ export default {
               errMsg === "No token Received." ||
               errMsg === "Outdated or Invalid token"
             ) {
-              this.emiiter.emit("signout");
+              this.emitter.emit("signout");
               this.$router.replace({ path: "/signin" });
             }
             useToast().error(errMsg);

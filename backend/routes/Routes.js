@@ -12,7 +12,6 @@ const OTP = require("../models/otpModel.js");
 // securities for authentication route.
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
-
 const jwt_token = process.env.JWT_TOKEN;
 
 // Retreive all existed assignment.
@@ -38,7 +37,7 @@ app.post("/create", verifyToken, async (req, res) => {
 
   // This prevent creator to use the same assignment name.
   const nameValidation =
-    await assignment_repository.findByName(assignment_name);
+        await assignment_repository.findByName(assignment_name);
   // console.log(nameValidation.length);
   if (nameValidation.length > 0) {
     return res.status(400).json({ message: "the name is already used." });
@@ -280,7 +279,7 @@ app.get("/getredirectionurl/:id", (req, res) => {
     .then((dburl) => {
       const url = dburl.mobileapp_url;
       const redirectURL =
-        process.env.FRONTEND_URL + "/appredirection?url=" + url;
+            process.env.FRONTEND_URL + "/appredirection?url=" + url;
       console.log(`send the URL: ${redirectURL}`);
       res.send(redirectURL);
     })
@@ -319,7 +318,7 @@ app.post("/register", async (req, res) => {
     const { username, email, password } = req.body;
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     const passwordRegex =
-      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_])[a-zA-Z\d\W_]{8,}$/;
+          /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_])[a-zA-Z\d\W_]{8,}$/;
     const domain = email.split("@")[1];
 
     // validate the email.
@@ -337,7 +336,7 @@ app.post("/register", async (req, res) => {
     if (!passwordRegex.test(password)) {
       return res.status(400).json({
         error:
-          "Password must include lowercase, uppercase, number, special character, and be at least 8 characters.",
+        "Password must include lowercase, uppercase, number, special character, and be at least 8 characters.",
       });
     }
 
@@ -372,7 +371,7 @@ app.post("/login", async (req, res) => {
   if (!user) {
     return res.status(401).json({
       error:
-        "User's email not found.\nPlease ensure that your email is registered.",
+      "User's email not found.\nPlease ensure that your email is registered.",
     });
   }
 

@@ -58,7 +58,7 @@
             <button
               @click="idToDelete = null"
               type="button"
-              class="py-2.5 px-5 ml-3 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100"
+              class="py-2.5 px-5 ml-3 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 focus:z-10 focus:ring-4 focus:ring-gray-100"
             >
               No, cancel
             </button>
@@ -107,7 +107,7 @@
         </a>
         <a
           href="/"
-          class="py-3 px-5 sm:ms-4 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-70"
+          class="py-3 px-5 sm:ms-4 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 focus:z-10 focus:ring-4 focus:ring-gray-100 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-70"
         >
           Learn more
         </a>
@@ -487,7 +487,7 @@ export default {
             errMsg === "No token Received." ||
               errMsg === "Outdated or Invalid token"
           ) {
-            this.emiiter.emit("signout");
+            this.emitter.emit("signout");
             this.$router.replace({ path: "/signin" });
           }
           console.error("Error deleting the assignment", errMsg);

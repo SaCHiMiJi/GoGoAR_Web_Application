@@ -16,12 +16,12 @@ const seedAssignments = [
       "1": {
         "function": "connect",
         "component": "input1",
-        "context": "Please conenct Light Sensor to InputPort1",
-        "externalComponent": "lightsensor"
+        "context": "Please connect Luminosity Sensor to InputPort1",
+        "externalComponent": "luminosity"
       },
       "2": {
         "function": "context",
-        "context": "Now you can read a value from Gogocode.",
+        "context": "Now you can read a value from GoGocode.",
       }
     }
   },
@@ -40,12 +40,12 @@ const seedAssignments = [
       "2": {
         "function": "connect",
         "component": "output1",
-        "context": "Please conenct Light Sensor to Output Port1",
-        "externalComponent": "lightsensor"
+        "context": "Please connect LED bulb to Output Port1",
+        "externalComponent": "led"
       },
       "3": {
         "function": "context",
-        "context": "Now you can operate a equipment from Gogocode.",
+        "context": "Now you can operate a equipment from GoGocode.",
       }
     }
   },
@@ -64,8 +64,8 @@ const seedAssignments = [
       "2": {
         "function": "connect",
         "component": "input1",
-        "context": "Connect the light sensor to input port number 1.",
-        "externalComponent": "lightsensor"
+        "context": "Connect the Luminosity Sensor to input port number 1.",
+        "externalComponent": "luminosity"
       },
       "3": {
         "function": "connect",
@@ -82,7 +82,7 @@ const seedAssignments = [
 ];
 
 exports.seedAssignment = async () => {
-try {
+  try {
     const assignments = await assignment_repository.findAll();
     const assignmentAmount = assignments.length; 
 
@@ -93,15 +93,15 @@ try {
           const createdAssignment = await assignment_repository.create(assignment);
           const id = createdAssignment._id;
           await assignment_repository.updateURL(id, "unitydl://mylink?" + id);
-          console.log("Successfully created the assignment.");
+          console.log("[SEED]\nSuccessfully created the assignment.");
         } catch (error) {
-          console.error("Unable to create the initiated assignment because:\n" + error.toString());
+          console.error("[SEED]\nUnable to create the initiated assignment because:\n" + error.toString());
         }
       }
     } else {
-      console.log('The assignments are already created. No need to create the seeded ones.');
+      console.log("[SEED]\nThe assignments are already created. No need to create the seeded ones.");
     }
   } catch (error) {
-    console.error("Unable to fetch assignments because:\n" + error.toString());
+    console.error("[SEED]\nUnable to fetch assignments because:\n" + error.toString());
   }
 };

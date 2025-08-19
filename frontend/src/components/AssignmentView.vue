@@ -2,7 +2,7 @@
   <div class="align-self-center;">
     <!-- view assignment's details and instructions -->
     <div
-      class="mx-auto gap-8 items-center py-8 px-4 xl:gap-16 sm:grid md:grid md:grid-cols-2 lg:px-6 max-h-screen-xl max-w-screen-2xl"
+      class="mx-auto gap-8 items-start py-8 px-4 xl:gap-16 sm:grid md:grid md:grid-cols-2 lg:px-6 max-h-screen-xl max-w-screen-2xl"
       v-if="detailView" >
       <!-- Image container on 1st column -->
       <!-- class="sm:relative sm:flex-grow sm:flex sm:flex-col sm:items-center sm:justify-center sm:self-start" -->

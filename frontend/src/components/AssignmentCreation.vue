@@ -122,11 +122,11 @@
 
     <!-- Assignments -->
     <div
-      class="mx-auto gap-8 items-center py-8 px-4 max-w-screen-2xl xl:gap-16 md:grid md:grid-cols-2 lg:px-6 max-h-screen-xl"
+      class="mx-auto gap-8 items-start py-8 px-4 max-w-screen-2xl xl:gap-16 md:grid md:grid-cols-2 lg:px-6 max-h-screen-xl"
       v-if="!isAssignmentSubmit">
       <!-- Image container on 1st column -->
       <!-- class="sm:relative sm:flex-grow sm:flex sm:flex-col sm:items-center sm:justify-center sm:self-start" -->
-      <div class="object-center mx-auto">
+      <div class="mx-auto">
         <div class="">
           <v-lazy-image
             class="object-none self-center"

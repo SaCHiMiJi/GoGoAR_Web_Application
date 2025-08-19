@@ -365,13 +365,12 @@
           v-show="isValidFilter(assignment.assignment_name)"
         >
           <!-- Topic -->
-          <div class="p-6 bg-white border border-gray-200 rounded-lg shadow">
-            {{ assignment.assignment_name }}
-            <br />
+          <div class="max-w-sm h-full p-6 bg-white border border-gray-200 rounded-lg shadow">
+            <h2>{{ assignment.assignment_name }}</h2>
 
             <!-- Description -->
-            <p class="font-normal text-gray-700">
-              {{ assignment.description }}
+            <p class="font-normal text-sm text-gray-700 whitespace-pre-line">
+              {{ assignment.description ? assignment.description : "\n"}}
             </p>
 
             <!-- URL -->

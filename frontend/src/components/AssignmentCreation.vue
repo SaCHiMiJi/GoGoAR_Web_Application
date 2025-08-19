@@ -122,18 +122,18 @@
 
     <!-- Assignments -->
     <div
-      class="gap-8 items-center py-8 px-4 max-w-screen-2xl xl:gap-16 md:grid md:grid-cols-2 lg:px-6 max-h-screen-xl"
-      v-if="!isAssignmentSubmit"
-    >
+      class="mx-auto gap-8 items-center py-8 px-4 max-w-screen-2xl xl:gap-16 md:grid md:grid-cols-2 lg:px-6 max-h-screen-xl"
+      v-if="!isAssignmentSubmit">
       <!-- Image container on 1st column -->
-      <div
-        class="sm:relative sm:flex-grow sm:flex sm:items-center sm:justify-center sm:self-start"
-      >
-        <v-lazy-image
-          class="object-none self-center"
-          src="/gogoboard.png"
-          usemap="#image_map"
-        />
+      <!-- class="sm:relative sm:flex-grow sm:flex sm:flex-col sm:items-center sm:justify-center sm:self-start" -->
+      <div class="object-center mx-auto">
+        <div class="">
+          <v-lazy-image
+            class="object-none self-center"
+            src="/gogoboard.png"
+            usemap="#image_map"
+          />
+        </div>
         <map name="image_map">
           <area
             v-for="(area, index) in areas"
@@ -146,11 +146,10 @@
             :class="{ 'selected-area': areaClicked === index }"
           />
         </map>
-        <div class="sm:absolute sm:bottom-0 sm:left-0" v-if="!formCreating">
-          <button
-            class="p-8 text-white bg-[#50C878] hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 focus:outline-none"
-            v-on:click="saveConfirmationModal = true"
-          >
+        <!-- class="sm:absolute sm:bottom-0 sm:left-0" -->
+        <div class="flex justify-center mt-4" v-if="!formCreating">
+          <button class="p-12 px-5 py-2.5 text-white bg-[#50C878] hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm focus:outline-none"
+            v-on:click="saveConfirmationModal=true">
             Save Assignment
           </button>
         </div>

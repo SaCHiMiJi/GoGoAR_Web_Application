@@ -338,8 +338,8 @@
           >
             <h2>{{ assignment.assignment_name }}</h2>
 
-            <p class="font-normal text-sm text-gray-700">
-              {{ assignment.description }}
+            <p class="font-normal text-sm text-gray-700 whitespace-pre-line">
+              {{ assignment.description ? assignment.description : "\n"}}
             </p>
 
             <p class="font-normal text-gray-500">

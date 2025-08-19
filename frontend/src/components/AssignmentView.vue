@@ -2,25 +2,20 @@
   <div class="align-self-center;">
     <!-- view assignment's details and instructions -->
     <div
-      class="gap-8 items- py-8 px-4 mx-auto max-w-screen-xl xl:gap-16 md:grid md:grid-cols-2 sm:py-16 lg:px-6"
-      v-if="detailView"
-    >
+      class="mx-auto gap-8 items-center py-8 px-4 xl:gap-16 sm:grid md:grid md:grid-cols-2 lg:px-6 max-h-screen-xl max-w-screen-2xl"
+      v-if="detailView" >
       <!-- Image container on 1st column -->
-      <div class="sm:relative">
+      <!-- class="sm:relative sm:flex-grow sm:flex sm:flex-col sm:items-center sm:justify-center sm:self-start" -->
+      <div class="">
         <v-lazy-image
           class="object-none self-center"
           src="/gogoboard.png"
           usemap="#image_map"
         />
         <!-- view the assignment's url -->
-        <div class="sm:absolute sm:bottom-0 sm:left-0">
-          <button
-            class="mb-5 p-8 text-white bg-[#50C878] hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 focus:outline-none"
-            v-on:click="
-              detailView = !detailView;
-              getMobileAppURL();
-            "
-          >
+        <div class="flex justify-center mt-4">
+          <button class="p-12 px-5 py-2.5 text-white bg-[#50C878] hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm focus:outline-none"
+            v-on:click="detailView=!detailView; getMobileAppURL();">
             Assignment URL
           </button>
         </div>

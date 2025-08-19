@@ -6,18 +6,20 @@
       v-if="detailView" >
       <!-- Image container on 1st column -->
       <!-- class="sm:relative sm:flex-grow sm:flex sm:flex-col sm:items-center sm:justify-center sm:self-start" -->
-      <div class="">
-        <v-lazy-image
-          class="object-none self-center"
-          src="/gogoboard.png"
-          usemap="#image_map"
-        />
-        <!-- view the assignment's url -->
-        <div class="flex justify-center mt-4">
-          <button class="p-12 px-5 py-2.5 text-white bg-[#50C878] hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm focus:outline-none"
-            v-on:click="detailView=!detailView; getMobileAppURL();">
-            Assignment URL
-          </button>
+      <div class="object-center mx-auto">
+        <div class="">
+          <v-lazy-image
+            class="object-none self-center"
+            src="/gogoboard.png"
+            usemap="#image_map"
+          />
+          <!-- view the assignment's url -->
+          <div class="flex justify-center mt-4">
+            <button class="p-12 px-5 py-2.5 text-white bg-[#50C878] hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm focus:outline-none"
+              v-on:click="detailView=!detailView; getMobileAppURL();">
+              Assignment URL
+            </button>
+          </div>
         </div>
       </div>
 

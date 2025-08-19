@@ -116,15 +116,40 @@
           </div>
 
           <!-- Copy to Clipboard -->
+          <!-- Preview Link -->
+          <div class="mb-2"> Preview URL </div>
           <div class="relative bg-[#322653] mb-6 p-2">
             <input
               v-model="mobileAppURL"
               class="col-span-6 bg-gray-50 border border-gray-300 text-gray-500 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
               disabled
+              readonly/>
+            <button v-on:click="copyLink(mobileAppURL)"
+              class="absolute end-2 top-1/2 -translate-y-1/2 text-gray-500 bg-[#322653] hover:bg-white rounded-lg p-4 inline-flex items-center justify-center">
+              <span id="default-icon">
+                <svg
+                  class="w-3.5 h-3.5"
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="currentColor"
+                  viewBox="0 0 18 20">
+                  <path
+                    d="M16 1h-3.278A1.992 1.992 0 0 0 11 0H7a1.993 1.993 0 0 0-1.722 1H2a2 2 0 0 0-2 2v15a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V3a2 2 0 0 0-2-2Zm-3 14H5a1 1 0 0 1 0-2h8a1 1 0 0 1 0 2Zm0-4H5a1 1 0 0 1 0-2h8a1 1 0 1 1 0 2Zm0-5H5a1 1 0 0 1 0-2h2V2h4v2h2a1 1 0 1 1 0 2Z"
+                  />
+                </svg>
+              </span>
+            </button>
+          </div>
+          <!-- ID copy -->
+          <div class="mb-2"> Assignment ID </div>
+          <div class="relative bg-[#322653] mb-6 p-2">
+            <input
+              v-model="assignment_id"
+              class="col-span-6 bg-gray-50 border border-gray-300 text-gray-500 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+              disabled
               readonly
             />
             <button
-              v-on:click="copyLink()"
+              v-on:click="copyLink(assignment_id)"
               class="absolute end-2 top-1/2 -translate-y-1/2 text-gray-500 bg-[#322653] hover:bg-white rounded-lg p-4 inline-flex items-center justify-center"
             >
               <span id="default-icon">
@@ -373,9 +398,9 @@ export default {
           console.error(err.toString());
         });
     },
-    copyLink() {
+    copyLink(content) {
       try {
-        copy(this.mobileAppURL);
+        copy(content);
         useToast().success("Copied");
       } catch ($e) {
         useToast().error("Cannot copy: " + $e);

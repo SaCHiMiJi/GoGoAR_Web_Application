@@ -13,6 +13,13 @@
       :class="imageClass"
       @load="onLoad()"
       />
+
+    <v-lazy-image 
+      src="/home_splited_3.png" 
+      src-placeholder="/rolling_load.gif"
+      :class="imageClass"
+      @load="onLoad()"
+      />
   </div>
 </template>
 

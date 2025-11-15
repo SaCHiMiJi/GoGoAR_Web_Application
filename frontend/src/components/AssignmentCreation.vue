@@ -181,7 +181,7 @@
             >Description</label
           >
           <textarea
-            maxlength="75"
+            maxlength="200"
             v-model="description"
             id="message"
             rows="1"
@@ -381,7 +381,7 @@
                 Context
               </div>
               <textarea
-                maxlength="75"
+                maxlength="200"
                 v-model="assignmentContext"
                 id="textarea"
                 rows="2"
